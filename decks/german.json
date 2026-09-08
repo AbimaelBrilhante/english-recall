@@ -220,6 +220,12 @@
       "front": "Ich habe eine Tochter.",
       "back": "Eu tenho uma filha.",
       "initial_due_days": 3
+    },
+    {
+      "id": "de-037",
+      "front": "Ich bin müde.",
+      "back": "Eu estou cansado.",
+      "initial_due_days": 0
     }
   ]
 }
