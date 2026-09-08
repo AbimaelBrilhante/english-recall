@@ -1,0 +1,375 @@
+{
+  "schema_version": 1,
+  "deck_id": "en",
+  "name": "English",
+  "flag": "🇺🇸",
+  "lang": "en-US",
+  "cards": [
+    {
+      "id": "en-001",
+      "front": "Tell me a little about yourself.",
+      "back": "Fale um pouco sobre você.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-002",
+      "front": "I have been working with data since 2022.",
+      "back": "Eu trabalho com dados desde 2022.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-003",
+      "front": "I work closely with tax and accounting teams.",
+      "back": "Eu trabalho em estreita colaboração com as equipes fiscal e contábil.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-004",
+      "front": "One of my main strengths is understanding both business and data.",
+      "back": "Um dos meus principais pontos fortes é entender tanto o negócio quanto os dados.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-005",
+      "front": "I turn business rules into data validation.",
+      "back": "Eu transformo regras de negócio em validações de dados.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-006",
+      "front": "I usually start by understanding the business problem.",
+      "back": "Normalmente começo entendendo o problema de negócio.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-007",
+      "front": "Then I identify the necessary data sources.",
+      "back": "Depois identifico as fontes de dados necessárias.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-008",
+      "front": "I use SQL to transform and validate the data.",
+      "back": "Eu uso SQL para transformar e validar os dados.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-009",
+      "front": "I have experience working with Snowflake.",
+      "back": "Tenho experiência trabalhando com Snowflake.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-010",
+      "front": "I use dashboards to make the results easier to understand.",
+      "back": "Eu uso dashboards para tornar os resultados mais fáceis de entender.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-011",
+      "front": "This automation saves about fifty hours per month.",
+      "back": "Essa automação economiza cerca de cinquenta horas por mês.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-012",
+      "front": "The project reduced a highly manual process.",
+      "back": "O projeto reduziu um processo altamente manual.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-013",
+      "front": "We automated several repetitive activities.",
+      "back": "Nós automatizamos várias atividades repetitivas.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-014",
+      "front": "The main challenge was understanding the business rules.",
+      "back": "O principal desafio foi entender as regras de negócio.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-015",
+      "front": "I was responsible for the project from discovery to validation.",
+      "back": "Eu fui responsável pelo projeto desde a descoberta até a validação.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-016",
+      "front": "I worked directly with the users to validate the results.",
+      "back": "Eu trabalhei diretamente com os usuários para validar os resultados.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-017",
+      "front": "We found inconsistencies that were difficult to identify manually.",
+      "back": "Encontramos inconsistências que eram difíceis de identificar manualmente.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-018",
+      "front": "I am looking for my first international opportunity.",
+      "back": "Estou buscando minha primeira oportunidade internacional.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-019",
+      "front": "I want to apply my experience in data, SAP and business processes.",
+      "back": "Quero aplicar minha experiência em dados, SAP e processos de negócio.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-020",
+      "front": "I am comfortable learning new tools when necessary.",
+      "back": "Eu me sinto confortável aprendendo novas ferramentas quando necessário.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-021",
+      "front": "Could you tell me more about this role?",
+      "back": "Você poderia me falar mais sobre esta vaga?",
+      "initial_due_days": 1
+    },
+    {
+      "id": "en-022",
+      "front": "What are the main challenges of this position?",
+      "back": "Quais são os principais desafios desta posição?",
+      "initial_due_days": 1
+    },
+    {
+      "id": "en-023",
+      "front": "What would you expect from me during the first three months?",
+      "back": "O que vocês esperariam de mim durante os primeiros três meses?",
+      "initial_due_days": 1
+    },
+    {
+      "id": "en-024",
+      "front": "Could you repeat the question, please?",
+      "back": "Você poderia repetir a pergunta, por favor?",
+      "initial_due_days": 1
+    },
+    {
+      "id": "en-025",
+      "front": "Could you say that a little more slowly?",
+      "back": "Você poderia falar isso um pouco mais devagar?",
+      "initial_due_days": 1
+    },
+    {
+      "id": "en-026",
+      "front": "Let me think for a second.",
+      "back": "Deixe-me pensar por um segundo.",
+      "initial_due_days": 1
+    },
+    {
+      "id": "en-027",
+      "front": "If I understood correctly, you are asking about my experience with automation.",
+      "back": "Se entendi corretamente, você está perguntando sobre minha experiência com automação.",
+      "initial_due_days": 1
+    },
+    {
+      "id": "en-028",
+      "front": "A good example of that is one of my recent projects.",
+      "back": "Um bom exemplo disso é um dos meus projetos recentes.",
+      "initial_due_days": 1
+    },
+    {
+      "id": "en-029",
+      "front": "The result was a significant reduction in manual work.",
+      "back": "O resultado foi uma redução significativa no trabalho manual.",
+      "initial_due_days": 1
+    },
+    {
+      "id": "en-030",
+      "front": "I would like to understand how the team works on a daily basis.",
+      "back": "Eu gostaria de entender como a equipe trabalha no dia a dia.",
+      "initial_due_days": 1
+    },
+    {
+      "id": "en-031",
+      "front": "I am still improving my English, but I can communicate in professional situations.",
+      "back": "Ainda estou melhorando meu inglês, mas consigo me comunicar em situações profissionais.",
+      "initial_due_days": 1
+    },
+    {
+      "id": "en-032",
+      "front": "I do not know the answer yet, but I know how I would investigate it.",
+      "back": "Ainda não sei a resposta, mas sei como eu investigaria isso.",
+      "initial_due_days": 1
+    },
+    {
+      "id": "en-033",
+      "front": "First, I would check the quality of the source data.",
+      "back": "Primeiro, eu verificaria a qualidade dos dados de origem.",
+      "initial_due_days": 1
+    },
+    {
+      "id": "en-034",
+      "front": "We need to understand the root cause before changing the process.",
+      "back": "Precisamos entender a causa raiz antes de alterar o processo.",
+      "initial_due_days": 1
+    },
+    {
+      "id": "en-035",
+      "front": "The data looks correct, but I would like to validate it with the business team.",
+      "back": "Os dados parecem corretos, mas eu gostaria de validá-los com a equipe de negócio.",
+      "initial_due_days": 1
+    },
+    {
+      "id": "en-036",
+      "front": "I can explain the technical part in more detail if you want.",
+      "back": "Posso explicar a parte técnica com mais detalhes se você quiser.",
+      "initial_due_days": 1
+    },
+    {
+      "id": "en-037",
+      "front": "I am responsible for analyzing data and improving business processes.",
+      "back": "Sou responsável por analisar dados e melhorar processos de negócio.",
+      "initial_due_days": 1
+    },
+    {
+      "id": "en-038",
+      "front": "Most of my projects start with a manual process that needs improvement.",
+      "back": "A maioria dos meus projetos começa com um processo manual que precisa ser melhorado.",
+      "initial_due_days": 1
+    },
+    {
+      "id": "en-039",
+      "front": "I try to understand the process before choosing the technology.",
+      "back": "Eu tento entender o processo antes de escolher a tecnologia.",
+      "initial_due_days": 1
+    },
+    {
+      "id": "en-040",
+      "front": "The solution needs to be simple enough for the users to maintain.",
+      "back": "A solução precisa ser simples o suficiente para os usuários manterem.",
+      "initial_due_days": 1
+    },
+    {
+      "id": "en-041",
+      "front": "I use data to identify problems and support decisions.",
+      "back": "Eu uso dados para identificar problemas e apoiar decisões.",
+      "initial_due_days": 2
+    },
+    {
+      "id": "en-042",
+      "front": "The first step is to validate whether the source is reliable.",
+      "back": "O primeiro passo é validar se a fonte é confiável.",
+      "initial_due_days": 2
+    },
+    {
+      "id": "en-043",
+      "front": "We created a consolidated data layer for the analysis.",
+      "back": "Criamos uma camada consolidada de dados para a análise.",
+      "initial_due_days": 2
+    },
+    {
+      "id": "en-044",
+      "front": "The dashboard allows the team to identify exceptions quickly.",
+      "back": "O dashboard permite que a equipe identifique exceções rapidamente.",
+      "initial_due_days": 2
+    },
+    {
+      "id": "en-045",
+      "front": "I am used to working with large datasets.",
+      "back": "Estou acostumado a trabalhar com grandes volumes de dados.",
+      "initial_due_days": 2
+    },
+    {
+      "id": "en-046",
+      "front": "I have worked with millions of rows in some projects.",
+      "back": "Já trabalhei com milhões de linhas em alguns projetos.",
+      "initial_due_days": 2
+    },
+    {
+      "id": "en-047",
+      "front": "I prefer to automate repetitive tasks whenever possible.",
+      "back": "Prefiro automatizar tarefas repetitivas sempre que possível.",
+      "initial_due_days": 2
+    },
+    {
+      "id": "en-048",
+      "front": "The automation also reduced the risk of human error.",
+      "back": "A automação também reduziu o risco de erro humano.",
+      "initial_due_days": 2
+    },
+    {
+      "id": "en-049",
+      "front": "I had to learn more about the process before building the solution.",
+      "back": "Precisei aprender mais sobre o processo antes de construir a solução.",
+      "initial_due_days": 2
+    },
+    {
+      "id": "en-050",
+      "front": "I documented the main business rules used in the validation.",
+      "back": "Documentei as principais regras de negócio usadas na validação.",
+      "initial_due_days": 2
+    },
+    {
+      "id": "en-051",
+      "front": "I communicated the results to both technical and business users.",
+      "back": "Comuniquei os resultados tanto para usuários técnicos quanto de negócio.",
+      "initial_due_days": 2
+    },
+    {
+      "id": "en-052",
+      "front": "The project had a measurable impact on the team.",
+      "back": "O projeto teve um impacto mensurável na equipe.",
+      "initial_due_days": 2
+    },
+    {
+      "id": "en-053",
+      "front": "I am interested in roles where data is connected to real business problems.",
+      "back": "Tenho interesse em vagas nas quais dados estejam conectados a problemas reais de negócio.",
+      "initial_due_days": 2
+    },
+    {
+      "id": "en-054",
+      "front": "I am open to learning new technologies if the role requires them.",
+      "back": "Estou aberto a aprender novas tecnologias se a vaga exigir.",
+      "initial_due_days": 2
+    },
+    {
+      "id": "en-055",
+      "front": "Could you give me an example?",
+      "back": "Você poderia me dar um exemplo?",
+      "initial_due_days": 2
+    },
+    {
+      "id": "en-056",
+      "front": "Could you clarify what you mean by that?",
+      "back": "Você poderia esclarecer o que quer dizer com isso?",
+      "initial_due_days": 2
+    },
+    {
+      "id": "en-057",
+      "front": "I would like to make sure I understood the question correctly.",
+      "back": "Gostaria de ter certeza de que entendi a pergunta corretamente.",
+      "initial_due_days": 2
+    },
+    {
+      "id": "en-058",
+      "front": "From my perspective, the most important point is data quality.",
+      "back": "Na minha perspectiva, o ponto mais importante é a qualidade dos dados.",
+      "initial_due_days": 2
+    },
+    {
+      "id": "en-059",
+      "front": "That depends on the business requirement.",
+      "back": "Isso depende do requisito de negócio.",
+      "initial_due_days": 2
+    },
+    {
+      "id": "en-060",
+      "front": "I would first analyze the current process and the available data.",
+      "back": "Primeiro eu analisaria o processo atual e os dados disponíveis.",
+      "initial_due_days": 2
+    },
+    {
+      "id": "en-061",
+      "front": "After that, I would propose the simplest reliable solution.",
+      "back": "Depois disso, eu proporia a solução confiável mais simples.",
+      "initial_due_days": 3
+    }
+  ]
+}
