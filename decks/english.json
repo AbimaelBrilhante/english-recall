@@ -376,6 +376,12 @@
       "front": "I make sure the solution addresses the real business need.",
       "back": "Eu garanto que a solução atenda à necessidade real do negócio.",
       "initial_due_days": 0
+    },
+    {
+      "id": "en-063",
+      "front": "Could you explain how success is measured in this role?",
+      "back": "Você poderia explicar como o sucesso é medido nesta função?",
+      "initial_due_days": 0
     }
   ]
 }
