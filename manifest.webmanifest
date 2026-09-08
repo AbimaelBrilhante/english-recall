@@ -1,0 +1,25 @@
+{
+  "name": "English Recall",
+  "short_name": "Recall",
+  "description": "Flashcards de inglês com repetição espaçada, áudio e sequência diária.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#F7F7FB",
+  "theme_color": "#3C318C",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
