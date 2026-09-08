@@ -370,6 +370,12 @@
       "front": "After that, I would propose the simplest reliable solution.",
       "back": "Depois disso, eu proporia a solução confiável mais simples.",
       "initial_due_days": 3
+    },
+    {
+      "id": "en-062",
+      "front": "I make sure the solution addresses the real business need.",
+      "back": "Eu garanto que a solução atenda à necessidade real do negócio.",
+      "initial_due_days": 0
     }
   ]
 }
