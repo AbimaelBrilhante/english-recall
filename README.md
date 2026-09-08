@@ -1,27 +1,48 @@
-# English Recall — iPhone PWA
+# Recall V3 — Multi Deck
 
-App de flashcards com:
-- repetição espaçada (Fácil / Bom / Difícil / Não lembrei)
-- áudio em inglês em velocidade normal e lenta
-- cards com frente em inglês e verso em português
-- pendentes do dia
-- streak de dias consecutivos
-- total de dias ativos
-- frases estudadas hoje
-- inclusão de várias frases de uma vez
-- biblioteca com busca e exclusão
-- backup/importação JSON
-- funcionamento offline após a primeira abertura
-- dados salvos localmente no iPhone
+Estrutura:
 
-## Publicar com GitHub Pages
-1. Crie um repositório público no GitHub, por exemplo `english-recall`.
-2. Envie para a raiz do repositório todos os arquivos desta pasta.
-3. No GitHub: Settings > Pages.
-4. Em "Build and deployment", escolha "Deploy from a branch".
-5. Branch: `main`; pasta: `/ (root)`; Save.
-6. Aguarde o link do GitHub Pages ficar disponível.
-7. Abra o link no Safari do iPhone.
-8. Compartilhar > Adicionar à Tela de Início > Adicionar.
+```text
+english-recall/
+├── index.html
+├── sw.js
+├── manifest.webmanifest
+├── icon-192.png
+├── icon-512.png
+├── .nojekyll
+├── decks/
+│   ├── english.json
+│   └── german.json
+├── PROJECT_INSTRUCTIONS.md
+└── README.md
+```
 
-Depois disso, o app abre como um aplicativo standalone.
+## O que mudou
+- Decks separados: English e Deutsch.
+- Progresso de repetição espaçada independente por deck.
+- Streak global.
+- Migração automática do armazenamento da V1 (`englishRecallPwaV1`) para a V3.
+- Voz configurável separadamente por idioma.
+- Auto-play do próximo card após avaliar.
+- `decks/*.json` sincronizados do GitHub sem reinstalar o app.
+- Frases adicionadas manualmente no app continuam salvas apenas no iPhone.
+- Backup local inclui todos os decks e histórico.
+
+## Atualizar o GitHub
+Substitua os arquivos atuais pelos arquivos deste pacote e crie a pasta `decks/`.
+
+O GitHub Pages pode continuar em:
+- branch: `main`
+- folder: `/ (root)`
+
+Não desinstale o app do iPhone. A V3 migra o progresso da V1 automaticamente.
+
+## Adicionar frases pelo GitHub
+Edite somente:
+- `decks/english.json`
+- `decks/german.json`
+
+Depois de um commit, abra o app e toque em **Sincronizar GitHub**. O app também tenta sincronizar automaticamente ao abrir e ao recuperar conexão.
+
+### Regra importante
+Nunca altere um `id` já existente. Novas frases recebem novos IDs.
