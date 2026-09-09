@@ -36,3 +36,11 @@ Adicione às instruções do projeto:
 ```
 
 O app busca esses arquivos no GitHub e incorpora somente as frases novas, preservando o progresso local.
+
+
+## Recall V4
+O app agora pode apresentar a mesma frase nos dois sentidos. Isso não muda o formato dos JSONs do GitHub:
+- `front` continua sendo o idioma estudado.
+- `back` continua sendo português.
+- Não crie uma segunda frase invertida para Português → idioma-alvo.
+O próprio app gera o exercício de produção e mantém o progresso de cada direção separadamente.
