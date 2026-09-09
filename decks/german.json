@@ -5,239 +5,50 @@
   "flag": "🇩🇪",
   "lang": "de-DE",
   "cards": [
-    {
-      "id": "de-001",
-      "front": "Hallo!",
-      "back": "Olá!",
-      "initial_due_days": 0
-    },
-    {
-      "id": "de-002",
-      "front": "Guten Morgen!",
-      "back": "Bom dia!",
-      "initial_due_days": 0
-    },
-    {
-      "id": "de-003",
-      "front": "Guten Tag!",
-      "back": "Boa tarde! / Bom dia!",
-      "initial_due_days": 0
-    },
-    {
-      "id": "de-004",
-      "front": "Guten Abend!",
-      "back": "Boa noite!",
-      "initial_due_days": 0
-    },
-    {
-      "id": "de-005",
-      "front": "Tschüss!",
-      "back": "Tchau!",
-      "initial_due_days": 0
-    },
-    {
-      "id": "de-006",
-      "front": "Bis morgen!",
-      "back": "Até amanhã!",
-      "initial_due_days": 0
-    },
-    {
-      "id": "de-007",
-      "front": "Wie heißt du?",
-      "back": "Como você se chama?",
-      "initial_due_days": 0
-    },
-    {
-      "id": "de-008",
-      "front": "Ich heiße Abimael.",
-      "back": "Eu me chamo Abimael.",
-      "initial_due_days": 0
-    },
-    {
-      "id": "de-009",
-      "front": "Wie geht es dir?",
-      "back": "Como você está?",
-      "initial_due_days": 0
-    },
-    {
-      "id": "de-010",
-      "front": "Mir geht es gut.",
-      "back": "Estou bem.",
-      "initial_due_days": 0
-    },
-    {
-      "id": "de-011",
-      "front": "Und dir?",
-      "back": "E você?",
-      "initial_due_days": 1
-    },
-    {
-      "id": "de-012",
-      "front": "Danke.",
-      "back": "Obrigado.",
-      "initial_due_days": 1
-    },
-    {
-      "id": "de-013",
-      "front": "Bitte.",
-      "back": "Por favor. / De nada.",
-      "initial_due_days": 1
-    },
-    {
-      "id": "de-014",
-      "front": "Ja.",
-      "back": "Sim.",
-      "initial_due_days": 1
-    },
-    {
-      "id": "de-015",
-      "front": "Nein.",
-      "back": "Não.",
-      "initial_due_days": 1
-    },
-    {
-      "id": "de-016",
-      "front": "Ich komme aus Brasilien.",
-      "back": "Eu venho do Brasil.",
-      "initial_due_days": 1
-    },
-    {
-      "id": "de-017",
-      "front": "Ich wohne in Fortaleza.",
-      "back": "Eu moro em Fortaleza.",
-      "initial_due_days": 1
-    },
-    {
-      "id": "de-018",
-      "front": "Ich spreche Portugiesisch.",
-      "back": "Eu falo português.",
-      "initial_due_days": 1
-    },
-    {
-      "id": "de-019",
-      "front": "Ich lerne Deutsch.",
-      "back": "Eu estou aprendendo alemão.",
-      "initial_due_days": 1
-    },
-    {
-      "id": "de-020",
-      "front": "Ich verstehe.",
-      "back": "Eu entendo.",
-      "initial_due_days": 1
-    },
-    {
-      "id": "de-021",
-      "front": "Ich verstehe nicht.",
-      "back": "Eu não entendo.",
-      "initial_due_days": 2
-    },
-    {
-      "id": "de-022",
-      "front": "Noch einmal, bitte.",
-      "back": "Mais uma vez, por favor.",
-      "initial_due_days": 2
-    },
-    {
-      "id": "de-023",
-      "front": "Langsamer, bitte.",
-      "back": "Mais devagar, por favor.",
-      "initial_due_days": 2
-    },
-    {
-      "id": "de-024",
-      "front": "Was ist das?",
-      "back": "O que é isso?",
-      "initial_due_days": 2
-    },
-    {
-      "id": "de-025",
-      "front": "Das ist gut.",
-      "back": "Isso é bom.",
-      "initial_due_days": 2
-    },
-    {
-      "id": "de-026",
-      "front": "Das ist schön.",
-      "back": "Isso é bonito.",
-      "initial_due_days": 2
-    },
-    {
-      "id": "de-027",
-      "front": "Wie bitte?",
-      "back": "Como? / Pode repetir?",
-      "initial_due_days": 2
-    },
-    {
-      "id": "de-028",
-      "front": "Entschuldigung.",
-      "back": "Desculpe. / Com licença.",
-      "initial_due_days": 2
-    },
-    {
-      "id": "de-029",
-      "front": "Kein Problem.",
-      "back": "Sem problema.",
-      "initial_due_days": 2
-    },
-    {
-      "id": "de-030",
-      "front": "Ich weiß nicht.",
-      "back": "Eu não sei.",
-      "initial_due_days": 2
-    },
-    {
-      "id": "de-031",
-      "front": "Wo ist das?",
-      "back": "Onde fica isso?",
-      "initial_due_days": 3
-    },
-    {
-      "id": "de-032",
-      "front": "Was machst du?",
-      "back": "O que você faz?",
-      "initial_due_days": 3
-    },
-    {
-      "id": "de-033",
-      "front": "Ich arbeite mit Daten.",
-      "back": "Eu trabalho com dados.",
-      "initial_due_days": 3
-    },
-    {
-      "id": "de-034",
-      "front": "Ich bin Brasilianer.",
-      "back": "Eu sou brasileiro.",
-      "initial_due_days": 3
-    },
-    {
-      "id": "de-035",
-      "front": "Ich bin verheiratet.",
-      "back": "Eu sou casado.",
-      "initial_due_days": 3
-    },
-    {
-      "id": "de-036",
-      "front": "Ich habe eine Tochter.",
-      "back": "Eu tenho uma filha.",
-      "initial_due_days": 3
-    },
-    {
-      "id": "de-037",
-      "front": "Ich bin müde.",
-      "back": "Eu estou cansado.",
-      "initial_due_days": 0
-    },
-    {
-      "id": "de-038",
-      "front": "Mach's gut!",
-      "back": "Se cuida! / Fique bem!",
-      "initial_due_days": 0
-    },
-    {
-      "id": "de-039",
-      "front": "Das tut mir leid.",
-      "back": "Sinto muito.",
-      "initial_due_days": 0
-    }
+    {"id":"de-001","front":"Hallo!","back":"Olá!","initial_due_days":0},
+    {"id":"de-002","front":"Guten Morgen!","back":"Bom dia!","initial_due_days":0},
+    {"id":"de-003","front":"Guten Tag!","back":"Boa tarde! / Bom dia!","initial_due_days":0},
+    {"id":"de-004","front":"Guten Abend!","back":"Boa noite!","initial_due_days":0},
+    {"id":"de-005","front":"Tschüss!","back":"Tchau!","initial_due_days":0},
+    {"id":"de-006","front":"Bis morgen!","back":"Até amanhã!","initial_due_days":0},
+    {"id":"de-007","front":"Wie heißt du?","back":"Como você se chama?","initial_due_days":0},
+    {"id":"de-008","front":"Ich heiße Abimael.","back":"Eu me chamo Abimael.","initial_due_days":0},
+    {"id":"de-009","front":"Wie geht es dir?","back":"Como você está?","initial_due_days":0},
+    {"id":"de-010","front":"Mir geht es gut.","back":"Estou bem.","initial_due_days":0},
+    {"id":"de-011","front":"Und dir?","back":"E você?","initial_due_days":1},
+    {"id":"de-012","front":"Danke.","back":"Obrigado.","initial_due_days":1},
+    {"id":"de-013","front":"Bitte.","back":"Por favor. / De nada.","initial_due_days":1},
+    {"id":"de-014","front":"Ja.","back":"Sim.","initial_due_days":1},
+    {"id":"de-015","front":"Nein.","back":"Não.","initial_due_days":1},
+    {"id":"de-016","front":"Ich komme aus Brasilien.","back":"Eu venho do Brasil.","initial_due_days":1},
+    {"id":"de-017","front":"Ich wohne in Fortaleza.","back":"Eu moro em Fortaleza.","initial_due_days":1},
+    {"id":"de-018","front":"Ich spreche Portugiesisch.","back":"Eu falo português.","initial_due_days":1},
+    {"id":"de-019","front":"Ich lerne Deutsch.","back":"Eu estou aprendendo alemão.","initial_due_days":1},
+    {"id":"de-020","front":"Ich verstehe.","back":"Eu entendo.","initial_due_days":1},
+    {"id":"de-021","front":"Ich verstehe nicht.","back":"Eu não entendo.","initial_due_days":2},
+    {"id":"de-022","front":"Noch einmal, bitte.","back":"Mais uma vez, por favor.","initial_due_days":2},
+    {"id":"de-023","front":"Langsamer, bitte.","back":"Mais devagar, por favor.","initial_due_days":2},
+    {"id":"de-024","front":"Was ist das?","back":"O que é isso?","initial_due_days":2},
+    {"id":"de-025","front":"Das ist gut.","back":"Isso é bom.","initial_due_days":2},
+    {"id":"de-026","front":"Das ist schön.","back":"Isso é bonito.","initial_due_days":2},
+    {"id":"de-027","front":"Wie bitte?","back":"Como? / Pode repetir?","initial_due_days":2},
+    {"id":"de-028","front":"Entschuldigung.","back":"Desculpe. / Com licença.","initial_due_days":2},
+    {"id":"de-029","front":"Kein Problem.","back":"Sem problema.","initial_due_days":2},
+    {"id":"de-030","front":"Ich weiß nicht.","back":"Eu não sei.","initial_due_days":2},
+    {"id":"de-031","front":"Wo ist das?","back":"Onde fica isso?","initial_due_days":3},
+    {"id":"de-032","front":"Was machst du?","back":"O que você faz?","initial_due_days":3},
+    {"id":"de-033","front":"Ich arbeite mit Daten.","back":"Eu trabalho com dados.","initial_due_days":3},
+    {"id":"de-034","front":"Ich bin Brasilianer.","back":"Eu sou brasileiro.","initial_due_days":3},
+    {"id":"de-035","front":"Ich bin verheiratet.","back":"Eu sou casado.","initial_due_days":3},
+    {"id":"de-036","front":"Ich habe eine Tochter.","back":"Eu tenho uma filha.","initial_due_days":3},
+    {"id":"de-037","front":"Ich bin müde.","back":"Eu estou cansado.","initial_due_days":0},
+    {"id":"de-038","front":"Mach's gut!","back":"Se cuida! / Fique bem!","initial_due_days":0},
+    {"id":"de-039","front":"Das tut mir leid.","back":"Sinto muito.","initial_due_days":0},
+    {"id":"de-040","front":"Wie geht's dir?","back":"Como você está?","initial_due_days":0},
+    {"id":"de-041","front":"Mir geht's gut, danke.","back":"Estou bem, obrigado.","initial_due_days":0},
+    {"id":"de-042","front":"Woher kommst du?","back":"De onde você vem?","initial_due_days":0},
+    {"id":"de-043","front":"Wo wohnst du?","back":"Onde você mora?","initial_due_days":0},
+    {"id":"de-044","front":"Was machst du beruflich?","back":"O que você faz profissionalmente?","initial_due_days":0},
+    {"id":"de-045","front":"Ich bin Datenanalyst.","back":"Eu sou analista de dados.","initial_due_days":0}
   ]
 }
