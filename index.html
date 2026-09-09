@@ -9,41 +9,18 @@
 <meta name="apple-mobile-web-app-title" content="Recall">
 <link rel="apple-touch-icon" href="icon-192.png">
 <link rel="manifest" href="manifest.webmanifest">
-<title>English Recall</title>
-<style>
-:root{--bg:#f7f7fb;--surface:#fff;--surface2:#f1f0f8;--ink:#1d1d29;--muted:#77778a;--line:#e3e2ec;--primary:#3c318c;--primary2:#5748cc;--accent:#f43f8b;--good:#138a5b;--danger:#c0394b;--radius:22px}
-*{box-sizing:border-box}
-html,body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif}
-body{min-height:100%;padding:calc(env(safe-area-inset-top) + 10px) 16px calc(env(safe-area-inset-bottom) + 24px)}
-button,input,textarea,select{font:inherit}button{touch-action:manipulation}.app{max-width:760px;margin:0 auto}
-.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:4px 0 14px}.brand small{display:block;color:var(--muted);font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:11px}.brand h1{font-size:24px;line-height:1.05;margin:5px 0 0;color:var(--primary)}
-.topstats{display:flex;gap:8px}.pill{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:8px 11px;min-width:70px;text-align:center}.pill b{display:block;font-size:18px}.pill span{font-size:10px;color:var(--muted)}
-.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:14px;margin-bottom:14px}.metric{text-align:center}.metric b{display:block;font-size:24px;color:var(--primary)}.metric span{font-size:11px;color:var(--muted)}
-.nav{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:14px 0}.nav button{height:46px;border:1px solid var(--line);background:var(--surface);border-radius:14px;font-weight:800;color:var(--muted);font-size:12px}.nav button.active{background:var(--primary);color:#fff;border-color:var(--primary)}
-.view{display:none}.view.active{display:block}.section,.panel{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:16px;margin-bottom:12px}.section h2{font-size:17px;margin:0 0 6px}.section p{margin:0 0 12px;color:var(--muted);font-size:13px;line-height:1.45}
-.deck-grid{display:grid;gap:12px}.deck-card{border:1px solid var(--line);background:var(--surface);border-radius:22px;padding:18px;text-align:left}.deck-head{display:flex;align-items:center;justify-content:space-between;gap:10px}.deck-title{font-size:22px;font-weight:900}.deck-flag{font-size:26px}.deck-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}.deck-stat{background:var(--surface2);border-radius:14px;padding:10px;text-align:center}.deck-stat b{display:block;font-size:18px;color:var(--primary)}.deck-stat span{font-size:10px;color:var(--muted)}.deck-action{margin-top:12px;color:var(--primary);font-weight:800;font-size:13px}
-.sync-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}.primary-btn,.secondary-btn{min-height:46px;border-radius:14px;padding:0 16px;font-weight:800;border:0}.primary-btn{background:var(--primary);color:#fff}.secondary-btn{background:#efedf8;color:var(--primary)}
-.progress-wrap{margin:0 2px 14px}.progress-row{display:flex;justify-content:space-between;color:var(--muted);font-size:12px;margin-bottom:7px}.track{height:7px;background:#e6e4ee;border-radius:999px;overflow:hidden}.fill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--primary2));border-radius:999px;transition:width .25s ease}
-.cardmeta{display:flex;justify-content:space-between;color:var(--muted);font-size:12px;margin:0 2px 9px}.flashcard{width:100%;min-height:370px;border:0;border-radius:20px;background:#fff;box-shadow:0 8px 28px rgba(42,33,90,.08);padding:24px;text-align:left;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden}.flashcard.back{background:var(--primary);color:#fff}.corner{position:absolute;right:0;top:0;width:0;height:0;border-top:58px solid var(--primary);border-left:58px solid transparent}.back .corner{border-top-color:#fff}.side{font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#aaa}.back .side{color:#d6d1ff}.flip{position:absolute;right:18px;top:18px;color:var(--primary2);font-weight:700;font-size:13px}.back .flip{color:#fff}.cardbody{margin:auto 0}.en-small{display:none;color:#c4bdf5;font-size:18px;font-weight:700;margin-bottom:12px}.back .en-small{display:block}.cardtext{font-size:30px;line-height:1.2;font-weight:800;color:var(--accent);word-break:break-word}.back .cardtext{color:#fff}
-.audio-row{display:flex;align-items:center;gap:9px;margin-top:14px}.speed{height:46px;border:1px solid var(--line);border-radius:14px;background:#fff;padding:0 10px;color:var(--ink)}.audio{height:46px;border:0;border-radius:14px;padding:0 15px;font-weight:800;flex:1}.audio.normal{background:#eef3ff;color:#25335f}.audio.slow{background:#f3efff;color:#493a96}
-.rating{display:none;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}.rating.show{display:grid}.rate{border:1px solid var(--line);background:#fff;border-radius:16px;min-height:64px;padding:8px 3px;font-weight:800;font-size:12px;color:var(--ink)}.rate i{display:block;font-style:normal;font-size:21px;margin-bottom:3px}
-textarea,input[type=search],select.setting{width:100%;border:1px solid var(--line);background:#fff;border-radius:14px;padding:13px;font-size:16px;color:var(--ink)}textarea{min-height:150px;resize:vertical}.field{margin-bottom:12px}.field label{display:block;font-size:12px;font-weight:800;color:var(--muted);margin-bottom:6px}
-.toggle{display:flex;align-items:center;justify-content:space-between;gap:12px;border:1px solid var(--line);border-radius:14px;padding:12px 13px}.toggle input{width:22px;height:22px}
-.library-head{display:grid;grid-template-columns:120px 1fr;gap:8px;margin-bottom:10px}.list{display:grid;gap:9px}.item{border:1px solid var(--line);border-radius:15px;padding:12px}.item .en{font-weight:800;line-height:1.3}.item .pt{color:var(--muted);font-size:13px;margin-top:5px;line-height:1.3}.item .meta{color:#999;font-size:11px;margin-top:7px}.item-actions{display:flex;gap:7px;margin-top:9px}.item-actions button{min-height:38px;border:1px solid var(--line);border-radius:11px;background:#fff;padding:0 11px}.empty{padding:38px 18px;text-align:center;color:var(--muted)}.hidden{display:none!important}.msg{font-size:12px;color:var(--muted);margin-top:8px;min-height:16px}
-.toast{position:sticky;bottom:calc(env(safe-area-inset-bottom) + 12px);margin:10px auto 0;max-width:520px;background:#1e1c2d;color:#fff;padding:11px 14px;border-radius:14px;text-align:center;font-size:13px;display:none;z-index:10}.toast.show{display:block}
-@media(max-width:430px){.flashcard{min-height:350px;padding:20px}.cardtext{font-size:27px}.rating{gap:6px}.rate{font-size:10.5px;min-height:62px}.audio-row{flex-wrap:wrap}.speed{width:84px}.audio{min-width:115px}.nav button{font-size:11px}.library-head{grid-template-columns:105px 1fr}}
-@media(prefers-color-scheme:dark){:root{--bg:#12111a;--surface:#1c1a27;--surface2:#242132;--ink:#f5f3fb;--muted:#aaa5b9;--line:#353145}.flashcard,.speed,textarea,input[type=search],select.setting,.rate,.item-actions button{background:#211f2c;color:var(--ink)}.audio.normal{background:#242b40;color:#dfe7ff}.audio.slow{background:#2a2440;color:#e8e1ff}}
-</style>
+<title>Recall</title>
+<link rel="stylesheet" href="app.css">
 </head>
 <body>
 <main class="app">
 <header class="topbar">
-  <div class="brand"><small>Spaced repetition</small><h1 id="appTitle">Recall</h1></div>
+  <div class="brand"><small>Active recall</small><h1>Recall</h1></div>
   <div class="topstats"><div class="pill"><b id="topStreak">0</b><span>🔥 streak</span></div><div class="pill"><b id="topDue">0</b><span>pendentes</span></div></div>
 </header>
 
 <section class="summary">
-  <div class="metric"><b id="dueToday">0</b><span>pendentes hoje</span></div>
+  <div class="metric"><b id="dueToday">0</b><span>exercícios hoje</span></div>
   <div class="metric"><b id="studiedToday">0</b><span>estudados hoje</span></div>
   <div class="metric"><b id="activeTotal">0</b><span>dias ativos</span></div>
 </section>
@@ -56,70 +33,55 @@ textarea,input[type=search],select.setting{width:100%;border:1px solid var(--lin
 </nav>
 
 <section id="view-decks" class="view active">
-  <div class="sync-row">
-    <button id="syncBtn" class="secondary-btn" type="button">↻ Sincronizar GitHub</button>
-    <button id="settingsBtn" class="secondary-btn" type="button">⚙ Áudio</button>
-  </div>
-  <div id="deckGrid" class="deck-grid"></div>
-  <div id="syncMsg" class="msg"></div>
+  <div class="sync-row"><button id="syncBtn" class="secondary-btn" type="button">↻ Sincronizar GitHub</button><button id="settingsBtn" class="secondary-btn" type="button">⚙ Estudo e áudio</button></div>
+  <div id="deckGrid" class="deck-grid"></div><div id="syncMsg" class="msg"></div>
 </section>
 
 <section id="view-review" class="view">
-  <div class="progress-wrap">
-    <div class="progress-row"><span id="progressLabel">Sessão</span><span id="progressPct">0%</span></div>
-    <div class="track"><div class="fill" id="progressFill"></div></div>
-  </div>
+  <div class="progress-wrap"><div class="progress-row"><span id="progressLabel">Sessão</span><span id="progressPct">0%</span></div><div class="track"><div class="fill" id="progressFill"></div></div></div>
   <div class="panel">
+    <div id="studyBadge" class="study-badge recognition">👁 Compreensão</div>
     <div class="cardmeta"><span id="position">—</span><span id="dueInfo">—</span></div>
     <div id="reviewEmpty" class="empty hidden"><b>Você está em dia.</b><br><span id="nextDueText"></span></div>
     <button id="flashcard" class="flashcard" type="button" aria-label="Virar card">
       <span class="corner"></span><span class="side" id="sideLabel">Front</span><span class="flip" id="flipLabel">Flip card</span>
-      <div class="cardbody"><div class="en-small" id="frontSmall"></div><div class="cardtext" id="cardText"></div></div><div style="height:24px"></div>
+      <div class="cardbody"><div class="small-answer" id="smallAnswer"></div><div class="cardtext" id="cardText"></div></div><div style="height:24px"></div>
     </button>
+    <div id="promptHint" class="prompt-hint"></div>
     <div id="audioRow" class="audio-row">
-      <select id="speed" class="speed" aria-label="Velocidade"><option value="0.7">0.7x</option><option value="0.85">0.85x</option><option value="1" selected>1.0x</option><option value="1.15">1.15x</option></select>
-      <button id="audioNormal" class="audio normal" type="button">▶ Ouvir</button>
-      <button id="audioSlow" class="audio slow" type="button">🐢 Devagar</button>
+      <select id="speed" class="speed"><option value="0.7">0.7x</option><option value="0.85">0.85x</option><option value="1" selected>1.0x</option><option value="1.15">1.15x</option></select>
+      <button id="audioNormal" class="audio normal" type="button">▶ Ouvir</button><button id="audioSlow" class="audio slow" type="button">🐢 Devagar</button>
     </div>
     <div id="rating" class="rating">
-      <button class="rate" data-rating="easy" type="button"><i>😁</i>Fácil</button>
-      <button class="rate" data-rating="good" type="button"><i>🙂</i>Bom</button>
-      <button class="rate" data-rating="hard" type="button"><i>😐</i>Difícil</button>
-      <button class="rate" data-rating="again" type="button"><i>😕</i>Não lembrei</button>
+      <button class="rate" data-rating="easy" type="button"><i>😁</i>Fácil</button><button class="rate" data-rating="good" type="button"><i>🙂</i>Bom</button><button class="rate" data-rating="hard" type="button"><i>😐</i>Difícil</button><button class="rate" data-rating="again" type="button"><i>😕</i>Não lembrei</button>
     </div>
   </div>
 </section>
 
 <section id="view-add" class="view">
-  <div class="section">
-    <h2>Adicionar várias frases</h2><p>Escolha o deck. Uma frase por linha no formato <b>Frase | Tradução</b>. Estas frases ficam salvas localmente no iPhone.</p>
+  <div class="section"><h2>Adicionar várias frases</h2><p>Escolha o deck. Uma frase por linha no formato <b>Frase | Tradução</b>.</p>
     <div class="field"><label for="addDeck">Deck</label><select id="addDeck" class="setting"><option value="en">🇺🇸 English</option><option value="de">🇩🇪 Deutsch</option></select></div>
-    <textarea id="bulkInput" placeholder="Could you repeat that? | Você poderia repetir?"></textarea>
-    <div style="margin-top:10px"><button id="bulkAdd" class="primary-btn" type="button">Adicionar frases</button></div>
-    <div id="bulkMsg" class="msg"></div>
+    <textarea id="bulkInput" placeholder="Could you repeat that? | Você poderia repetir?"></textarea><div style="margin-top:10px"><button id="bulkAdd" class="primary-btn" type="button">Adicionar frases</button></div><div id="bulkMsg" class="msg"></div>
   </div>
-  <div class="section">
-    <h2>Backup local</h2><p>O backup inclui todos os decks, avaliações, streak, dias ativos e configurações de voz.</p>
-    <button id="exportBtn" class="secondary-btn" type="button">Exportar backup</button>
-    <label class="secondary-btn" style="display:inline-flex;align-items:center;cursor:pointer;margin-left:6px">Importar backup<input id="importFile" type="file" accept="application/json" class="hidden"></label>
-  </div>
+  <div class="section"><h2>Backup local</h2><p>Inclui os dois sentidos de revisão, avaliações, streak e configurações.</p><button id="exportBtn" class="secondary-btn" type="button">Exportar backup</button><label class="secondary-btn" style="display:inline-flex;align-items:center;cursor:pointer;margin-left:6px">Importar backup<input id="importFile" type="file" accept="application/json" class="hidden"></label></div>
 </section>
 
 <section id="view-library" class="view">
-  <div class="section">
-    <h2>Biblioteca</h2><p id="libraryCount"></p>
-    <div class="library-head"><select id="libraryDeck" class="setting"><option value="en">🇺🇸 English</option><option value="de">🇩🇪 Deutsch</option></select><input id="search" type="search" placeholder="Buscar..."></div>
-    <div id="list" class="list"></div>
-  </div>
+  <div class="section"><h2>Biblioteca</h2><p id="libraryCount"></p><div class="library-head"><select id="libraryDeck" class="setting"><option value="en">🇺🇸 English</option><option value="de">🇩🇪 Deutsch</option></select><input id="search" type="search" placeholder="Buscar..."></div><div id="list" class="list"></div></div>
 </section>
 
 <section id="view-settings" class="view">
   <div class="section">
-    <h2>Áudio e reprodução</h2><p>A voz é escolhida separadamente para cada idioma e salva no iPhone.</p>
+    <h2>Modo de estudo</h2><p>Cada sentido tem memória e intervalo próprios.</p>
     <div class="field"><label for="settingsDeck">Deck</label><select id="settingsDeck" class="setting"><option value="en">🇺🇸 English</option><option value="de">🇩🇪 Deutsch</option></select></div>
+    <div class="field"><label for="studyMode">Modo</label><select id="studyMode" class="setting"><option value="smart">🧠 Smart Mix</option><option value="recognition">👁 Compreensão</option><option value="production">🗣 Produção</option></select></div>
+    <div id="modeHelp" class="mode-help"></div>
+  </div>
+  <div class="section">
+    <h2>Áudio</h2>
     <div class="field"><label for="voiceSelect">Voice</label><select id="voiceSelect" class="setting"></select></div>
     <div class="field"><label for="settingsSpeed">Velocidade padrão</label><select id="settingsSpeed" class="setting"><option value="0.7">0.7x</option><option value="0.85">0.85x</option><option value="1">1.0x</option><option value="1.15">1.15x</option></select></div>
-    <div class="toggle"><span><b>Auto-play do próximo card</b><br><small style="color:var(--muted)">Toca após escolher Fácil/Bom/Difícil/Não lembrei.</small></span><input id="autoPlay" type="checkbox"></div>
+    <div class="toggle"><span><b>Auto-play inteligente</b><br><small style="color:var(--muted)">Compreensão: toca ao mostrar. Produção: toca só depois de revelar a resposta.</small></span><input id="autoPlay" type="checkbox"></div>
     <div style="margin-top:10px"><button id="testVoice" class="secondary-btn" type="button">▶ Testar voz</button></div>
   </div>
 </section>
@@ -128,163 +90,17 @@ textarea,input[type=search],select.setting{width:100%;border:1px solid var(--lin
 </main>
 
 <script>
-(() => {
-'use strict';
-const STORE_V3='englishRecallPwaV3', STORE_V1='englishRecallPwaV1', DAY=86400000;
-const DECKS={
-  en:{name:'English',flag:'🇺🇸',lang:'en-US',file:'english.json'},
-  de:{name:'Deutsch',flag:'🇩🇪',lang:'de-DE',file:'german.json'}
-};
-const $=id=>document.getElementById(id);
-let currentId=null,flipped=false,sessionInitial=0,sessionDone=0,currentView='decks',voices=[];
-
-function dayKey(date=new Date()){return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;}
-function endOfDay(date=new Date()){return new Date(date.getFullYear(),date.getMonth(),date.getDate()+1).getTime()-1;}
-function normalize(s){return String(s||'').trim().toLowerCase().replace(/\s+/g,' ');}
-function baseState(){return {version:3,cards:{en:[],de:[]},activeDays:[],reviewLog:[],settings:{selectedDeck:'en',autoPlay:true,voiceByDeck:{en:'',de:''},speedByDeck:{en:1,de:1}},createdAt:Date.now()};}
-function save(){localStorage.setItem(STORE_V3,JSON.stringify(state));}
-function migrateV1(){
-  try{
-    const old=JSON.parse(localStorage.getItem(STORE_V1));
-    if(!old||!Array.isArray(old.cards))return null;
-    const s=baseState();
-    s.activeDays=Array.isArray(old.activeDays)?old.activeDays:[];
-    s.reviewLog=(Array.isArray(old.reviewLog)?old.reviewLog:[]).map(r=>({...r,deckId:'en'}));
-    s.cards.en=old.cards.map((c,i)=>({
-      id:`legacy-${c.id||i}`,remoteId:null,front:c.en||'',back:c.pt||'',due:Number(c.due)||Date.now(),interval:Number(c.interval)||0,
-      ease:Number(c.ease)||2.5,reps:Number(c.reps)||0,lapses:Number(c.lapses)||0,created:Number(c.created)||Date.now()+i,source:'legacy'
-    })).filter(c=>c.front&&c.back);
-    return s;
-  }catch(e){return null;}
-}
-function load(){try{const s=JSON.parse(localStorage.getItem(STORE_V3));if(s&&s.version===3)return s;}catch(e){}return migrateV1()||baseState();}
-let state=load();
-state.cards ||= {en:[],de:[]}; state.cards.en ||= []; state.cards.de ||= []; state.activeDays ||= []; state.reviewLog ||= [];
-state.settings ||= {}; state.settings.selectedDeck ||= 'en'; if(typeof state.settings.autoPlay!=='boolean')state.settings.autoPlay=true;
-state.settings.voiceByDeck ||= {en:'',de:''}; state.settings.speedByDeck ||= {en:1,de:1}; save();
-
-function selectedDeck(){return state.settings.selectedDeck||'en';}
-function deckCards(deckId=selectedDeck()){return state.cards[deckId]||[];}
-function dueTodayCards(deckId=selectedDeck()){const e=endOfDay();return deckCards(deckId).filter(c=>Number(c.due)<=e).sort((a,b)=>a.due-b.due||a.created-b.created);}
-function allDueToday(){return Object.keys(DECKS).reduce((n,d)=>n+dueTodayCards(d).length,0);}
-function current(){let c=deckCards().find(x=>x.id===currentId);if(!c){c=dueTodayCards()[0]||null;currentId=c?.id||null;}return c;}
-function streak(){const set=new Set(state.activeDays);if(!set.size)return 0;let d=new Date();if(!set.has(dayKey(d)))d.setDate(d.getDate()-1);let n=0;while(set.has(dayKey(d))){n++;d.setDate(d.getDate()-1);}return n;}
-function todayStudyCount(){const k=dayKey();return state.reviewLog.filter(r=>r.day===k).length;}
-function markActive(){const k=dayKey();if(!state.activeDays.includes(k))state.activeDays.push(k);}
-function formatDue(ts){const diff=Number(ts)-Date.now();if(diff<=0)return 'Agora';const min=Math.ceil(diff/60000);if(min<60)return `em ${min} min`;const h=Math.ceil(diff/3600000);if(h<24)return `em ${h} h`;const d=Math.ceil(diff/DAY);return `em ${d} ${d===1?'dia':'dias'}`;}
-function showView(name){currentView=name;document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id===`view-${name}`));document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.view===name));if(name==='library')renderLibrary();if(name==='settings')renderSettings();}
-function renderStats(){$('topDue').textContent=allDueToday();$('dueToday').textContent=allDueToday();$('topStreak').textContent=streak();$('studiedToday').textContent=todayStudyCount();$('activeTotal').textContent=new Set(state.activeDays).size;}
-function renderDecks(){
-  const grid=$('deckGrid');grid.innerHTML='';
-  Object.entries(DECKS).forEach(([id,m])=>{
-    const all=deckCards(id),due=dueTodayCards(id).length,studied=state.reviewLog.filter(r=>r.day===dayKey()&&r.deckId===id).length;
-    const btn=document.createElement('button');btn.type='button';btn.className='deck-card';
-    btn.innerHTML=`<div class="deck-head"><div class="deck-title">${m.name}</div><div class="deck-flag">${m.flag}</div></div><div class="deck-stats"><div class="deck-stat"><b>${due}</b><span>pendentes</span></div><div class="deck-stat"><b>${studied}</b><span>hoje</span></div><div class="deck-stat"><b>${all.length}</b><span>frases</span></div></div><div class="deck-action">Estudar →</div>`;
-    btn.addEventListener('click',()=>selectDeck(id,true));grid.appendChild(btn);
-  });
-}
-function selectDeck(id,autoplay=false){
-  state.settings.selectedDeck=id;currentId=null;flipped=false;sessionInitial=dueTodayCards(id).length;sessionDone=0;
-  $('libraryDeck').value=id;$('addDeck').value=id;$('settingsDeck').value=id;$('speed').value=String(state.settings.speedByDeck[id]||1);save();showView('review');render();
-  if(autoplay&&state.settings.autoPlay)setTimeout(()=>speak(),80);
-}
-function renderProgress(){const total=Math.max(sessionInitial,1),pct=Math.min(100,Math.round(sessionDone/total*100));$('progressLabel').textContent=`${DECKS[selectedDeck()].flag} ${DECKS[selectedDeck()].name}: ${Math.min(sessionDone,sessionInitial)} de ${sessionInitial}`;$('progressPct').textContent=`${pct}%`;$('progressFill').style.width=`${pct}%`;}
-function renderReview(){
-  renderProgress();const c=current(),due=dueTodayCards();
-  if(!c||!due.length){$('flashcard').classList.add('hidden');$('rating').classList.remove('show');$('audioRow').classList.add('hidden');$('reviewEmpty').classList.remove('hidden');const next=deckCards().slice().sort((a,b)=>a.due-b.due)[0];$('nextDueText').textContent=next?`Próximo card ${formatDue(next.due)}.`:'Sua biblioteca está vazia.';$('position').textContent=`${DECKS[selectedDeck()].flag} ${DECKS[selectedDeck()].name}`;$('dueInfo').textContent='0 pendentes';return;}
-  $('reviewEmpty').classList.add('hidden');$('flashcard').classList.remove('hidden');$('audioRow').classList.remove('hidden');
-  $('position').textContent=`${DECKS[selectedDeck()].flag} ${DECKS[selectedDeck()].name} · ${Math.max(1,due.findIndex(x=>x.id===c.id)+1)}/${due.length}`;$('dueInfo').textContent=formatDue(c.due);
-  $('flashcard').classList.toggle('back',flipped);$('sideLabel').textContent=flipped?'Back':'Front';$('flipLabel').textContent=flipped?'Front':'Flip card';$('frontSmall').textContent=c.front;$('cardText').textContent=flipped?c.back:c.front;$('rating').classList.toggle('show',flipped);$('speed').value=String(state.settings.speedByDeck[selectedDeck()]||1);
-}
-function renderLibrary(){
-  const deckId=$('libraryDeck').value||selectedDeck(),q=$('search').value.trim().toLowerCase(),cards=deckCards(deckId);
-  $('libraryCount').textContent=`${DECKS[deckId].flag} ${DECKS[deckId].name} · ${cards.length} frases`;
-  const list=$('list');list.innerHTML='';const filtered=cards.filter(c=>!q||c.front.toLowerCase().includes(q)||c.back.toLowerCase().includes(q));
-  if(!filtered.length){list.innerHTML='<div class="empty">Nenhuma frase encontrada.</div>';return;}
-  filtered.sort((a,b)=>a.created-b.created).forEach(c=>{
-    const row=document.createElement('article');row.className='item';const a=document.createElement('div');a.className='en';a.textContent=c.front;const b=document.createElement('div');b.className='pt';b.textContent=c.back;const meta=document.createElement('div');meta.className='meta';meta.textContent=`Revisões: ${c.reps||0} · intervalo: ${c.interval||0}d · ${formatDue(c.due)}${c.remoteId?' · GitHub':''}`;
-    const acts=document.createElement('div');acts.className='item-actions';const play=document.createElement('button');play.type='button';play.textContent='▶ Ouvir';play.addEventListener('click',()=>speakText(c.front,deckId,1));const del=document.createElement('button');del.type='button';del.textContent='Excluir localmente';del.addEventListener('click',()=>deleteCard(deckId,c.id));acts.append(play,del);row.append(a,b,meta,acts);list.appendChild(row);
-  });
-}
-function renderSettings(){
-  const id=$('settingsDeck').value||selectedDeck();populateVoices(id);$('settingsSpeed').value=String(state.settings.speedByDeck[id]||1);$('autoPlay').checked=state.settings.autoPlay;
-}
-function render(){renderStats();renderDecks();renderReview();if(currentView==='library')renderLibrary();save();}
-
-function loadVoices(){if(!('speechSynthesis'in window))return;voices=speechSynthesis.getVoices()||[];renderSettings();}
-if('speechSynthesis'in window){loadVoices();speechSynthesis.onvoiceschanged=loadVoices;}
-function voiceOptions(deckId){const lang=DECKS[deckId].lang.slice(0,2).toLowerCase();return voices.filter(v=>(v.lang||'').toLowerCase().startsWith(lang)).sort((a,b)=>(a.lang===DECKS[deckId].lang?-1:0)-(b.lang===DECKS[deckId].lang?-1:0));}
-function populateVoices(deckId){
-  const sel=$('voiceSelect');if(!sel)return;const opts=voiceOptions(deckId),saved=state.settings.voiceByDeck[deckId]||'';sel.innerHTML='';
-  if(!opts.length){const o=document.createElement('option');o.value='';o.textContent='Voz padrão do iPhone';sel.appendChild(o);return;}
-  opts.forEach(v=>{const o=document.createElement('option');o.value=v.name;o.textContent=`${v.name} — ${v.lang}${v.localService?'':' · online'}`;sel.appendChild(o);});
-  if(saved&&opts.some(v=>v.name===saved))sel.value=saved;else{const preferred=opts.find(v=>/samantha|ava|allison|siri|daniel|serena|anna|katja/i.test(v.name))||opts[0];sel.value=preferred.name;state.settings.voiceByDeck[deckId]=preferred.name;save();}
-}
-function speakText(text,deckId,rate){
-  if(!('speechSynthesis'in window)){toast('Áudio não disponível neste navegador.');return;}speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang=DECKS[deckId].lang;u.rate=rate;u.pitch=1;
-  const name=state.settings.voiceByDeck[deckId];const available=voiceOptions(deckId);u.voice=available.find(v=>v.name===name)||available[0]||null;speechSynthesis.speak(u);
-}
-function speak(rateOverride){const c=current();if(!c)return;const id=selectedDeck(),rate=rateOverride??Number($('speed').value||state.settings.speedByDeck[id]||1);speakText(c.front,id,rate);}
-function rateCard(kind){
-  const c=current();if(!c)return;const deckId=selectedDeck(),before=dueTodayCards(deckId).length,now=Date.now();c.ease=Number(c.ease)||2.5;c.interval=Number(c.interval)||0;c.reps=Number(c.reps)||0;c.lapses=Number(c.lapses)||0;
-  if(kind==='again'){c.lapses++;c.ease=Math.max(1.3,c.ease-.20);c.interval=0;c.due=now+10*60000;}
-  else if(kind==='hard'){c.reps++;c.ease=Math.max(1.3,c.ease-.15);c.interval=c.interval<=0?1:Math.max(1,Math.round(c.interval*1.2));c.due=now+c.interval*DAY;}
-  else if(kind==='good'){c.reps++;if(c.interval<=0)c.interval=1;else if(c.interval===1)c.interval=3;else c.interval=Math.max(c.interval+1,Math.round(c.interval*c.ease));c.due=now+c.interval*DAY;}
-  else if(kind==='easy'){c.reps++;c.ease=Math.min(3.2,c.ease+.15);c.interval=c.interval<=0?4:Math.max(c.interval+2,Math.round(c.interval*c.ease*1.3));c.due=now+c.interval*DAY;}
-  markActive();state.reviewLog.push({day:dayKey(),ts:now,id:c.id,deckId,rating:kind});const after=dueTodayCards(deckId).length;if(after<before)sessionDone+=before-after;flipped=false;currentId=null;render();
-  if(state.settings.autoPlay&&dueTodayCards(deckId).length)setTimeout(()=>speak(),80);
-}
-function deleteCard(deckId,id){if(!confirm('Excluir esta frase deste iPhone? Se ela existir no GitHub, uma sincronização futura poderá adicioná-la novamente.'))return;state.cards[deckId]=deckCards(deckId).filter(c=>c.id!==id);if(currentId===id)currentId=null;render();toast('Frase excluída localmente.');}
-function addBulk(){
-  const deckId=$('addDeck').value,lines=$('bulkInput').value.split(/\n+/).map(x=>x.trim()).filter(Boolean);let added=0,bad=0;
-  for(const line of lines){const p=line.indexOf('|');if(p<1){bad++;continue;}const front=line.slice(0,p).trim(),back=line.slice(p+1).trim();if(!front||!back){bad++;continue;}const dup=deckCards(deckId).some(c=>normalize(c.front)===normalize(front)&&normalize(c.back)===normalize(back));if(dup)continue;state.cards[deckId].push({id:`local-${deckId}-${Date.now()}-${Math.random().toString(36).slice(2)}`,remoteId:null,front,back,due:Date.now(),interval:0,ease:2.5,reps:0,lapses:0,created:Date.now()+Math.random(),source:'local'});added++;}
-  $('bulkMsg').textContent=`${added} frase(s) adicionada(s)`+(bad?` · ${bad} linha(s) inválida(s)`:'');if(added){$('bulkInput').value='';toast(`${added} frase(s) adicionada(s).`);}render();
-}
-async function syncDeck(deckId){
-  const meta=DECKS[deckId],res=await fetch(`./decks/${meta.file}?v=${Date.now()}`,{cache:'no-store'});if(!res.ok)throw new Error(`HTTP ${res.status}`);const remote=await res.json();if(!remote||!Array.isArray(remote.cards))throw new Error('Deck inválido');
-  const local=state.cards[deckId],now=Date.now();let added=0,matched=0;
-  for(const rc of remote.cards){
-    if(!rc.id||!rc.front||!rc.back)continue;
-    let lc=local.find(c=>c.remoteId===rc.id)||local.find(c=>normalize(c.front)===normalize(rc.front)&&normalize(c.back)===normalize(rc.back));
-    if(lc){lc.remoteId=rc.id;lc.front=rc.front;lc.back=rc.back;lc.source=lc.source==='local'?'local+remote':(lc.source||'remote');matched++;}
-    else{local.push({id:`remote-${deckId}-${rc.id}`,remoteId:rc.id,front:rc.front,back:rc.back,due:now+(Number(rc.initial_due_days)||0)*DAY,interval:0,ease:2.5,reps:0,lapses:0,created:now+local.length,source:'remote'});added++;}
-  }
-  return {added,matched};
-}
-async function syncAll(showMessage=true){
-  try{const results={};for(const id of Object.keys(DECKS))results[id]=await syncDeck(id);save();render();if(showMessage){const n=Object.values(results).reduce((s,x)=>s+x.added,0);$('syncMsg').textContent=n?`${n} nova(s) frase(s) recebida(s) do GitHub.`:'Decks já estavam atualizados.';toast(n?`${n} nova(s) frase(s) sincronizada(s).`:'Tudo sincronizado.');}return true;}
-  catch(e){if(showMessage)$('syncMsg').textContent='Não foi possível sincronizar agora. O app continuará usando as frases salvas no iPhone.';return false;}
-}
-function exportBackup(){const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=`recall-backup-${dayKey()}.json`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);}
-function importBackup(file){const r=new FileReader();r.onload=()=>{try{const x=JSON.parse(String(r.result));if(!x||x.version!==3||!x.cards)throw new Error();state=x;save();currentId=null;flipped=false;render();toast('Backup restaurado.');}catch(e){toast('Backup inválido.');}};r.readAsText(file);}
-let toastTimer;function toast(msg){const t=$('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2300);}
-
-$('flashcard').addEventListener('click',()=>{flipped=!flipped;renderReview();});
-$('audioNormal').addEventListener('click',()=>speak());
-$('audioSlow').addEventListener('click',()=>speak(.72));
-document.querySelectorAll('.rate').forEach(b=>b.addEventListener('click',()=>rateCard(b.dataset.rating)));
-document.querySelectorAll('.nav button').forEach(b=>b.addEventListener('click',()=>showView(b.dataset.view)));
-$('syncBtn').addEventListener('click',()=>syncAll(true));
-$('settingsBtn').addEventListener('click',()=>showView('settings'));
-$('bulkAdd').addEventListener('click',addBulk);
-$('exportBtn').addEventListener('click',exportBackup);
-$('importFile').addEventListener('change',e=>{const f=e.target.files?.[0];if(f)importBackup(f);e.target.value='';});
-$('search').addEventListener('input',renderLibrary);
-$('libraryDeck').addEventListener('change',renderLibrary);
-$('settingsDeck').addEventListener('change',renderSettings);
-$('voiceSelect').addEventListener('change',()=>{const id=$('settingsDeck').value;state.settings.voiceByDeck[id]=$('voiceSelect').value;save();});
-$('settingsSpeed').addEventListener('change',()=>{const id=$('settingsDeck').value;state.settings.speedByDeck[id]=Number($('settingsSpeed').value)||1;if(id===selectedDeck())$('speed').value=String(state.settings.speedByDeck[id]);save();});
-$('speed').addEventListener('change',()=>{state.settings.speedByDeck[selectedDeck()]=Number($('speed').value)||1;save();});
-$('autoPlay').addEventListener('change',()=>{state.settings.autoPlay=$('autoPlay').checked;save();});
-$('testVoice').addEventListener('click',()=>{const id=$('settingsDeck').value;const sample=id==='de'?'Hallo! Wie geht es dir?':'Hello! How are you today?';speakText(sample,id,Number($('settingsSpeed').value)||1);});
-
-if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js').catch(()=>{});
-window.addEventListener('online',()=>syncAll(false));
-
-sessionInitial=dueTodayCards().length;
-render();
-syncAll(false).then(()=>{sessionInitial=dueTodayCards().length;render();});
-})();
+Promise.all([
+  './app-1.part','./app-2.part','./app-3.part','./app-4.part'
+].map(path => fetch(path).then(r => {
+  if (!r.ok) throw new Error('Failed to load '+path);
+  return r.text();
+}))).then(parts => {
+  new Function(parts.join(''))();
+}).catch(err => {
+  console.error(err);
+  document.body.insertAdjacentHTML('beforeend','<p style="padding:16px">Não foi possível carregar o app. Verifique sua conexão e abra novamente.</p>');
+});
 </script>
 </body>
 </html>
