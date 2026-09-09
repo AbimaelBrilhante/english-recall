@@ -1,7 +1,7 @@
 {
-  "name": "English Recall",
+  "name": "Recall",
   "short_name": "Recall",
-  "description": "Flashcards de inglês e alemão com repetição espaçada, áudio e decks separados.",
+  "description": "Flashcards de inglês e alemão com compreensão, produção ativa e repetição espaçada.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
