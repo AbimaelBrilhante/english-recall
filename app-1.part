@@ -1,0 +1,66 @@
+(() => {
+'use strict';
+const STORE_V4='englishRecallPwaV4', STORE_V3='englishRecallPwaV3', STORE_V1='englishRecallPwaV1', DAY=86400000;
+const DECKS={
+  en:{name:'English',flag:'🇺🇸',lang:'en-US',file:'english.json',prodRatio:.60,unlockReps:2},
+  de:{name:'Deutsch',flag:'🇩🇪',lang:'de-DE',file:'german.json',prodRatio:.20,unlockReps:3}
+};
+const $=id=>document.getElementById(id);
+let currentItem=null,flipped=false,sessionInitial=0,sessionDone=0,currentView='decks',voices=[];
+
+function dayKey(date=new Date()){return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;}
+function endOfDay(date=new Date()){return new Date(date.getFullYear(),date.getMonth(),date.getDate()+1).getTime()-1;}
+function normalize(s){return String(s||'').trim().toLowerCase().replace(/\s+/g,' ');}
+function freshSchedule(due=Date.now()){return {due,interval:0,ease:2.5,reps:0,lapses:0};}
+function baseState(){return {version:4,cards:{en:[],de:[]},activeDays:[],reviewLog:[],settings:{selectedDeck:'en',autoPlay:true,voiceByDeck:{en:'',de:''},speedByDeck:{en:1,de:1},modeByDeck:{en:'smart',de:'smart'}},createdAt:Date.now()};}
+function toV4Card(c,deckId,index=0){
+  if(c.schedules&&c.schedules.recognition&&c.schedules.production)return c;
+  const recognition={due:Number(c.due)||Date.now(),interval:Number(c.interval)||0,ease:Number(c.ease)||2.5,reps:Number(c.reps)||0,lapses:Number(c.lapses)||0};
+  const unlocked=recognition.reps>=DECKS[deckId].unlockReps;
+  const production=freshSchedule(unlocked?Date.now()+DAY:Date.now());
+  return {id:c.id||`migrated-${deckId}-${index}`,remoteId:c.remoteId||null,front:c.front||c.en||'',back:c.back||c.pt||'',created:Number(c.created)||Date.now()+index,source:c.source||'migrated',schedules:{recognition,production}};
+}
+function migrateV3(){
+  try{
+    const old=JSON.parse(localStorage.getItem(STORE_V3));if(!old||old.version!==3||!old.cards)return null;
+    const s=baseState();s.activeDays=old.activeDays||[];s.reviewLog=(old.reviewLog||[]).map(r=>({...r,direction:r.direction||'recognition'}));
+    for(const id of Object.keys(DECKS))s.cards[id]=(old.cards[id]||[]).map((c,i)=>toV4Card(c,id,i));
+    s.settings.selectedDeck=old.settings?.selectedDeck||'en';s.settings.autoPlay=old.settings?.autoPlay!==false;s.settings.voiceByDeck=old.settings?.voiceByDeck||{en:'',de:''};s.settings.speedByDeck=old.settings?.speedByDeck||{en:1,de:1};return s;
+  }catch(e){return null;}
+}
+function migrateV1(){
+  try{
+    const old=JSON.parse(localStorage.getItem(STORE_V1));if(!old||!Array.isArray(old.cards))return null;
+    const s=baseState();s.activeDays=old.activeDays||[];s.reviewLog=(old.reviewLog||[]).map(r=>({...r,deckId:'en',direction:'recognition'}));
+    s.cards.en=old.cards.map((c,i)=>toV4Card({id:`legacy-${c.id||i}`,front:c.en,back:c.pt,due:c.due,interval:c.interval,ease:c.ease,reps:c.reps,lapses:c.lapses,created:c.created,source:'legacy'},'en',i)).filter(c=>c.front&&c.back);return s;
+  }catch(e){return null;}
+}
+function load(){try{const s=JSON.parse(localStorage.getItem(STORE_V4));if(s&&s.version===4)return s;}catch(e){}return migrateV3()||migrateV1()||baseState();}
+let state=load();
+state.cards ||= {en:[],de:[]};for(const id of Object.keys(DECKS)){state.cards[id]=(state.cards[id]||[]).map((c,i)=>toV4Card(c,id,i));}
+state.activeDays ||= [];state.reviewLog ||= [];state.settings ||= {};state.settings.selectedDeck ||= 'en';if(typeof state.settings.autoPlay!=='boolean')state.settings.autoPlay=true;state.settings.voiceByDeck ||= {en:'',de:''};state.settings.speedByDeck ||= {en:1,de:1};state.settings.modeByDeck ||= {en:'smart',de:'smart'};
+function save(){localStorage.setItem(STORE_V4,JSON.stringify(state));}
+save();
+
+function selectedDeck(){return state.settings.selectedDeck||'en';}
+function selectedMode(deckId=selectedDeck()){return state.settings.modeByDeck[deckId]||'smart';}
+function deckCards(deckId=selectedDeck()){return state.cards[deckId]||[];}
+function productionUnlocked(card,deckId,mode=selectedMode(deckId)){return mode==='production'||card.schedules.recognition.reps>=DECKS[deckId].unlockReps;}
+function candidateItems(deckId=selectedDeck(),cutoff=Date.now(),mode=selectedMode(deckId)){
+  const out=[];
+  for(const card of deckCards(deckId)){
+    if(mode!=='production'&&card.schedules.recognition.due<=cutoff)out.push({card,direction:'recognition',due:card.schedules.recognition.due});
+    if(mode!=='recognition'&&productionUnlocked(card,deckId,mode)&&card.schedules.production.due<=cutoff)out.push({card,direction:'production',due:card.schedules.production.due});
+  }
+  return out.sort((a,b)=>a.due-b.due||a.card.created-b.card.created);
+}
+function pendingToday(deckId=selectedDeck()){return candidateItems(deckId,endOfDay(),selectedMode(deckId)).length;}
+function dueNow(deckId=selectedDeck()){return candidateItems(deckId,Date.now(),selectedMode(deckId));}
+function allPendingToday(){return Object.keys(DECKS).reduce((n,id)=>n+pendingToday(id),0);}
+function chooseSmart(items,deckId){
+  if(!items.length)return null;const rec=items.filter(x=>x.direction==='recognition'),prod=items.filter(x=>x.direction==='production');
+  if(!rec.length)return prod[0]||null;if(!prod.length)return rec[0]||null;
+  const today=state.reviewLog.filter(r=>r.day===dayKey()&&r.deckId===deckId);const p=today.filter(r=>r.direction==='production').length,total=today.length;const ratio=total?p/total:0;
+  return ratio<DECKS[deckId].prodRatio?prod[0]:rec[0];
+}
+function nextItem(deckId=selectedDeck()){
