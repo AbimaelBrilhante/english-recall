@@ -2,11 +2,6 @@ const CACHE = 'english-recall-v4';
 const APP_ASSETS = [
   './',
   './index.html',
-  './app.css',
-  './app-1.part',
-  './app-2.part',
-  './app-3.part',
-  './app-4.part',
   './manifest.webmanifest',
   './icon-192.png',
   './icon-512.png'
@@ -28,6 +23,7 @@ self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET') return;
   const url = new URL(event.request.url);
 
+  // Deck content is network-first so GitHub additions arrive without reinstalling the PWA.
   if (url.pathname.includes('/decks/')) {
     event.respondWith(
       fetch(event.request, {cache:'no-store'})

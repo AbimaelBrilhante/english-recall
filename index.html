@@ -10,7 +10,31 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Recall</title>
-<link rel="stylesheet" href="app.css">
+<style>
+:root{--bg:#f7f7fb;--surface:#fff;--surface2:#f1f0f8;--ink:#1d1d29;--muted:#77778a;--line:#e3e2ec;--primary:#3c318c;--primary2:#5748cc;--accent:#f43f8b;--good:#138a5b;--danger:#c0394b;--radius:22px}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif}
+body{min-height:100%;padding:calc(env(safe-area-inset-top) + 10px) 16px calc(env(safe-area-inset-bottom) + 24px)}
+button,input,textarea,select{font:inherit}button{touch-action:manipulation}.app{max-width:760px;margin:0 auto}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:4px 0 14px}.brand small{display:block;color:var(--muted);font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:11px}.brand h1{font-size:24px;line-height:1.05;margin:5px 0 0;color:var(--primary)}
+.topstats{display:flex;gap:8px}.pill{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:8px 11px;min-width:70px;text-align:center}.pill b{display:block;font-size:18px}.pill span{font-size:10px;color:var(--muted)}
+.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:14px;margin-bottom:14px}.metric{text-align:center}.metric b{display:block;font-size:24px;color:var(--primary)}.metric span{font-size:11px;color:var(--muted)}
+.nav{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:14px 0}.nav button{height:46px;border:1px solid var(--line);background:var(--surface);border-radius:14px;font-weight:800;color:var(--muted);font-size:12px}.nav button.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+.view{display:none}.view.active{display:block}.section,.panel{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:16px;margin-bottom:12px}.section h2{font-size:17px;margin:0 0 6px}.section p{margin:0 0 12px;color:var(--muted);font-size:13px;line-height:1.45}
+.deck-grid{display:grid;gap:12px}.deck-card{border:1px solid var(--line);background:var(--surface);border-radius:22px;padding:18px;text-align:left}.deck-head{display:flex;align-items:center;justify-content:space-between;gap:10px}.deck-title{font-size:22px;font-weight:900}.deck-flag{font-size:26px}.deck-mode{display:inline-block;margin-top:8px;background:#eeeafd;color:var(--primary);border-radius:999px;padding:5px 9px;font-size:11px;font-weight:900}.deck-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}.deck-stat{background:var(--surface2);border-radius:14px;padding:10px;text-align:center}.deck-stat b{display:block;font-size:18px;color:var(--primary)}.deck-stat span{font-size:10px;color:var(--muted)}.deck-action{margin-top:12px;color:var(--primary);font-weight:800;font-size:13px}
+.sync-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}.primary-btn,.secondary-btn{min-height:46px;border-radius:14px;padding:0 16px;font-weight:800;border:0}.primary-btn{background:var(--primary);color:#fff}.secondary-btn{background:#efedf8;color:var(--primary)}
+.progress-wrap{margin:0 2px 14px}.progress-row{display:flex;justify-content:space-between;color:var(--muted);font-size:12px;margin-bottom:7px}.track{height:7px;background:#e6e4ee;border-radius:999px;overflow:hidden}.fill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--primary2));border-radius:999px;transition:width .25s ease}
+.study-badge{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:6px 10px;font-size:11px;font-weight:900;margin-bottom:10px}.study-badge.recognition{background:#eaf3ff;color:#294e8f}.study-badge.production{background:#fff0f6;color:#9b2e62}
+.cardmeta{display:flex;justify-content:space-between;color:var(--muted);font-size:12px;margin:0 2px 9px}.flashcard{width:100%;min-height:370px;border:0;border-radius:20px;background:#fff;box-shadow:0 8px 28px rgba(42,33,90,.08);padding:24px;text-align:left;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden}.flashcard.back{background:var(--primary);color:#fff}.corner{position:absolute;right:0;top:0;width:0;height:0;border-top:58px solid var(--primary);border-left:58px solid transparent}.back .corner{border-top-color:#fff}.side{font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#aaa}.back .side{color:#d6d1ff}.flip{position:absolute;right:18px;top:18px;color:var(--primary2);font-weight:700;font-size:13px}.back .flip{color:#fff}.cardbody{margin:auto 0}.small-answer{display:none;color:#c4bdf5;font-size:18px;font-weight:700;margin-bottom:12px}.back .small-answer{display:block}.cardtext{font-size:30px;line-height:1.2;font-weight:800;color:var(--accent);word-break:break-word}.back .cardtext{color:#fff}
+.prompt-hint{font-size:12px;color:var(--muted);margin:10px 2px 0;line-height:1.4}.audio-row{display:flex;align-items:center;gap:9px;margin-top:14px}.speed{height:46px;border:1px solid var(--line);border-radius:14px;background:#fff;padding:0 10px;color:var(--ink)}.audio{height:46px;border:0;border-radius:14px;padding:0 15px;font-weight:800;flex:1}.audio.normal{background:#eef3ff;color:#25335f}.audio.slow{background:#f3efff;color:#493a96}
+.rating{display:none;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}.rating.show{display:grid}.rate{border:1px solid var(--line);background:#fff;border-radius:16px;min-height:64px;padding:8px 3px;font-weight:800;font-size:12px;color:var(--ink)}.rate i{display:block;font-style:normal;font-size:21px;margin-bottom:3px}
+textarea,input[type=search],select.setting{width:100%;border:1px solid var(--line);background:#fff;border-radius:14px;padding:13px;font-size:16px;color:var(--ink)}textarea{min-height:150px;resize:vertical}.field{margin-bottom:12px}.field label{display:block;font-size:12px;font-weight:800;color:var(--muted);margin-bottom:6px}.toggle{display:flex;align-items:center;justify-content:space-between;gap:12px;border:1px solid var(--line);border-radius:14px;padding:12px 13px}.toggle input{width:22px;height:22px}
+.mode-help{background:var(--surface2);border-radius:14px;padding:12px;font-size:12px;color:var(--muted);line-height:1.45;margin-top:8px}
+.library-head{display:grid;grid-template-columns:120px 1fr;gap:8px;margin-bottom:10px}.list{display:grid;gap:9px}.item{border:1px solid var(--line);border-radius:15px;padding:12px}.item .en{font-weight:800;line-height:1.3}.item .pt{color:var(--muted);font-size:13px;margin-top:5px;line-height:1.3}.item .meta{color:#999;font-size:11px;margin-top:7px}.item-actions{display:flex;gap:7px;margin-top:9px}.item-actions button{min-height:38px;border:1px solid var(--line);border-radius:11px;background:#fff;padding:0 11px}.empty{padding:38px 18px;text-align:center;color:var(--muted)}.hidden{display:none!important}.msg{font-size:12px;color:var(--muted);margin-top:8px;min-height:16px}
+.toast{position:sticky;bottom:calc(env(safe-area-inset-bottom) + 12px);margin:10px auto 0;max-width:520px;background:#1e1c2d;color:#fff;padding:11px 14px;border-radius:14px;text-align:center;font-size:13px;display:none;z-index:10}.toast.show{display:block}
+@media(max-width:430px){.flashcard{min-height:350px;padding:20px}.cardtext{font-size:27px}.rating{gap:6px}.rate{font-size:10.5px;min-height:62px}.audio-row{flex-wrap:wrap}.speed{width:84px}.audio{min-width:115px}.nav button{font-size:11px}.library-head{grid-template-columns:105px 1fr}}
+@media(prefers-color-scheme:dark){:root{--bg:#12111a;--surface:#1c1a27;--surface2:#242132;--ink:#f5f3fb;--muted:#aaa5b9;--line:#353145}.flashcard,.speed,textarea,input[type=search],select.setting,.rate,.item-actions button{background:#211f2c;color:var(--ink)}.audio.normal{background:#242b40;color:#dfe7ff}.audio.slow{background:#2a2440;color:#e8e1ff}}
+</style>
 </head>
 <body>
 <main class="app">
@@ -90,17 +114,177 @@
 </main>
 
 <script>
-Promise.all([
-  './app-1.part','./app-2.part','./app-3.part','./app-4.part'
-].map(path => fetch(path).then(r => {
-  if (!r.ok) throw new Error('Failed to load '+path);
-  return r.text();
-}))).then(parts => {
-  new Function(parts.join(''))();
-}).catch(err => {
-  console.error(err);
-  document.body.insertAdjacentHTML('beforeend','<p style="padding:16px">Não foi possível carregar o app. Verifique sua conexão e abra novamente.</p>');
-});
+(() => {
+'use strict';
+const STORE_V4='englishRecallPwaV4', STORE_V3='englishRecallPwaV3', STORE_V1='englishRecallPwaV1', DAY=86400000;
+const DECKS={
+  en:{name:'English',flag:'🇺🇸',lang:'en-US',file:'english.json',prodRatio:.60,unlockReps:2},
+  de:{name:'Deutsch',flag:'🇩🇪',lang:'de-DE',file:'german.json',prodRatio:.20,unlockReps:3}
+};
+const $=id=>document.getElementById(id);
+let currentItem=null,flipped=false,sessionInitial=0,sessionDone=0,currentView='decks',voices=[];
+
+function dayKey(date=new Date()){return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;}
+function endOfDay(date=new Date()){return new Date(date.getFullYear(),date.getMonth(),date.getDate()+1).getTime()-1;}
+function normalize(s){return String(s||'').trim().toLowerCase().replace(/\s+/g,' ');}
+function freshSchedule(due=Date.now()){return {due,interval:0,ease:2.5,reps:0,lapses:0};}
+function baseState(){return {version:4,cards:{en:[],de:[]},activeDays:[],reviewLog:[],settings:{selectedDeck:'en',autoPlay:true,voiceByDeck:{en:'',de:''},speedByDeck:{en:1,de:1},modeByDeck:{en:'smart',de:'smart'}},createdAt:Date.now()};}
+function toV4Card(c,deckId,index=0){
+  if(c.schedules&&c.schedules.recognition&&c.schedules.production)return c;
+  const recognition={due:Number(c.due)||Date.now(),interval:Number(c.interval)||0,ease:Number(c.ease)||2.5,reps:Number(c.reps)||0,lapses:Number(c.lapses)||0};
+  const unlocked=recognition.reps>=DECKS[deckId].unlockReps;
+  const production=freshSchedule(unlocked?Date.now()+DAY:Date.now());
+  return {id:c.id||`migrated-${deckId}-${index}`,remoteId:c.remoteId||null,front:c.front||c.en||'',back:c.back||c.pt||'',created:Number(c.created)||Date.now()+index,source:c.source||'migrated',schedules:{recognition,production}};
+}
+function migrateV3(){
+  try{
+    const old=JSON.parse(localStorage.getItem(STORE_V3));if(!old||old.version!==3||!old.cards)return null;
+    const s=baseState();s.activeDays=old.activeDays||[];s.reviewLog=(old.reviewLog||[]).map(r=>({...r,direction:r.direction||'recognition'}));
+    for(const id of Object.keys(DECKS))s.cards[id]=(old.cards[id]||[]).map((c,i)=>toV4Card(c,id,i));
+    s.settings.selectedDeck=old.settings?.selectedDeck||'en';s.settings.autoPlay=old.settings?.autoPlay!==false;s.settings.voiceByDeck=old.settings?.voiceByDeck||{en:'',de:''};s.settings.speedByDeck=old.settings?.speedByDeck||{en:1,de:1};return s;
+  }catch(e){return null;}
+}
+function migrateV1(){
+  try{
+    const old=JSON.parse(localStorage.getItem(STORE_V1));if(!old||!Array.isArray(old.cards))return null;
+    const s=baseState();s.activeDays=old.activeDays||[];s.reviewLog=(old.reviewLog||[]).map(r=>({...r,deckId:'en',direction:'recognition'}));
+    s.cards.en=old.cards.map((c,i)=>toV4Card({id:`legacy-${c.id||i}`,front:c.en,back:c.pt,due:c.due,interval:c.interval,ease:c.ease,reps:c.reps,lapses:c.lapses,created:c.created,source:'legacy'},'en',i)).filter(c=>c.front&&c.back);return s;
+  }catch(e){return null;}
+}
+function load(){try{const s=JSON.parse(localStorage.getItem(STORE_V4));if(s&&s.version===4)return s;}catch(e){}return migrateV3()||migrateV1()||baseState();}
+let state=load();
+state.cards ||= {en:[],de:[]};for(const id of Object.keys(DECKS)){state.cards[id]=(state.cards[id]||[]).map((c,i)=>toV4Card(c,id,i));}
+state.activeDays ||= [];state.reviewLog ||= [];state.settings ||= {};state.settings.selectedDeck ||= 'en';if(typeof state.settings.autoPlay!=='boolean')state.settings.autoPlay=true;state.settings.voiceByDeck ||= {en:'',de:''};state.settings.speedByDeck ||= {en:1,de:1};state.settings.modeByDeck ||= {en:'smart',de:'smart'};
+function save(){localStorage.setItem(STORE_V4,JSON.stringify(state));}
+save();
+
+function selectedDeck(){return state.settings.selectedDeck||'en';}
+function selectedMode(deckId=selectedDeck()){return state.settings.modeByDeck[deckId]||'smart';}
+function deckCards(deckId=selectedDeck()){return state.cards[deckId]||[];}
+function productionUnlocked(card,deckId,mode=selectedMode(deckId)){return mode==='production'||card.schedules.recognition.reps>=DECKS[deckId].unlockReps;}
+function candidateItems(deckId=selectedDeck(),cutoff=Date.now(),mode=selectedMode(deckId)){
+  const out=[];
+  for(const card of deckCards(deckId)){
+    if(mode!=='production'&&card.schedules.recognition.due<=cutoff)out.push({card,direction:'recognition',due:card.schedules.recognition.due});
+    if(mode!=='recognition'&&productionUnlocked(card,deckId,mode)&&card.schedules.production.due<=cutoff)out.push({card,direction:'production',due:card.schedules.production.due});
+  }
+  return out.sort((a,b)=>a.due-b.due||a.card.created-b.card.created);
+}
+function pendingToday(deckId=selectedDeck()){return candidateItems(deckId,endOfDay(),selectedMode(deckId)).length;}
+function dueNow(deckId=selectedDeck()){return candidateItems(deckId,Date.now(),selectedMode(deckId));}
+function allPendingToday(){return Object.keys(DECKS).reduce((n,id)=>n+pendingToday(id),0);}
+function chooseSmart(items,deckId){
+  if(!items.length)return null;const rec=items.filter(x=>x.direction==='recognition'),prod=items.filter(x=>x.direction==='production');
+  if(!rec.length)return prod[0]||null;if(!prod.length)return rec[0]||null;
+  const today=state.reviewLog.filter(r=>r.day===dayKey()&&r.deckId===deckId);const p=today.filter(r=>r.direction==='production').length,total=today.length;const ratio=total?p/total:0;
+  return ratio<DECKS[deckId].prodRatio?prod[0]:rec[0];
+}
+function nextItem(deckId=selectedDeck()){
+  const items=dueNow(deckId),mode=selectedMode(deckId);
+  if(mode==='smart')return chooseSmart(items,deckId);
+  return items[0]||null;
+}
+function current(){
+  if(currentItem){
+    const card=deckCards().find(c=>c.id===currentItem.card.id);
+    if(card)return {card,direction:currentItem.direction,due:card.schedules[currentItem.direction].due};
+  }
+  currentItem=nextItem();return currentItem;
+}
+function streak(){const set=new Set(state.activeDays);if(!set.size)return 0;let d=new Date();if(!set.has(dayKey(d)))d.setDate(d.getDate()-1);let n=0;while(set.has(dayKey(d))){n++;d.setDate(d.getDate()-1);}return n;}
+function todayStudyCount(){const k=dayKey();return state.reviewLog.filter(r=>r.day===k).length;}
+function markActive(){const k=dayKey();if(!state.activeDays.includes(k))state.activeDays.push(k);}
+function formatDue(ts){const diff=Number(ts)-Date.now();if(diff<=0)return 'Agora';const min=Math.ceil(diff/60000);if(min<60)return `em ${min} min`;const h=Math.ceil(diff/3600000);if(h<24)return `em ${h} h`;const d=Math.ceil(diff/DAY);return `em ${d} ${d===1?'dia':'dias'}`;}
+function modeLabel(m){return m==='smart'?'🧠 Smart Mix':m==='recognition'?'👁 Compreensão':'🗣 Produção';}
+function showView(name){currentView=name;document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id===`view-${name}`));document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.view===name));if(name==='library')renderLibrary();if(name==='settings')renderSettings();}
+
+function renderStats(){$('topDue').textContent=allPendingToday();$('dueToday').textContent=allPendingToday();$('topStreak').textContent=streak();$('studiedToday').textContent=todayStudyCount();$('activeTotal').textContent=new Set(state.activeDays).size;}
+function renderDecks(){
+  const grid=$('deckGrid');grid.innerHTML='';
+  Object.entries(DECKS).forEach(([id,m])=>{
+    const all=deckCards(id),due=pendingToday(id),studied=state.reviewLog.filter(r=>r.day===dayKey()&&r.deckId===id).length;
+    const btn=document.createElement('button');btn.type='button';btn.className='deck-card';
+    btn.innerHTML=`<div class="deck-head"><div class="deck-title">${m.name}</div><div class="deck-flag">${m.flag}</div></div><span class="deck-mode">${modeLabel(selectedMode(id))}</span><div class="deck-stats"><div class="deck-stat"><b>${due}</b><span>exercícios</span></div><div class="deck-stat"><b>${studied}</b><span>hoje</span></div><div class="deck-stat"><b>${all.length}</b><span>frases</span></div></div><div class="deck-action">Estudar →</div>`;
+    btn.addEventListener('click',()=>selectDeck(id,true));grid.appendChild(btn);
+  });
+}
+function selectDeck(id,autoplay=false){
+  state.settings.selectedDeck=id;currentItem=null;flipped=false;sessionInitial=dueNow(id).length;sessionDone=0;$('libraryDeck').value=id;$('addDeck').value=id;$('settingsDeck').value=id;$('speed').value=String(state.settings.speedByDeck[id]||1);save();showView('review');render();
+  if(autoplay)maybeAutoPlayCurrent();
+}
+function renderProgress(){const total=Math.max(sessionInitial,1),pct=Math.min(100,Math.round(sessionDone/total*100));$('progressLabel').textContent=`${DECKS[selectedDeck()].flag} ${DECKS[selectedDeck()].name}: ${Math.min(sessionDone,sessionInitial)} de ${sessionInitial}`;$('progressPct').textContent=`${pct}%`;$('progressFill').style.width=`${pct}%`;}
+function renderReview(){
+  renderProgress();const item=current();
+  if(!item){
+    $('flashcard').classList.add('hidden');$('rating').classList.remove('show');$('audioRow').classList.add('hidden');$('reviewEmpty').classList.remove('hidden');$('studyBadge').classList.add('hidden');
+    const future=candidateItems(selectedDeck(),endOfDay(),selectedMode()).filter(x=>x.due>Date.now())[0];$('nextDueText').textContent=future?`Próximo exercício ${formatDue(future.due)}.`:'Nenhum exercício pendente agora.';$('position').textContent=`${DECKS[selectedDeck()].flag} ${DECKS[selectedDeck()].name}`;$('dueInfo').textContent=`${pendingToday()} hoje`;return;
+  }
+  $('reviewEmpty').classList.add('hidden');$('flashcard').classList.remove('hidden');$('studyBadge').classList.remove('hidden');
+  const {card,direction}=item,badge=$('studyBadge');badge.className=`study-badge ${direction}`;badge.textContent=direction==='recognition'?'👁 Compreensão':'🗣 Produção';
+  const due=dueNow();$('position').textContent=`${DECKS[selectedDeck()].flag} ${DECKS[selectedDeck()].name} · ${Math.max(1,due.findIndex(x=>x.card.id===card.id&&x.direction===direction)+1)}/${due.length}`;$('dueInfo').textContent=formatDue(card.schedules[direction].due);
+  $('flashcard').classList.toggle('back',flipped);$('sideLabel').textContent=flipped?'Back':'Front';$('flipLabel').textContent=flipped?'Front':'Flip card';
+  const front=direction==='recognition'?card.front:card.back,back=direction==='recognition'?card.back:card.front;
+  $('smallAnswer').textContent=front;$('cardText').textContent=flipped?back:front;$('rating').classList.toggle('show',flipped);
+  $('promptHint').textContent=direction==='recognition'?'Entenda a frase. Vire o card para conferir o significado.':flipped?'Compare sua resposta com a frase no idioma-alvo.':'Diga a frase no idioma-alvo antes de virar o card.';
+  $('speed').value=String(state.settings.speedByDeck[selectedDeck()]||1);
+  // In production mode, do not reveal the answer through audio before flipping.
+  $('audioRow').classList.toggle('hidden',direction==='production'&&!flipped);
+}
+function renderLibrary(){
+  const deckId=$('libraryDeck').value||selectedDeck(),q=$('search').value.trim().toLowerCase(),cards=deckCards(deckId);$('libraryCount').textContent=`${DECKS[deckId].flag} ${DECKS[deckId].name} · ${cards.length} frases`;const list=$('list');list.innerHTML='';
+  const filtered=cards.filter(c=>!q||c.front.toLowerCase().includes(q)||c.back.toLowerCase().includes(q));if(!filtered.length){list.innerHTML='<div class="empty">Nenhuma frase encontrada.</div>';return;}
+  filtered.sort((a,b)=>a.created-b.created).forEach(c=>{
+    const r=c.schedules.recognition,p=c.schedules.production,row=document.createElement('article');row.className='item';const a=document.createElement('div');a.className='en';a.textContent=c.front;const b=document.createElement('div');b.className='pt';b.textContent=c.back;const meta=document.createElement('div');meta.className='meta';meta.textContent=`👁 ${r.reps} rev · ${r.interval}d | 🗣 ${p.reps} rev · ${p.interval}d${c.remoteId?' · GitHub':''}`;
+    const acts=document.createElement('div');acts.className='item-actions';const play=document.createElement('button');play.type='button';play.textContent='▶ Ouvir';play.addEventListener('click',()=>speakText(c.front,deckId,1));acts.append(play);row.append(a,b,meta,acts);list.appendChild(row);
+  });
+}
+function renderSettings(){
+  const id=$('settingsDeck').value||selectedDeck();$('studyMode').value=selectedMode(id);$('settingsSpeed').value=String(state.settings.speedByDeck[id]||1);$('autoPlay').checked=state.settings.autoPlay;populateVoices(id);
+  $('modeHelp').textContent=id==='en'?'Smart Mix prioriza produção quando ela estiver liberada, buscando aproximadamente 60% Português → English. A produção é liberada após 2 revisões de compreensão da frase.':'Smart Mix começa mais leve: aproximadamente 20% Português → Deutsch. A produção é liberada após 3 revisões de compreensão da frase.';
+}
+function render(){renderStats();renderDecks();renderReview();if(currentView==='library')renderLibrary();save();}
+
+function loadVoices(){if(!('speechSynthesis'in window))return;voices=speechSynthesis.getVoices()||[];if(currentView==='settings')renderSettings();}
+if('speechSynthesis'in window){loadVoices();speechSynthesis.onvoiceschanged=loadVoices;}
+function voiceOptions(deckId){const lang=DECKS[deckId].lang.slice(0,2).toLowerCase();return voices.filter(v=>(v.lang||'').toLowerCase().startsWith(lang));}
+function populateVoices(deckId){const sel=$('voiceSelect'),opts=voiceOptions(deckId),saved=state.settings.voiceByDeck[deckId]||'';sel.innerHTML='';if(!opts.length){const o=document.createElement('option');o.value='';o.textContent='Voz padrão do iPhone';sel.appendChild(o);return;}opts.forEach(v=>{const o=document.createElement('option');o.value=v.name;o.textContent=`${v.name} — ${v.lang}`;sel.appendChild(o);});if(saved&&opts.some(v=>v.name===saved))sel.value=saved;else{const preferred=opts.find(v=>/samantha|ava|allison|siri|daniel|serena|anna|katja/i.test(v.name))||opts[0];sel.value=preferred.name;state.settings.voiceByDeck[deckId]=preferred.name;save();}}
+function speakText(text,deckId,rate){if(!('speechSynthesis'in window)){toast('Áudio não disponível.');return;}speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang=DECKS[deckId].lang;u.rate=rate;u.pitch=1;const opts=voiceOptions(deckId),name=state.settings.voiceByDeck[deckId];u.voice=opts.find(v=>v.name===name)||opts[0]||null;speechSynthesis.speak(u);}
+function speak(rateOverride){const item=current();if(!item)return;const id=selectedDeck(),rate=rateOverride??Number($('speed').value||1);speakText(item.card.front,id,rate);}
+function maybeAutoPlayCurrent(){const item=current();if(!item||!state.settings.autoPlay)return;if(item.direction==='recognition'&&!flipped)setTimeout(()=>speak(),80);if(item.direction==='production'&&flipped)setTimeout(()=>speak(),80);}
+function unlockProductionIfReady(card,deckId){if(card.schedules.recognition.reps>=DECKS[deckId].unlockReps&&card.schedules.production.reps===0&&card.schedules.production.interval===0&&card.schedules.production.due>Date.now())card.schedules.production.due=Date.now();}
+function rateSchedule(s,kind){
+  const now=Date.now();s.ease=Number(s.ease)||2.5;s.interval=Number(s.interval)||0;s.reps=Number(s.reps)||0;s.lapses=Number(s.lapses)||0;
+  if(kind==='again'){s.lapses++;s.ease=Math.max(1.3,s.ease-.20);s.interval=0;s.due=now+10*60000;}
+  else if(kind==='hard'){s.reps++;s.ease=Math.max(1.3,s.ease-.15);s.interval=s.interval<=0?1:Math.max(1,Math.round(s.interval*1.2));s.due=now+s.interval*DAY;}
+  else if(kind==='good'){s.reps++;if(s.interval<=0)s.interval=1;else if(s.interval===1)s.interval=3;else s.interval=Math.max(s.interval+1,Math.round(s.interval*s.ease));s.due=now+s.interval*DAY;}
+  else if(kind==='easy'){s.reps++;s.ease=Math.min(3.2,s.ease+.15);s.interval=s.interval<=0?4:Math.max(s.interval+2,Math.round(s.interval*s.ease*1.3));s.due=now+s.interval*DAY;}
+}
+function rateCard(kind){
+  const item=current();if(!item)return;const {card,direction}=item,deckId=selectedDeck(),before=dueNow(deckId).length;rateSchedule(card.schedules[direction],kind);if(direction==='recognition')unlockProductionIfReady(card,deckId);
+  markActive();state.reviewLog.push({day:dayKey(),ts:Date.now(),id:card.id,deckId,direction,rating:kind});const after=dueNow(deckId).length;if(after<before)sessionDone+=before-after;flipped=false;currentItem=null;render();maybeAutoPlayCurrent();
+}
+function addBulk(){const deckId=$('addDeck').value,lines=$('bulkInput').value.split(/\n+/).map(x=>x.trim()).filter(Boolean);let added=0,bad=0;for(const line of lines){const p=line.indexOf('|');if(p<1){bad++;continue;}const front=line.slice(0,p).trim(),back=line.slice(p+1).trim();if(!front||!back){bad++;continue;}if(deckCards(deckId).some(c=>normalize(c.front)===normalize(front)&&normalize(c.back)===normalize(back)))continue;state.cards[deckId].push({id:`local-${deckId}-${Date.now()}-${Math.random().toString(36).slice(2)}`,remoteId:null,front,back,created:Date.now()+Math.random(),source:'local',schedules:{recognition:freshSchedule(Date.now()),production:freshSchedule(Date.now())}});added++;}$('bulkMsg').textContent=`${added} frase(s) adicionada(s)`+(bad?` · ${bad} inválida(s)`:'');if(added){$('bulkInput').value='';toast(`${added} frase(s) adicionada(s).`);}render();}
+async function syncDeck(deckId){
+  const res=await fetch(`./decks/${DECKS[deckId].file}?v=${Date.now()}`,{cache:'no-store'});if(!res.ok)throw new Error();const remote=await res.json();if(!remote||!Array.isArray(remote.cards))throw new Error();const local=state.cards[deckId],now=Date.now();let added=0,matched=0;
+  for(const rc of remote.cards){if(!rc.id||!rc.front||!rc.back)continue;let lc=local.find(c=>c.remoteId===rc.id)||local.find(c=>normalize(c.front)===normalize(rc.front)&&normalize(c.back)===normalize(rc.back));if(lc){lc.remoteId=rc.id;lc.front=rc.front;lc.back=rc.back;matched++;}else{const due=now+(Number(rc.initial_due_days)||0)*DAY;local.push({id:`remote-${deckId}-${rc.id}`,remoteId:rc.id,front:rc.front,back:rc.back,created:now+local.length,source:'remote',schedules:{recognition:freshSchedule(due),production:freshSchedule(due)}});added++;}}return{added,matched};
+}
+async function syncAll(showMessage=true){try{const results={};for(const id of Object.keys(DECKS))results[id]=await syncDeck(id);save();render();if(showMessage){const n=Object.values(results).reduce((s,x)=>s+x.added,0);$('syncMsg').textContent=n?`${n} nova(s) frase(s) recebida(s).`:'Decks já estavam atualizados.';toast(n?`${n} nova(s) frase(s) sincronizada(s).`:'Tudo sincronizado.');}return true;}catch(e){if(showMessage)$('syncMsg').textContent='Não foi possível sincronizar agora. O app continuará offline.';return false;}}
+function exportBackup(){const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=`recall-v4-backup-${dayKey()}.json`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);}
+function importBackup(file){const r=new FileReader();r.onload=()=>{try{const x=JSON.parse(String(r.result));if(!x||x.version!==4||!x.cards)throw new Error();state=x;save();currentItem=null;flipped=false;render();toast('Backup restaurado.');}catch(e){toast('Backup inválido.');}};r.readAsText(file);}
+let toastTimer;function toast(msg){const t=$('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2300);}
+
+$('flashcard').addEventListener('click',()=>{flipped=!flipped;renderReview();maybeAutoPlayCurrent();});
+$('audioNormal').addEventListener('click',()=>speak());$('audioSlow').addEventListener('click',()=>speak(.72));
+document.querySelectorAll('.rate').forEach(b=>b.addEventListener('click',()=>rateCard(b.dataset.rating)));
+document.querySelectorAll('.nav button').forEach(b=>b.addEventListener('click',()=>showView(b.dataset.view)));
+$('syncBtn').addEventListener('click',()=>syncAll(true));$('settingsBtn').addEventListener('click',()=>showView('settings'));$('bulkAdd').addEventListener('click',addBulk);$('exportBtn').addEventListener('click',exportBackup);$('importFile').addEventListener('change',e=>{const f=e.target.files?.[0];if(f)importBackup(f);e.target.value='';});$('search').addEventListener('input',renderLibrary);$('libraryDeck').addEventListener('change',renderLibrary);
+$('settingsDeck').addEventListener('change',renderSettings);$('studyMode').addEventListener('change',()=>{const id=$('settingsDeck').value;state.settings.modeByDeck[id]=$('studyMode').value;if(id===selectedDeck()){currentItem=null;sessionInitial=dueNow(id).length;sessionDone=0;}save();renderSettings();renderDecks();});
+$('voiceSelect').addEventListener('change',()=>{const id=$('settingsDeck').value;state.settings.voiceByDeck[id]=$('voiceSelect').value;save();});$('settingsSpeed').addEventListener('change',()=>{const id=$('settingsDeck').value;state.settings.speedByDeck[id]=Number($('settingsSpeed').value)||1;if(id===selectedDeck())$('speed').value=String(state.settings.speedByDeck[id]);save();});$('speed').addEventListener('change',()=>{state.settings.speedByDeck[selectedDeck()]=Number($('speed').value)||1;save();});$('autoPlay').addEventListener('change',()=>{state.settings.autoPlay=$('autoPlay').checked;save();});$('testVoice').addEventListener('click',()=>{const id=$('settingsDeck').value,sample=id==='de'?'Hallo! Wie geht es dir?':'Hello! How are you today?';speakText(sample,id,Number($('settingsSpeed').value)||1);});
+
+if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js').catch(()=>{});
+window.addEventListener('online',()=>syncAll(false));
+sessionInitial=dueNow().length;render();syncAll(false).then(()=>{sessionInitial=dueNow().length;render();});
+})();
 </script>
 </body>
 </html>
