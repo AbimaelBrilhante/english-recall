@@ -226,6 +226,18 @@
       "front": "Ich bin müde.",
       "back": "Eu estou cansado.",
       "initial_due_days": 0
+    },
+    {
+      "id": "de-038",
+      "front": "Mach's gut!",
+      "back": "Se cuida! / Fique bem!",
+      "initial_due_days": 0
+    },
+    {
+      "id": "de-039",
+      "front": "Das tut mir leid.",
+      "back": "Sinto muito.",
+      "initial_due_days": 0
     }
   ]
 }
