@@ -1,4 +1,4 @@
-const CACHE = 'english-recall-v3';
+const CACHE = 'english-recall-v4';
 const APP_ASSETS = [
   './',
   './index.html',
@@ -23,10 +23,10 @@ self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET') return;
   const url = new URL(event.request.url);
 
-  // Deck JSON is network-first, so GitHub edits appear without reinstalling the PWA.
+  // Deck content is network-first so GitHub additions arrive without reinstalling the PWA.
   if (url.pathname.includes('/decks/')) {
     event.respondWith(
-      fetch(event.request, {cache: 'no-store'})
+      fetch(event.request, {cache:'no-store'})
         .then(response => {
           const copy = response.clone();
           caches.open(CACHE).then(cache => cache.put(event.request, copy));
@@ -37,7 +37,6 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // App shell: cache-first for offline use.
   event.respondWith(
     caches.match(event.request).then(cached => cached || fetch(event.request).then(response => {
       const copy = response.clone();
