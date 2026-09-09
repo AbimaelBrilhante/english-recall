@@ -1,0 +1,51 @@
+  const items=dueNow(deckId),mode=selectedMode(deckId);
+  if(mode==='smart')return chooseSmart(items,deckId);
+  return items[0]||null;
+}
+function current(){
+  if(currentItem){
+    const card=deckCards().find(c=>c.id===currentItem.card.id);
+    if(card)return {card,direction:currentItem.direction,due:card.schedules[currentItem.direction].due};
+  }
+  currentItem=nextItem();return currentItem;
+}
+function streak(){const set=new Set(state.activeDays);if(!set.size)return 0;let d=new Date();if(!set.has(dayKey(d)))d.setDate(d.getDate()-1);let n=0;while(set.has(dayKey(d))){n++;d.setDate(d.getDate()-1);}return n;}
+function todayStudyCount(){const k=dayKey();return state.reviewLog.filter(r=>r.day===k).length;}
+function markActive(){const k=dayKey();if(!state.activeDays.includes(k))state.activeDays.push(k);}
+function formatDue(ts){const diff=Number(ts)-Date.now();if(diff<=0)return 'Agora';const min=Math.ceil(diff/60000);if(min<60)return `em ${min} min`;const h=Math.ceil(diff/3600000);if(h<24)return `em ${h} h`;const d=Math.ceil(diff/DAY);return `em ${d} ${d===1?'dia':'dias'}`;}
+function modeLabel(m){return m==='smart'?'🧠 Smart Mix':m==='recognition'?'👁 Compreensão':'🗣 Produção';}
+function showView(name){currentView=name;document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id===`view-${name}`));document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.view===name));if(name==='library')renderLibrary();if(name==='settings')renderSettings();}
+
+function renderStats(){$('topDue').textContent=allPendingToday();$('dueToday').textContent=allPendingToday();$('topStreak').textContent=streak();$('studiedToday').textContent=todayStudyCount();$('activeTotal').textContent=new Set(state.activeDays).size;}
+function renderDecks(){
+  const grid=$('deckGrid');grid.innerHTML='';
+  Object.entries(DECKS).forEach(([id,m])=>{
+    const all=deckCards(id),due=pendingToday(id),studied=state.reviewLog.filter(r=>r.day===dayKey()&&r.deckId===id).length;
+    const btn=document.createElement('button');btn.type='button';btn.className='deck-card';
+    btn.innerHTML=`<div class="deck-head"><div class="deck-title">${m.name}</div><div class="deck-flag">${m.flag}</div></div><span class="deck-mode">${modeLabel(selectedMode(id))}</span><div class="deck-stats"><div class="deck-stat"><b>${due}</b><span>exercícios</span></div><div class="deck-stat"><b>${studied}</b><span>hoje</span></div><div class="deck-stat"><b>${all.length}</b><span>frases</span></div></div><div class="deck-action">Estudar →</div>`;
+    btn.addEventListener('click',()=>selectDeck(id,true));grid.appendChild(btn);
+  });
+}
+function selectDeck(id,autoplay=false){
+  state.settings.selectedDeck=id;currentItem=null;flipped=false;sessionInitial=dueNow(id).length;sessionDone=0;$('libraryDeck').value=id;$('addDeck').value=id;$('settingsDeck').value=id;$('speed').value=String(state.settings.speedByDeck[id]||1);save();showView('review');render();
+  if(autoplay)maybeAutoPlayCurrent();
+}
+function renderProgress(){const total=Math.max(sessionInitial,1),pct=Math.min(100,Math.round(sessionDone/total*100));$('progressLabel').textContent=`${DECKS[selectedDeck()].flag} ${DECKS[selectedDeck()].name}: ${Math.min(sessionDone,sessionInitial)} de ${sessionInitial}`;$('progressPct').textContent=`${pct}%`;$('progressFill').style.width=`${pct}%`;}
+function renderReview(){
+  renderProgress();const item=current();
+  if(!item){
+    $('flashcard').classList.add('hidden');$('rating').classList.remove('show');$('audioRow').classList.add('hidden');$('reviewEmpty').classList.remove('hidden');$('studyBadge').classList.add('hidden');
+    const future=candidateItems(selectedDeck(),endOfDay(),selectedMode()).filter(x=>x.due>Date.now())[0];$('nextDueText').textContent=future?`Próximo exercício ${formatDue(future.due)}.`:'Nenhum exercício pendente agora.';$('position').textContent=`${DECKS[selectedDeck()].flag} ${DECKS[selectedDeck()].name}`;$('dueInfo').textContent=`${pendingToday()} hoje`;return;
+  }
+  $('reviewEmpty').classList.add('hidden');$('flashcard').classList.remove('hidden');$('studyBadge').classList.remove('hidden');
+  const {card,direction}=item,badge=$('studyBadge');badge.className=`study-badge ${direction}`;badge.textContent=direction==='recognition'?'👁 Compreensão':'🗣 Produção';
+  const due=dueNow();$('position').textContent=`${DECKS[selectedDeck()].flag} ${DECKS[selectedDeck()].name} · ${Math.max(1,due.findIndex(x=>x.card.id===card.id&&x.direction===direction)+1)}/${due.length}`;$('dueInfo').textContent=formatDue(card.schedules[direction].due);
+  $('flashcard').classList.toggle('back',flipped);$('sideLabel').textContent=flipped?'Back':'Front';$('flipLabel').textContent=flipped?'Front':'Flip card';
+  const front=direction==='recognition'?card.front:card.back,back=direction==='recognition'?card.back:card.front;
+  $('smallAnswer').textContent=front;$('cardText').textContent=flipped?back:front;$('rating').classList.toggle('show',flipped);
+  $('promptHint').textContent=direction==='recognition'?'Entenda a frase. Vire o card para conferir o significado.':flipped?'Compare sua resposta com a frase no idioma-alvo.':'Diga a frase no idioma-alvo antes de virar o card.';
+  $('speed').value=String(state.settings.speedByDeck[selectedDeck()]||1);
+  // In production mode, do not reveal the answer through audio before flipping.
+  $('audioRow').classList.toggle('hidden',direction==='production'&&!flipped);
+}
+function renderLibrary(){
