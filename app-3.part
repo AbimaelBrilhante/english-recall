@@ -1,0 +1,32 @@
+  const deckId=$('libraryDeck').value||selectedDeck(),q=$('search').value.trim().toLowerCase(),cards=deckCards(deckId);$('libraryCount').textContent=`${DECKS[deckId].flag} ${DECKS[deckId].name} · ${cards.length} frases`;const list=$('list');list.innerHTML='';
+  const filtered=cards.filter(c=>!q||c.front.toLowerCase().includes(q)||c.back.toLowerCase().includes(q));if(!filtered.length){list.innerHTML='<div class="empty">Nenhuma frase encontrada.</div>';return;}
+  filtered.sort((a,b)=>a.created-b.created).forEach(c=>{
+    const r=c.schedules.recognition,p=c.schedules.production,row=document.createElement('article');row.className='item';const a=document.createElement('div');a.className='en';a.textContent=c.front;const b=document.createElement('div');b.className='pt';b.textContent=c.back;const meta=document.createElement('div');meta.className='meta';meta.textContent=`👁 ${r.reps} rev · ${r.interval}d | 🗣 ${p.reps} rev · ${p.interval}d${c.remoteId?' · GitHub':''}`;
+    const acts=document.createElement('div');acts.className='item-actions';const play=document.createElement('button');play.type='button';play.textContent='▶ Ouvir';play.addEventListener('click',()=>speakText(c.front,deckId,1));acts.append(play);row.append(a,b,meta,acts);list.appendChild(row);
+  });
+}
+function renderSettings(){
+  const id=$('settingsDeck').value||selectedDeck();$('studyMode').value=selectedMode(id);$('settingsSpeed').value=String(state.settings.speedByDeck[id]||1);$('autoPlay').checked=state.settings.autoPlay;populateVoices(id);
+  $('modeHelp').textContent=id==='en'?'Smart Mix prioriza produção quando ela estiver liberada, buscando aproximadamente 60% Português → English. A produção é liberada após 2 revisões de compreensão da frase.':'Smart Mix começa mais leve: aproximadamente 20% Português → Deutsch. A produção é liberada após 3 revisões de compreensão da frase.';
+}
+function render(){renderStats();renderDecks();renderReview();if(currentView==='library')renderLibrary();save();}
+
+function loadVoices(){if(!('speechSynthesis'in window))return;voices=speechSynthesis.getVoices()||[];if(currentView==='settings')renderSettings();}
+if('speechSynthesis'in window){loadVoices();speechSynthesis.onvoiceschanged=loadVoices;}
+function voiceOptions(deckId){const lang=DECKS[deckId].lang.slice(0,2).toLowerCase();return voices.filter(v=>(v.lang||'').toLowerCase().startsWith(lang));}
+function populateVoices(deckId){const sel=$('voiceSelect'),opts=voiceOptions(deckId),saved=state.settings.voiceByDeck[deckId]||'';sel.innerHTML='';if(!opts.length){const o=document.createElement('option');o.value='';o.textContent='Voz padrão do iPhone';sel.appendChild(o);return;}opts.forEach(v=>{const o=document.createElement('option');o.value=v.name;o.textContent=`${v.name} — ${v.lang}`;sel.appendChild(o);});if(saved&&opts.some(v=>v.name===saved))sel.value=saved;else{const preferred=opts.find(v=>/samantha|ava|allison|siri|daniel|serena|anna|katja/i.test(v.name))||opts[0];sel.value=preferred.name;state.settings.voiceByDeck[deckId]=preferred.name;save();}}
+function speakText(text,deckId,rate){if(!('speechSynthesis'in window)){toast('Áudio não disponível.');return;}speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang=DECKS[deckId].lang;u.rate=rate;u.pitch=1;const opts=voiceOptions(deckId),name=state.settings.voiceByDeck[deckId];u.voice=opts.find(v=>v.name===name)||opts[0]||null;speechSynthesis.speak(u);}
+function speak(rateOverride){const item=current();if(!item)return;const id=selectedDeck(),rate=rateOverride??Number($('speed').value||1);speakText(item.card.front,id,rate);}
+function maybeAutoPlayCurrent(){const item=current();if(!item||!state.settings.autoPlay)return;if(item.direction==='recognition'&&!flipped)setTimeout(()=>speak(),80);if(item.direction==='production'&&flipped)setTimeout(()=>speak(),80);}
+function unlockProductionIfReady(card,deckId){if(card.schedules.recognition.reps>=DECKS[deckId].unlockReps&&card.schedules.production.reps===0&&card.schedules.production.interval===0&&card.schedules.production.due>Date.now())card.schedules.production.due=Date.now();}
+function rateSchedule(s,kind){
+  const now=Date.now();s.ease=Number(s.ease)||2.5;s.interval=Number(s.interval)||0;s.reps=Number(s.reps)||0;s.lapses=Number(s.lapses)||0;
+  if(kind==='again'){s.lapses++;s.ease=Math.max(1.3,s.ease-.20);s.interval=0;s.due=now+10*60000;}
+  else if(kind==='hard'){s.reps++;s.ease=Math.max(1.3,s.ease-.15);s.interval=s.interval<=0?1:Math.max(1,Math.round(s.interval*1.2));s.due=now+s.interval*DAY;}
+  else if(kind==='good'){s.reps++;if(s.interval<=0)s.interval=1;else if(s.interval===1)s.interval=3;else s.interval=Math.max(s.interval+1,Math.round(s.interval*s.ease));s.due=now+s.interval*DAY;}
+  else if(kind==='easy'){s.reps++;s.ease=Math.min(3.2,s.ease+.15);s.interval=s.interval<=0?4:Math.max(s.interval+2,Math.round(s.interval*s.ease*1.3));s.due=now+s.interval*DAY;}
+}
+function rateCard(kind){
+  const item=current();if(!item)return;const {card,direction}=item,deckId=selectedDeck(),before=dueNow(deckId).length;rateSchedule(card.schedules[direction],kind);if(direction==='recognition')unlockProductionIfReady(card,deckId);
+  markActive();state.reviewLog.push({day:dayKey(),ts:Date.now(),id:card.id,deckId,direction,rating:kind});const after=dueNow(deckId).length;if(after<before)sessionDone+=before-after;flipped=false;currentItem=null;render();maybeAutoPlayCurrent();
+}
