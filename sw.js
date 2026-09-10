@@ -1,4 +1,4 @@
-const CACHE = 'english-recall-v6-prerecorded-audio-ui-1';
+const CACHE = 'english-recall-v6-prerecorded-audio-ui-2';
 const APP_ASSETS = [
   './',
   './index.html',
