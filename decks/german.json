@@ -49,6 +49,9 @@
     {"id":"de-042","front":"Woher kommst du?","back":"De onde você vem?","initial_due_days":0},
     {"id":"de-043","front":"Wo wohnst du?","back":"Onde você mora?","initial_due_days":0},
     {"id":"de-044","front":"Was machst du beruflich?","back":"O que você faz profissionalmente?","initial_due_days":0},
-    {"id":"de-045","front":"Ich bin Datenanalyst.","back":"Eu sou analista de dados.","initial_due_days":0}
+    {"id":"de-045","front":"Ich bin Datenanalyst.","back":"Eu sou analista de dados.","initial_due_days":0},
+    {"id":"de-046","front":"Welche Sprachen sprichst du?","back":"Quais idiomas você fala?","initial_due_days":0},
+    {"id":"de-047","front":"Ich spreche ein bisschen Deutsch.","back":"Eu falo um pouco de alemão.","initial_due_days":0},
+    {"id":"de-048","front":"Ich spreche ein bisschen Englisch.","back":"Eu falo um pouco de inglês.","initial_due_days":0}
   ]
 }
