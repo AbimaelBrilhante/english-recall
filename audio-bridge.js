@@ -6,7 +6,8 @@
   const synth = window.speechSynthesis;
   const nativeSpeak = synth.speak.bind(synth);
   const nativeCancel = synth.cancel.bind(synth);
-  const prerecorded = new Map();
+  const prerecordedByLang = new Map();
+  const prerecordedByText = new Map();
   let activeAudio = null;
   let mapReady = false;
 
@@ -18,7 +19,8 @@
   function languageKey(lang) {
     const value = String(lang || '').toLowerCase();
     if (value.startsWith('de')) return 'de';
-    return 'en';
+    if (value.startsWith('en')) return 'en';
+    return '';
   }
 
   function textKey(text) {
@@ -34,10 +36,10 @@
 
       for (const card of cards) {
         if (!card?.id || !card?.front) continue;
-        prerecorded.set(
-          `${deck.id}|${textKey(card.front)}`,
-          `./audio/${deck.id}/${encodeURIComponent(card.id)}.caf`
-        );
+        const text = textKey(card.front);
+        const path = `./audio/${deck.id}/${encodeURIComponent(card.id)}.caf`;
+        prerecordedByLang.set(`${deck.id}|${text}`, path);
+        if (!prerecordedByText.has(text)) prerecordedByText.set(text, path);
       }
     } catch (error) {
       console.warn(`[Recall audio] Could not load ${deck.id} deck map.`, error);
@@ -46,7 +48,7 @@
 
   const mapPromise = Promise.all(DECKS.map(loadDeckMap)).finally(() => {
     mapReady = true;
-    console.info(`[Recall audio] Audio map ready for ${prerecorded.size} cards.`);
+    console.info(`[Recall audio] Audio map ready for ${prerecordedByText.size} cards.`);
   });
 
   function stopPrerecorded() {
@@ -64,8 +66,8 @@
 
   function handleSpeak(utterance) {
     const text = textKey(utterance?.text);
-    const key = `${languageKey(utterance?.lang)}|${text}`;
-    const audioPath = prerecorded.get(key);
+    const lang = languageKey(utterance?.lang);
+    const audioPath = (lang ? prerecordedByLang.get(`${lang}|${text}`) : null) || prerecordedByText.get(text);
 
     if (!audioPath) {
       fallbackToBrowser(utterance);
@@ -75,7 +77,7 @@
     stopPrerecorded();
     nativeCancel();
 
-    const audio = new Audio(audioPath);
+    const audio = new Audio(`${audioPath}?v=2`);
     activeAudio = audio;
     audio.preload = 'auto';
     audio.playbackRate = Number(utterance?.rate) || 1;
@@ -114,5 +116,5 @@
     handleSpeak(utterance);
   };
 
-  console.info('[Recall audio] Prerecorded CAF bridge enabled for English and German decks.');
+  console.info('[Recall audio] Prerecorded CAF bridge enabled with language + text fallback for English and German.');
 })();
