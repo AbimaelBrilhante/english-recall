@@ -8,26 +8,46 @@
   const nativeCancel = synth.cancel.bind(synth);
   const prerecorded = new Map();
   let activeAudio = null;
+  let mapReady = false;
 
-  async function loadPrerecordedMap() {
-    try {
-      const response = await fetch(`./decks/english.json?audio-test=${Date.now()}`, {cache: 'no-store'});
-      if (!response.ok) return;
-      const deck = await response.json();
-      const card = Array.isArray(deck.cards) ? deck.cards.find(c => c.id === 'en-001') : null;
-      if (card?.front) {
-        prerecorded.set(`en|${card.front}`, './audio/en/en-001.caf');
-      }
-    } catch (error) {
-      console.warn('[Recall audio test] Could not load deck map.', error);
-    }
-  }
+  const DECKS = [
+    { id: 'en', file: 'english.json' },
+    { id: 'de', file: 'german.json' }
+  ];
 
   function languageKey(lang) {
     const value = String(lang || '').toLowerCase();
     if (value.startsWith('de')) return 'de';
     return 'en';
   }
+
+  function textKey(text) {
+    return String(text || '').trim();
+  }
+
+  async function loadDeckMap(deck) {
+    try {
+      const response = await fetch(`./decks/${deck.file}?audio-map=${Date.now()}`, { cache: 'no-store' });
+      if (!response.ok) return;
+      const data = await response.json();
+      const cards = Array.isArray(data.cards) ? data.cards : [];
+
+      for (const card of cards) {
+        if (!card?.id || !card?.front) continue;
+        prerecorded.set(
+          `${deck.id}|${textKey(card.front)}`,
+          `./audio/${deck.id}/${encodeURIComponent(card.id)}.caf`
+        );
+      }
+    } catch (error) {
+      console.warn(`[Recall audio] Could not load ${deck.id} deck map.`, error);
+    }
+  }
+
+  const mapPromise = Promise.all(DECKS.map(loadDeckMap)).finally(() => {
+    mapReady = true;
+    console.info(`[Recall audio] Audio map ready for ${prerecorded.size} cards.`);
+  });
 
   function stopPrerecorded() {
     if (!activeAudio) return;
@@ -38,24 +58,24 @@
     activeAudio = null;
   }
 
-  synth.cancel = function () {
-    stopPrerecorded();
-    return nativeCancel();
-  };
+  function fallbackToBrowser(utterance) {
+    try { nativeSpeak(utterance); } catch (_) {}
+  }
 
-  synth.speak = function (utterance) {
-    const text = String(utterance?.text || '');
+  function handleSpeak(utterance) {
+    const text = textKey(utterance?.text);
     const key = `${languageKey(utterance?.lang)}|${text}`;
     const audioPath = prerecorded.get(key);
 
     if (!audioPath) {
-      return nativeSpeak(utterance);
+      fallbackToBrowser(utterance);
+      return;
     }
 
     stopPrerecorded();
     nativeCancel();
 
-    const audio = new Audio(`${audioPath}?v=1`);
+    const audio = new Audio(audioPath);
     activeAudio = audio;
     audio.preload = 'auto';
     audio.playbackRate = Number(utterance?.rate) || 1;
@@ -65,13 +85,13 @@
       if (fellBack) return;
       fellBack = true;
       if (activeAudio === audio) activeAudio = null;
-      try { nativeSpeak(utterance); } catch (_) {}
+      fallbackToBrowser(utterance);
     };
 
-    audio.addEventListener('error', fallback, {once: true});
+    audio.addEventListener('error', fallback, { once: true });
     audio.addEventListener('ended', () => {
       if (activeAudio === audio) activeAudio = null;
-    }, {once: true});
+    }, { once: true });
 
     try {
       const playPromise = audio.play();
@@ -79,8 +99,20 @@
     } catch (_) {
       fallback();
     }
+  }
+
+  synth.cancel = function () {
+    stopPrerecorded();
+    return nativeCancel();
   };
 
-  loadPrerecordedMap();
-  console.info('[Recall audio test] en-001 prerecorded CAF bridge loaded.');
+  synth.speak = function (utterance) {
+    if (!mapReady) {
+      mapPromise.finally(() => handleSpeak(utterance));
+      return;
+    }
+    handleSpeak(utterance);
+  };
+
+  console.info('[Recall audio] Prerecorded CAF bridge enabled for English and German decks.');
 })();
