@@ -1,4 +1,4 @@
-const CACHE = 'english-recall-v5-audio-all-1';
+const CACHE = 'english-recall-v6-prerecorded-audio-ui-1';
 const APP_ASSETS = [
   './',
   './index.html',
@@ -28,6 +28,7 @@ async function injectAddons(response) {
 
   let text = await response.text();
 
+  // Small cleanup add-on removes obsolete browser voice test/refresh UI.
   if (!text.includes('voice-diagnostics.js')) {
     text = text.replace('</body>', '<script src="./voice-diagnostics.js"></script>\n</body>');
   }
@@ -78,7 +79,6 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // Inject diagnostics + prerecorded audio bridge into every navigation.
   if (event.request.mode === 'navigate') {
     event.respondWith(
       fetch(event.request, {cache:'no-store'})
