@@ -1,4 +1,4 @@
-const CACHE = 'english-recall-v5-audio-test-1';
+const CACHE = 'english-recall-v5-audio-all-1';
 const APP_ASSETS = [
   './',
   './index.html',
@@ -45,13 +45,32 @@ self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET') return;
   const url = new URL(event.request.url);
 
-  // Deck content is network-first so GitHub additions arrive without reinstalling the PWA.
+  // Deck content is network-first so newly added phrases arrive without reinstalling the PWA.
   if (url.pathname.includes('/decks/')) {
     event.respondWith(
       fetch(event.request, {cache:'no-store'})
         .then(response => {
-          const copy = response.clone();
-          caches.open(CACHE).then(cache => cache.put(event.request, copy));
+          if (response.ok) {
+            const copy = response.clone();
+            caches.open(CACHE).then(cache => cache.put(event.request, copy));
+          }
+          return response;
+        })
+        .catch(() => caches.match(event.request))
+    );
+    return;
+  }
+
+  // Prerecorded audio is network-first: replacement/new CAF files are picked up immediately,
+  // while successfully played files remain available offline as a fallback.
+  if (url.pathname.includes('/audio/')) {
+    event.respondWith(
+      fetch(event.request)
+        .then(response => {
+          if (response.ok) {
+            const copy = response.clone();
+            caches.open(CACHE).then(cache => cache.put(event.request, copy));
+          }
           return response;
         })
         .catch(() => caches.match(event.request))
@@ -71,8 +90,10 @@ self.addEventListener('fetch', event => {
 
   event.respondWith(
     caches.match(event.request).then(cached => cached || fetch(event.request).then(response => {
-      const copy = response.clone();
-      caches.open(CACHE).then(cache => cache.put(event.request, copy));
+      if (response.ok) {
+        const copy = response.clone();
+        caches.open(CACHE).then(cache => cache.put(event.request, copy));
+      }
       return response;
     }).catch(() => caches.match('./index.html')))
   );
