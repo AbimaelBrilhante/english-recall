@@ -1,11 +1,12 @@
-const CACHE = 'english-recall-v4-voice-diagnostics-1';
+const CACHE = 'english-recall-v5-audio-test-1';
 const APP_ASSETS = [
   './',
   './index.html',
   './manifest.webmanifest',
   './icon-192.png',
   './icon-512.png',
-  './voice-diagnostics.js'
+  './voice-diagnostics.js',
+  './audio-bridge.js'
 ];
 
 self.addEventListener('install', event => {
@@ -20,17 +21,24 @@ self.addEventListener('activate', event => {
   self.clients.claim();
 });
 
-async function injectVoiceDiagnostics(response) {
+async function injectAddons(response) {
   if (!response) return response;
   const contentType = response.headers.get('content-type') || '';
   if (!contentType.includes('text/html')) return response;
-  const text = await response.text();
-  const patched = text.includes('voice-diagnostics.js')
-    ? text
-    : text.replace('</body>', '<script src="./voice-diagnostics.js"></script>\n</body>');
+
+  let text = await response.text();
+
+  if (!text.includes('voice-diagnostics.js')) {
+    text = text.replace('</body>', '<script src="./voice-diagnostics.js"></script>\n</body>');
+  }
+
+  if (!text.includes('audio-bridge.js')) {
+    text = text.replace('</body>', '<script src="./audio-bridge.js"></script>\n</body>');
+  }
+
   const headers = new Headers(response.headers);
   headers.delete('content-length');
-  return new Response(patched, {status: response.status, statusText: response.statusText, headers});
+  return new Response(text, {status: response.status, statusText: response.statusText, headers});
 }
 
 self.addEventListener('fetch', event => {
@@ -51,12 +59,12 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // Inject the diagnostics add-on into every navigation without changing Recall's core index.html.
+  // Inject diagnostics + prerecorded audio bridge into every navigation.
   if (event.request.mode === 'navigate') {
     event.respondWith(
-      fetch(event.request)
-        .then(response => injectVoiceDiagnostics(response))
-        .catch(async () => injectVoiceDiagnostics(await caches.match('./index.html')))
+      fetch(event.request, {cache:'no-store'})
+        .then(response => injectAddons(response))
+        .catch(async () => injectAddons(await caches.match('./index.html')))
     );
     return;
   }
