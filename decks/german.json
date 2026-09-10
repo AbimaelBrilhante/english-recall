@@ -52,6 +52,12 @@
     {"id":"de-045","front":"Ich bin Datenanalyst.","back":"Eu sou analista de dados.","initial_due_days":0},
     {"id":"de-046","front":"Welche Sprachen sprichst du?","back":"Quais idiomas você fala?","initial_due_days":0},
     {"id":"de-047","front":"Ich spreche ein bisschen Deutsch.","back":"Eu falo um pouco de alemão.","initial_due_days":0},
-    {"id":"de-048","front":"Ich spreche ein bisschen Englisch.","back":"Eu falo um pouco de inglês.","initial_due_days":0}
+    {"id":"de-048","front":"Ich spreche ein bisschen Englisch.","back":"Eu falo um pouco de inglês.","initial_due_days":0},
+    {"id":"de-049","front":"Es tut mir leid.","back":"Sinto muito. / Desculpe.","initial_due_days":0},
+    {"id":"de-050","front":"Wo ist der Bahnhof?","back":"Onde fica a estação de trem?","initial_due_days":0},
+    {"id":"de-051","front":"Wo ist die Apotheke?","back":"Onde fica a farmácia?","initial_due_days":0},
+    {"id":"de-052","front":"Der Bahnhof ist dort, rechts.","back":"A estação fica ali, à direita.","initial_due_days":0},
+    {"id":"de-053","front":"Das Hotel ist geradeaus.","back":"O hotel fica em frente / reto.","initial_due_days":0},
+    {"id":"de-054","front":"Ich verstehe nicht. Noch einmal, bitte.","back":"Eu não entendo. Mais uma vez, por favor.","initial_due_days":0}
   ]
 }
