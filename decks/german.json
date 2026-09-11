@@ -63,6 +63,11 @@
     {"id":"de-056","front":"Du bist müde.","back":"Você está cansado.","initial_due_days":0},
     {"id":"de-057","front":"Er ist krank.","back":"Ele está doente.","initial_due_days":0},
     {"id":"de-058","front":"Sie ist müde.","back":"Ela está cansada.","initial_due_days":0},
-    {"id":"de-059","front":"Mir geht es nicht gut.","back":"Eu não estou bem.","initial_due_days":0}
+    {"id":"de-059","front":"Mir geht es nicht gut.","back":"Eu não estou bem.","initial_due_days":0},
+    {"id":"de-060","front":"Wir sind müde.","back":"Nós estamos cansados.","initial_due_days":0},
+    {"id":"de-061","front":"Ihr seid müde.","back":"Vocês estão cansados.","initial_due_days":0},
+    {"id":"de-062","front":"Sie sind müde.","back":"Eles / Elas estão cansados.","initial_due_days":0},
+    {"id":"de-063","front":"Wir sind glücklich.","back":"Nós estamos felizes.","initial_due_days":0},
+    {"id":"de-064","front":"Uns geht's gut.","back":"Nós estamos bem.","initial_due_days":0}
   ]
 }
