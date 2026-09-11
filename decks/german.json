@@ -58,6 +58,11 @@
     {"id":"de-051","front":"Wo ist die Apotheke?","back":"Onde fica a farmácia?","initial_due_days":0},
     {"id":"de-052","front":"Der Bahnhof ist dort, rechts.","back":"A estação fica ali, à direita.","initial_due_days":0},
     {"id":"de-053","front":"Das Hotel ist geradeaus.","back":"O hotel fica em frente / reto.","initial_due_days":0},
-    {"id":"de-054","front":"Ich verstehe nicht. Noch einmal, bitte.","back":"Eu não entendo. Mais uma vez, por favor.","initial_due_days":0}
+    {"id":"de-054","front":"Ich verstehe nicht. Noch einmal, bitte.","back":"Eu não entendo. Mais uma vez, por favor.","initial_due_days":0},
+    {"id":"de-055","front":"Ich bin krank.","back":"Estou doente.","initial_due_days":0},
+    {"id":"de-056","front":"Du bist müde.","back":"Você está cansado.","initial_due_days":0},
+    {"id":"de-057","front":"Er ist krank.","back":"Ele está doente.","initial_due_days":0},
+    {"id":"de-058","front":"Sie ist müde.","back":"Ela está cansada.","initial_due_days":0},
+    {"id":"de-059","front":"Mir geht es nicht gut.","back":"Eu não estou bem.","initial_due_days":0}
   ]
 }
