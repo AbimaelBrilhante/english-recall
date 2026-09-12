@@ -1,0 +1,20 @@
+html[data-recall-theme="light"] #flashcard.flashcard.back {
+  background: #3c318c !important;
+  color: #ffffff !important;
+}
+
+html[data-recall-theme="light"] #flashcard.flashcard.back .cardtext {
+  color: #ffffff !important;
+}
+
+html[data-recall-theme="light"] #flashcard.flashcard.back .small-answer {
+  color: #c4bdf5 !important;
+}
+
+html[data-recall-theme="light"] #flashcard.flashcard.back .side {
+  color: #d6d1ff !important;
+}
+
+html[data-recall-theme="light"] #flashcard.flashcard.back .flip {
+  color: #ffffff !important;
+}
