@@ -1,4 +1,4 @@
-const CACHE = 'english-recall-v7-home-controls-2';
+const CACHE = 'english-recall-v7-home-controls-3';
 const APP_ASSETS = [
   './',
   './index.html',
@@ -7,7 +7,8 @@ const APP_ASSETS = [
   './icon-512.png',
   './voice-diagnostics.js',
   './audio-bridge.js',
-  './home-controls.js'
+  './home-controls.js',
+  './theme-hotfix.css'
 ];
 
 self.addEventListener('install', event => {
@@ -28,6 +29,10 @@ async function injectAddons(response) {
   if (!contentType.includes('text/html')) return response;
 
   let text = await response.text();
+
+  if (!text.includes('theme-hotfix.css')) {
+    text = text.replace('</head>', '<link rel="stylesheet" href="./theme-hotfix.css">\n</head>');
+  }
 
   // Small cleanup add-on removes obsolete browser voice test/refresh UI.
   if (!text.includes('voice-diagnostics.js')) {
