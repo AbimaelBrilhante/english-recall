@@ -16,7 +16,7 @@
       html[data-recall-theme="light"]{
         --bg:#f7f7fb;--surface:#fff;--surface2:#f1f0f8;--ink:#1d1d29;--muted:#77778a;--line:#e3e2ec;
       }
-      html[data-recall-theme="light"] .flashcard,
+      html[data-recall-theme="light"] .flashcard:not(.back),
       html[data-recall-theme="light"] .speed,
       html[data-recall-theme="light"] textarea,
       html[data-recall-theme="light"] input[type=search],
@@ -29,7 +29,7 @@
       html[data-recall-theme="dark"]{
         --bg:#18171f;--surface:#22212b;--surface2:#2a2833;--ink:#f5f3fb;--muted:#aaa6b5;--line:#373440;
       }
-      html[data-recall-theme="dark"] .flashcard,
+      html[data-recall-theme="dark"] .flashcard:not(.back),
       html[data-recall-theme="dark"] .speed,
       html[data-recall-theme="dark"] textarea,
       html[data-recall-theme="dark"] input[type=search],
@@ -39,6 +39,11 @@
       html[data-recall-theme="dark"] .audio.normal{background:#2b3040;color:#e4e9ff}
       html[data-recall-theme="dark"] .audio.slow{background:#312c43;color:#eee7ff}
       html[data-recall-theme="dark"] .deck-mode{background:#312d4f;color:#cfc6ff}
+
+      html[data-recall-theme="light"] .flashcard.back,
+      html[data-recall-theme="dark"] .flashcard.back{background:var(--primary);color:#fff}
+      html[data-recall-theme="light"] .flashcard.back .cardtext,
+      html[data-recall-theme="dark"] .flashcard.back .cardtext{color:#fff}
 
       .theme-toggle{
         width:44px;height:44px;flex:0 0 44px;border:1px solid var(--line);border-radius:14px;
