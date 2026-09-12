@@ -1,4 +1,4 @@
-const CACHE = 'english-recall-v7-home-controls-1';
+const CACHE = 'english-recall-v7-home-controls-2';
 const APP_ASSETS = [
   './',
   './index.html',
