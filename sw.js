@@ -1,4 +1,4 @@
-const CACHE = 'english-recall-v6-prerecorded-audio-ui-2';
+const CACHE = 'english-recall-v7-home-controls-1';
 const APP_ASSETS = [
   './',
   './index.html',
@@ -6,7 +6,8 @@ const APP_ASSETS = [
   './icon-192.png',
   './icon-512.png',
   './voice-diagnostics.js',
-  './audio-bridge.js'
+  './audio-bridge.js',
+  './home-controls.js'
 ];
 
 self.addEventListener('install', event => {
@@ -35,6 +36,10 @@ async function injectAddons(response) {
 
   if (!text.includes('audio-bridge.js')) {
     text = text.replace('</body>', '<script src="./audio-bridge.js"></script>\n</body>');
+  }
+
+  if (!text.includes('home-controls.js')) {
+    text = text.replace('</body>', '<script src="./home-controls.js"></script>\n</body>');
   }
 
   const headers = new Headers(response.headers);
