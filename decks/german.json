@@ -72,6 +72,9 @@
     {"id":"de-065","front":"Ich arbeite als Datenanalyst.","back":"Eu trabalho como analista de dados.","initial_due_days":0},
     {"id":"de-066","front":"Ich arbeite bei Três Corações.","back":"Eu trabalho na Três Corações.","initial_due_days":0},
     {"id":"de-067","front":"Was bist du von Beruf?","back":"Qual é a sua profissão?","initial_due_days":0},
-    {"id":"de-068","front":"Bist du Datenanalyst?","back":"Você é analista de dados?","initial_due_days":0}
+    {"id":"de-068","front":"Bist du Datenanalyst?","back":"Você é analista de dados?","initial_due_days":0},
+    {"id":"de-069","front":"Er kommt aus Deutschland.","back":"Ele vem da Alemanha.","initial_due_days":0},
+    {"id":"de-070","front":"Sie wohnt in Berlin.","back":"Ela mora em Berlim.","initial_due_days":0},
+    {"id":"de-071","front":"Er arbeitet in Deutschland.","back":"Ele trabalha na Alemanha.","initial_due_days":0}
   ]
 }
