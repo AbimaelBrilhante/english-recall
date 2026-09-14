@@ -1,4 +1,4 @@
-const CACHE = 'english-recall-v9-new-card-queue-1';
+const CACHE = 'english-recall-v10-force-refresh-1';
 const APP_ASSETS = [
   './',
   './index.html',
@@ -20,10 +20,17 @@ self.addEventListener('install', event => {
 });
 
 self.addEventListener('activate', event => {
-  event.waitUntil(
-    caches.keys().then(keys => Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k))))
-  );
-  self.clients.claim();
+  event.waitUntil((async () => {
+    const keys = await caches.keys();
+    await Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)));
+    await self.clients.claim();
+
+    // Force already-open/installed PWA windows to reload once under the new service worker.
+    const clients = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
+    await Promise.all(clients.map(client => {
+      try { return client.navigate(client.url); } catch (_) { return null; }
+    }));
+  })());
 });
 
 async function injectAddons(response) {
@@ -34,36 +41,36 @@ async function injectAddons(response) {
   let text = await response.text();
 
   if (!text.includes('theme-hotfix.css')) {
-    text = text.replace('</head>', '<link rel="stylesheet" href="./theme-hotfix.css">\n</head>');
+    text = text.replace('</head>', '<link rel="stylesheet" href="./theme-hotfix.css?v=10">\n</head>');
   }
 
   if (!text.includes('voice-diagnostics.js')) {
-    text = text.replace('</body>', '<script src="./voice-diagnostics.js"></script>\n</body>');
+    text = text.replace('</body>', '<script src="./voice-diagnostics.js?v=10"></script>\n</body>');
   }
 
   if (!text.includes('audio-bridge.js')) {
-    text = text.replace('</body>', '<script src="./audio-bridge.js"></script>\n</body>');
+    text = text.replace('</body>', '<script src="./audio-bridge.js?v=10"></script>\n</body>');
   }
 
   if (!text.includes('home-controls.js')) {
-    text = text.replace('</body>', '<script src="./home-controls.js"></script>\n</body>');
+    text = text.replace('</body>', '<script src="./home-controls.js?v=10"></script>\n</body>');
   }
 
   if (!text.includes('srs-tuning.js')) {
-    text = text.replace('</body>', '<script src="./srs-tuning.js"></script>\n</body>');
+    text = text.replace('</body>', '<script src="./srs-tuning.js?v=10"></script>\n</body>');
   }
 
   if (!text.includes('power-features.js')) {
-    text = text.replace('</body>', '<script src="./power-features.js"></script>\n</body>');
+    text = text.replace('</body>', '<script src="./power-features.js?v=10"></script>\n</body>');
   }
 
   if (!text.includes('new-card-queue.js')) {
-    text = text.replace('</body>', '<script src="./new-card-queue.js"></script>\n</body>');
+    text = text.replace('</body>', '<script src="./new-card-queue.js?v=10"></script>\n</body>');
   }
 
   const headers = new Headers(response.headers);
   headers.delete('content-length');
-  return new Response(text, {status: response.status, statusText: response.statusText, headers});
+  return new Response(text, { status: response.status, statusText: response.statusText, headers });
 }
 
 self.addEventListener('fetch', event => {
@@ -72,7 +79,7 @@ self.addEventListener('fetch', event => {
 
   if (url.pathname.includes('/decks/')) {
     event.respondWith(
-      fetch(event.request, {cache:'no-store'})
+      fetch(event.request, { cache: 'no-store' })
         .then(response => {
           if (response.ok) {
             const copy = response.clone();
@@ -102,7 +109,7 @@ self.addEventListener('fetch', event => {
 
   if (event.request.mode === 'navigate') {
     event.respondWith(
-      fetch(event.request, {cache:'no-store'})
+      fetch(event.request, { cache: 'no-store' })
         .then(response => injectAddons(response))
         .catch(async () => injectAddons(await caches.match('./index.html')))
     );
