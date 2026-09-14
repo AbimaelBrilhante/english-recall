@@ -1,4 +1,4 @@
-const CACHE = 'english-recall-v8-power-features-1';
+const CACHE = 'english-recall-v9-new-card-queue-1';
 const APP_ASSETS = [
   './',
   './index.html',
@@ -10,7 +10,8 @@ const APP_ASSETS = [
   './home-controls.js',
   './theme-hotfix.css',
   './srs-tuning.js',
-  './power-features.js'
+  './power-features.js',
+  './new-card-queue.js'
 ];
 
 self.addEventListener('install', event => {
@@ -54,6 +55,10 @@ async function injectAddons(response) {
 
   if (!text.includes('power-features.js')) {
     text = text.replace('</body>', '<script src="./power-features.js"></script>\n</body>');
+  }
+
+  if (!text.includes('new-card-queue.js')) {
+    text = text.replace('</body>', '<script src="./new-card-queue.js"></script>\n</body>');
   }
 
   const headers = new Headers(response.headers);
