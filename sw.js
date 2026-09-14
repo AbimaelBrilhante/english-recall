@@ -1,4 +1,4 @@
-const CACHE = 'english-recall-v7-home-controls-4';
+const CACHE = 'english-recall-v8-power-features-1';
 const APP_ASSETS = [
   './',
   './index.html',
@@ -9,7 +9,8 @@ const APP_ASSETS = [
   './audio-bridge.js',
   './home-controls.js',
   './theme-hotfix.css',
-  './srs-tuning.js'
+  './srs-tuning.js',
+  './power-features.js'
 ];
 
 self.addEventListener('install', event => {
@@ -35,7 +36,6 @@ async function injectAddons(response) {
     text = text.replace('</head>', '<link rel="stylesheet" href="./theme-hotfix.css">\n</head>');
   }
 
-  // Small cleanup add-on removes obsolete browser voice test/refresh UI.
   if (!text.includes('voice-diagnostics.js')) {
     text = text.replace('</body>', '<script src="./voice-diagnostics.js"></script>\n</body>');
   }
@@ -52,6 +52,10 @@ async function injectAddons(response) {
     text = text.replace('</body>', '<script src="./srs-tuning.js"></script>\n</body>');
   }
 
+  if (!text.includes('power-features.js')) {
+    text = text.replace('</body>', '<script src="./power-features.js"></script>\n</body>');
+  }
+
   const headers = new Headers(response.headers);
   headers.delete('content-length');
   return new Response(text, {status: response.status, statusText: response.statusText, headers});
@@ -61,7 +65,6 @@ self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET') return;
   const url = new URL(event.request.url);
 
-  // Deck content is network-first so newly added phrases arrive without reinstalling the PWA.
   if (url.pathname.includes('/decks/')) {
     event.respondWith(
       fetch(event.request, {cache:'no-store'})
@@ -77,8 +80,6 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // Prerecorded audio is network-first: replacement/new CAF files are picked up immediately,
-  // while successfully played files remain available offline as a fallback.
   if (url.pathname.includes('/audio/')) {
     event.respondWith(
       fetch(event.request)
