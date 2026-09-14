@@ -77,6 +77,9 @@
     {"id":"de-070","front":"Sie wohnt in Berlin.","back":"Ela mora em Berlim.","initial_due_days":0},
     {"id":"de-071","front":"Er arbeitet in Deutschland.","back":"Ele trabalha na Alemanha.","initial_due_days":0},
     {"id":"de-072","front":"Ich analysiere Daten.","back":"Eu analiso dados.","initial_due_days":0},
-    {"id":"de-073","front":"Ich erstelle Berichte.","back":"Eu crio relatórios.","initial_due_days":0}
+    {"id":"de-073","front":"Ich erstelle Berichte.","back":"Eu crio relatórios.","initial_due_days":0},
+    {"id":"de-074","front":"Wir arbeiten mit Daten.","back":"Nós trabalhamos com dados.","initial_due_days":0},
+    {"id":"de-075","front":"Sie analysieren Daten.","back":"Eles / Elas analisam dados.","initial_due_days":0},
+    {"id":"de-076","front":"Wir erstellen Berichte.","back":"Nós criamos relatórios.","initial_due_days":0}
   ]
 }
