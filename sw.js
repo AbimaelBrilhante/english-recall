@@ -1,4 +1,4 @@
-const CACHE = 'english-recall-v7-home-controls-3';
+const CACHE = 'english-recall-v7-home-controls-4';
 const APP_ASSETS = [
   './',
   './index.html',
@@ -8,7 +8,8 @@ const APP_ASSETS = [
   './voice-diagnostics.js',
   './audio-bridge.js',
   './home-controls.js',
-  './theme-hotfix.css'
+  './theme-hotfix.css',
+  './srs-tuning.js'
 ];
 
 self.addEventListener('install', event => {
@@ -45,6 +46,10 @@ async function injectAddons(response) {
 
   if (!text.includes('home-controls.js')) {
     text = text.replace('</body>', '<script src="./home-controls.js"></script>\n</body>');
+  }
+
+  if (!text.includes('srs-tuning.js')) {
+    text = text.replace('</body>', '<script src="./srs-tuning.js"></script>\n</body>');
   }
 
   const headers = new Headers(response.headers);
