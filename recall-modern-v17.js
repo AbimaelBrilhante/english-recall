@@ -4,7 +4,7 @@
   window.__recallModernV17 = true;
 
   const CSS_ID = 'recallModernV17Css';
-  const CSS_HREF = './recall-modern-v17.css?v=17';
+  const CSS_HREF = './recall-modern-v17.css?v=171';
 
   function ensureCss(){
     if(document.getElementById(CSS_ID)) return;
@@ -16,7 +16,7 @@
   }
 
   function updateVersion(){
-    document.querySelectorAll('.rf3-version').forEach(el=>el.textContent='Recall v17.0');
+    document.querySelectorAll('.rf3-version').forEach(el=>el.textContent='Recall v17.1');
   }
 
   function updateThemeColor(){
