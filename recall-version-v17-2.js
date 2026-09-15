@@ -3,7 +3,7 @@
   if (window.__recallVersionV172) return;
   window.__recallVersionV172 = true;
 
-  const VERSION = '17.2';
+  const VERSION = '18.0';
   const core = window.recallCore;
 
   function enforceVersion() {
