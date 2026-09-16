@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#3C318C">
+<title>Recall Beta</title>
+<style>
+html,body{margin:0;min-height:100%;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif;background:#f7f7fb;color:#1d1d29}
+#betaLoading{min-height:100vh;display:grid;place-items:center;padding:24px;text-align:center}
+#betaLoading b{display:block;font-size:24px;color:#3c318c;margin-bottom:8px}
+#betaLoading span{color:#77778a;line-height:1.5}
+</style>
+</head>
+<body>
+<div id="betaLoading"><div><b>Recall Beta</b><span>Carregando ambiente isolado de teste…</span></div></div>
+<script>
+(async()=>{
+  const scripts=[
+    'voice-diagnostics.js','audio-bridge.js','home-controls.js','recall-features-v2.js','home-layout-v2.js',
+    'recall-advanced-v3.js','recall-flow-fixes-v14.js','recall-single-audio-v14-1.js','recall-auto-tags-v15.js',
+    'recall-practice-v16.js','recall-review-layout-v16-1.js','recall-modern-v17.js','recall-audio-dedupe-v17-1.js',
+    'recall-insights-v18.js','recall-cefr-v18-1.js','recall-learning-v19.js','recall-version-v18-1.js',
+    'recall-handsfree-smart-v19.js'
+  ];
+  try{
+    const r=await fetch('./index.html?beta='+Date.now(),{cache:'no-store'});
+    if(!r.ok)throw new Error('index');
+    let t=await r.text();
+
+    // Isolamento adicional do estado. A origem deste beta já é separada da produção,
+    // mas a chave também muda para impedir qualquer reutilização acidental.
+    t=t.replaceAll('englishRecallPwaV4','englishRecallPwaV4BetaSandbox');
+
+    // O beta não registra Service Worker: tudo é carregado diretamente desta branch.
+    t=t.replace("if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js').catch(()=>{});",'');
+
+    // Expõe o core da mesma forma que o Service Worker da produção, sem alterar index.html.
+    if(!t.includes('window.recallCore=')){
+      const marker='\n})();\n</script>';
+      const i=t.lastIndexOf(marker);
+      if(i<0)throw new Error('bridge');
+      const bridge=`\nwindow.recallCore={DECKS,DAY,$,getState:()=>state,save:()=>save(),clearCurrentItem:()=>{currentItem=null;},getCurrentView:()=>currentView,current,selectedDeck,selectedMode,dayKey,endOfDay,dueNow,todayStudyCount,showView,speakText,render:()=>render(),renderLibrary:()=>renderLibrary(),syncAll:(...a)=>syncAll(...a),startSession:(deckId)=>{state.settings.selectedDeck=deckId;currentItem=null;flipped=false;sessionInitial=dueNow(deckId).length;sessionDone=0;if($('libraryDeck'))$('libraryDeck').value=deckId;if($('addDeck'))$('addDeck').value=deckId;if($('settingsDeck'))$('settingsDeck').value=deckId;if($('speed'))$('speed').value=String(state.settings.speedByDeck[deckId]||1);save();showView('review');render();maybeAutoPlayCurrent();},getCandidateItems:()=>candidateItems,setCandidateItems:f=>{candidateItems=f;},getRenderLibrary:()=>renderLibrary,setRenderLibrary:f=>{renderLibrary=f;},getRenderReview:()=>renderReview,setRenderReview:f=>{renderReview=f;},getRender:()=>render,setRender:f=>{render=f;},getSyncAll:()=>syncAll,setSyncAll:f=>{syncAll=f;},getRateCard:()=>rateCard,setRateCard:f=>{rateCard=f;},getRateSchedule:()=>rateSchedule,setRateSchedule:f=>{rateSchedule=f;}};\n`;
+      t=t.slice(0,i)+bridge+t.slice(i);
+    }
+
+    if(!t.includes('theme-hotfix.css'))t=t.replace('</head>','<link rel="stylesheet" href="./theme-hotfix.css?beta=1">\n</head>');
+
+    const tags=scripts.map(s=>`<script src="./${s}?beta=20260916"></`+'script>').join('\n');
+    const betaMark=`<script>\n(()=>{\n const mark=()=>{\n   document.documentElement.dataset.recallBeta='handsfree';\n   document.querySelectorAll('.rf3-version').forEach(el=>el.textContent='Recall Beta · Hands-free');\n   if(!document.getElementById('recallBetaBadge')){\n     const h=document.querySelector('.topbar');\n     if(h){const b=document.createElement('div');b.id='recallBetaBadge';b.textContent='BETA';b.style.cssText='position:absolute;left:50%;transform:translateX(-50%);top:8px;font-size:9px;font-weight:900;letter-spacing:.12em;color:#f43f8b;background:#fff0f6;border:1px solid #ffd1e3;border-radius:999px;padding:4px 7px;z-index:20';h.style.position='relative';h.appendChild(b);}\n   }\n };\n setTimeout(mark,50);setTimeout(mark,600);setTimeout(mark,1500);\n})();\n</`+'script>';
+    t=t.replace('</body>',tags+'\n'+betaMark+'\n</body>');
+
+    document.open();
+    document.write(t);
+    document.close();
+  }catch(e){
+    document.getElementById('betaLoading').innerHTML='<div><b>Não consegui abrir o Beta</b><span>Atualize esta página e tente novamente.</span></div>';
+  }
+})();
+</script>
+</body>
+</html>
