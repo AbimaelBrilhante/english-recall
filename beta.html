@@ -37,16 +37,16 @@ html,body{margin:0;min-height:100%;font-family:-apple-system,BlinkMacSystemFont,
 
     // Expõe o core da mesma forma que o Service Worker da produção, sem alterar index.html.
     if(!t.includes('window.recallCore=')){
-      const marker='\n})();\n</script>';
+      const marker='\n})();\n</'+'script>';
       const i=t.lastIndexOf(marker);
       if(i<0)throw new Error('bridge');
       const bridge=`\nwindow.recallCore={DECKS,DAY,$,getState:()=>state,save:()=>save(),clearCurrentItem:()=>{currentItem=null;},getCurrentView:()=>currentView,current,selectedDeck,selectedMode,dayKey,endOfDay,dueNow,todayStudyCount,showView,speakText,render:()=>render(),renderLibrary:()=>renderLibrary(),syncAll:(...a)=>syncAll(...a),startSession:(deckId)=>{state.settings.selectedDeck=deckId;currentItem=null;flipped=false;sessionInitial=dueNow(deckId).length;sessionDone=0;if($('libraryDeck'))$('libraryDeck').value=deckId;if($('addDeck'))$('addDeck').value=deckId;if($('settingsDeck'))$('settingsDeck').value=deckId;if($('speed'))$('speed').value=String(state.settings.speedByDeck[deckId]||1);save();showView('review');render();maybeAutoPlayCurrent();},getCandidateItems:()=>candidateItems,setCandidateItems:f=>{candidateItems=f;},getRenderLibrary:()=>renderLibrary,setRenderLibrary:f=>{renderLibrary=f;},getRenderReview:()=>renderReview,setRenderReview:f=>{renderReview=f;},getRender:()=>render,setRender:f=>{render=f;},getSyncAll:()=>syncAll,setSyncAll:f=>{syncAll=f;},getRateCard:()=>rateCard,setRateCard:f=>{rateCard=f;},getRateSchedule:()=>rateSchedule,setRateSchedule:f=>{rateSchedule=f;}};\n`;
       t=t.slice(0,i)+bridge+t.slice(i);
     }
 
-    if(!t.includes('theme-hotfix.css'))t=t.replace('</head>','<link rel="stylesheet" href="./theme-hotfix.css?beta=1">\n</head>');
+    if(!t.includes('theme-hotfix.css'))t=t.replace('</head>','<link rel="stylesheet" href="./theme-hotfix.css?beta=2">\n</head>');
 
-    const tags=scripts.map(s=>`<script src="./${s}?beta=20260916"></`+'script>').join('\n');
+    const tags=scripts.map(s=>`<script src="./${s}?beta=20260916b"></`+'script>').join('\n');
     const betaMark=`<script>\n(()=>{\n const mark=()=>{\n   document.documentElement.dataset.recallBeta='handsfree';\n   document.querySelectorAll('.rf3-version').forEach(el=>el.textContent='Recall Beta · Hands-free');\n   if(!document.getElementById('recallBetaBadge')){\n     const h=document.querySelector('.topbar');\n     if(h){const b=document.createElement('div');b.id='recallBetaBadge';b.textContent='BETA';b.style.cssText='position:absolute;left:50%;transform:translateX(-50%);top:8px;font-size:9px;font-weight:900;letter-spacing:.12em;color:#f43f8b;background:#fff0f6;border:1px solid #ffd1e3;border-radius:999px;padding:4px 7px;z-index:20';h.style.position='relative';h.appendChild(b);}\n   }\n };\n setTimeout(mark,50);setTimeout(mark,600);setTimeout(mark,1500);\n})();\n</`+'script>';
     t=t.replace('</body>',tags+'\n'+betaMark+'\n</body>');
 
