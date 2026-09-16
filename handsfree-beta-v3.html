@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#f7f7fb">
+<title>Recall · Hands-free Beta v3</title>
+<style>
+:root{--bg:#f7f7fb;--surface:#fff;--surface2:#f0eff7;--ink:#1d1d29;--muted:#77778a;--line:#dedde9;--primary:#40349b;--accent:#f43f8b;--good:#147a55;--danger:#b63849}
+*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif}body{padding:calc(env(safe-area-inset-top) + 12px) 16px calc(env(safe-area-inset-bottom) + 30px)}button,select,input{font:inherit}.app{max-width:720px;margin:auto}.top{display:flex;justify-content:space-between;gap:12px;margin:8px 0 16px}.eyebrow{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:850}.top h1{margin:5px 0 0;font-size:27px;color:var(--primary)}.beta{height:max-content;font-size:10px;font-weight:900;letter-spacing:.1em;color:#b22563;background:#fff0f6;border:1px solid #ffd2e3;padding:6px 9px;border-radius:999px}.card{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:16px;margin-bottom:12px}.card h2{font-size:16px;margin:0 0 4px}.muted{font-size:12px;line-height:1.4;color:var(--muted)}.status{padding:10px 12px;border-radius:13px;background:var(--surface2);font-size:12px;line-height:1.45;margin-top:10px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.grid label{font-size:11px;color:var(--muted);font-weight:800}.grid select,.grid input[type=text]{width:100%;margin-top:5px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:13px;padding:12px;font-size:15px}.toggle{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px;border:1px solid var(--line);border-radius:13px;margin-top:10px}.toggle span{font-size:12px;font-weight:750}.toggle input{width:22px;height:22px}.now{background:var(--surface2);border-radius:18px;padding:18px;text-align:center;margin-top:14px;min-height:220px;display:flex;flex-direction:column;justify-content:center}.now small{color:var(--muted);font-weight:750}.phrase{font-size:24px;line-height:1.25;font-weight:850;color:var(--accent);margin:12px 0 7px}.translation{font-size:16px;line-height:1.35;font-weight:700;color:var(--ink);margin:0 0 12px;min-height:22px}.translation.hidden{visibility:hidden}.hint{font-size:12px;color:var(--muted);line-height:1.4}.actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}.actions button,.filebtn{min-height:48px;border:0;border-radius:14px;font-weight:850}.primary{background:var(--primary);color:#fff}.secondary{background:var(--surface2);color:var(--ink)}.filebtn{display:flex;align-items:center;justify-content:center;background:var(--primary);color:#fff;cursor:pointer;padding:0 14px}.filebtn input{display:none}.small-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:9px}.small-actions button{border:1px solid var(--line);background:var(--surface);border-radius:11px;padding:9px 11px;font-weight:800;color:var(--ink)}.count{font-size:11px;color:var(--muted);margin-top:9px}.good{color:var(--good)}.danger{color:var(--danger)}
+@media(max-width:520px){.grid{grid-template-columns:1fr}.phrase{font-size:22px}.translation{font-size:15px}}
+</style>
+</head>
+<body>
+<main class="app">
+<header class="top"><div><div class="eyebrow">Active Recall</div><h1>🎧 Hands-free</h1></div><div class="beta">BETA v3</div></header>
+<section class="card">
+<h2>Histórico para teste</h2>
+<div class="muted">Beta isolado. Para Weak Spots reais, importe o backup da v19.0. Nada aqui altera o app principal.</div>
+<div class="small-actions"><label class="filebtn">Importar backup<input id="backupFile" type="file" accept="application/json"></label><button id="clearBackup" type="button">Limpar histórico</button></div>
+<div id="backupStatus" class="status">Carregando decks…</div>
+</section>
+<section class="card">
+<h2>Configurar sessão</h2>
+<div class="grid">
+<label>Deck<select id="deck"><option value="en">🇺🇸 English</option><option value="de">🇩🇪 Deutsch</option></select></label>
+<label>Frases<select id="source"><option value="due">Revisões de hoje</option><option value="weak" selected>Mais difíceis / Weak Spots</option><option value="recent">Difícil / Não lembrei recentes</option><option value="favorites">Favoritas</option><option value="tag">Tag / tema</option><option value="all">Todas as frases</option></select></label>
+<label id="tagWrap">Tag<input id="tag" type="text" placeholder="Interview"></label>
+<label>Quantidade<select id="size"><option value="5">5 frases</option><option value="10" selected>10 frases</option><option value="20">20 frases</option><option value="0">Todas</option></select></label>
+<label>Ordem<select id="order"><option value="random" selected>🔀 Aleatória</option><option value="hard">⚠️ Mais difíceis primeiro</option><option value="continue">▶ Continuar de onde parei</option></select></label>
+<label>Loop<select id="loop"><option value="1">1 volta</option><option value="2">2 voltas</option><option value="3">3 voltas</option><option value="infinite" selected>♾ Contínuo</option></select></label>
+<label>Modo<select id="mode"><option value="recognition" selected>👁 Compreensão</option><option value="production">🗣 Produção</option></select></label>
+<label>Pausa<select id="pause"><option value="3">3 s</option><option value="5" selected>5 s</option><option value="7">7 s</option><option value="10">10 s</option></select></label>
+<label>Repetir áudio<select id="repeats"><option value="1">1x</option><option value="2" selected>2x</option><option value="3">3x</option></select></label>
+</div>
+<label id="ptWrap" class="toggle"><span>Falar tradução em português</span><input id="speakPt" type="checkbox"></label>
+<div id="available" class="count"></div>
+<div class="now"><small id="meta">Pronto</small><div id="phrase" class="phrase">Escolha as opções e toque em iniciar</div><div id="translation" class="translation"></div><div id="hint" class="hint">Compreensão mostra frase + tradução. Produção mostra português primeiro e revela a resposta depois da pausa.</div></div>
+<div class="actions"><button id="start" class="primary" type="button">▶ Iniciar</button><button id="stop" class="secondary" type="button">■ Parar</button></div>
+<div id="audioStatus" class="status">Áudio ainda não iniciado.</div>
+</section>
+</main>
+<audio id="player" preload="auto" playsinline style="display:none"></audio>
+<script>
+(()=>{
+'use strict';
+const STATE_KEY='recallHandsfreeBetaV3State';
+const PREF_KEY='recallHandsfreeBetaV3Prefs';
+const $=id=>document.getElementById(id);
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+let betaState=null,remote={en:[],de:[]},running=false,token=0,wake=null;
+function load(k,f){try{return JSON.parse(localStorage.getItem(k)||'null')||f}catch{return f}}
+function store(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}
+function prefs(){return load(PREF_KEY,{})}
+function savePrefs(){const old=prefs(),p={cursors:old.cursors||{}};for(const id of ['deck','source','tag','size','order','loop','mode','pause','repeats'])p[id]=$(id).value;p.speakPt=$('speakPt').checked;store(PREF_KEY,p)}
+function restorePrefs(){const p=prefs();for(const id of ['deck','source','tag','size','order','loop','mode','pause','repeats'])if(p[id]!=null)$(id).value=p[id];if(typeof p.speakPt==='boolean')$('speakPt').checked=p.speakPt}
+function norm(c,id){return {...c,id:c.id||c.remoteId||`${id}-${Math.random()}`,remoteId:c.remoteId||c.id||null,front:String(c.front||''),back:String(c.back||''),created:Number(c.created||0),schedules:c.schedules||{},tags:Array.isArray(c.tags)?c.tags:[],favorite:Boolean(c.favorite),suspended:Boolean(c.suspended)}}
+async function fetchDeck(id,file){const r=await fetch(`./decks/${file}?v=${Date.now()}`,{cache:'no-store'});if(!r.ok)throw new Error('deck');const j=await r.json();remote[id]=(j.cards||[]).map(c=>norm(c,id)).filter(c=>c.front&&c.back)}
+async function boot(){betaState=load(STATE_KEY,null);try{await Promise.all([fetchDeck('en','english.json'),fetchDeck('de','german.json')])}catch(e){$('backupStatus').innerHTML='<span class="danger">Falha ao carregar os decks desta branch.</span>'}renderBackup();updateUi()}
+function cards(id){return betaState?.cards?.[id]?.map(c=>norm(c,id))||remote[id]}
+function logs(){return Array.isArray(betaState?.reviewLog)?betaState.reviewLog:[]}
+function cardLogs(c,id){return logs().filter(r=>r.id===c.id&&(r.deckId==null||r.deckId===id))}
+function reps(c){return Number(c.schedules?.recognition?.reps||0)+Number(c.schedules?.production?.reps||0)}
+function lapses(c){return Number(c.schedules?.recognition?.lapses||0)+Number(c.schedules?.production?.lapses||0)}
+function difficulty(c,id){const h=cardLogs(c,id);if(!h.length&&!reps(c))return -Infinity;let s=lapses(c)*4;for(const r of h.slice(-12)){if(r.rating==='again')s+=5;else if(r.rating==='hard')s+=2;if(r.direction==='production'&&(r.rating==='again'||r.rating==='hard'))s+=1}const last=h[h.length-1];if(last?.rating==='again')s+=3;else if(last?.rating==='hard')s+=1;return s}
+function isDue(c){const now=Date.now(),a=Number(c.schedules?.recognition?.due??Infinity),b=Number(c.schedules?.production?.due??Infinity);return Math.min(a,b)<=now}
+function sourceCards(){const id=$('deck').value,src=$('source').value,all=cards(id).filter(c=>!c.suspended);if(src==='all')return all;if(src==='favorites')return all.filter(c=>c.favorite);if(src==='due')return betaState?all.filter(isDue):[];if(src==='weak')return betaState?all.filter(c=>difficulty(c,id)>0):[];if(src==='recent'){if(!betaState)return[];const cutoff=Date.now()-30*86400000,ids=new Set(logs().filter(r=>(r.deckId==null||r.deckId===id)&&Number(r.ts||0)>=cutoff&&(r.rating==='again'||r.rating==='hard')).map(r=>r.id));return all.filter(c=>ids.has(c.id))}if(src==='tag'){const q=$('tag').value.trim().toLowerCase();return q?all.filter(c=>(c.tags||[]).some(t=>String(t).toLowerCase()===q)):[]}return all}
+function shuffle(a){const x=[...a];for(let i=x.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[x[i],x[j]]=[x[j],x[i]]}return x}
+function cursorKey(){return $('deck').value+'|'+$('source').value}
+function buildQueue(){const id=$('deck').value,order=$('order').value;let a=sourceCards();if(order==='random')a=shuffle(a);else if(order==='hard')a=[...a].sort((x,y)=>difficulty(y,id)-difficulty(x,id));else{a=[...a].sort((x,y)=>x.created-y.created);const p=prefs(),n=Number(p.cursors?.[cursorKey()]||0);if(a.length){const k=((n%a.length)+a.length)%a.length;a=a.slice(k).concat(a.slice(0,k))}}const n=Number($('size').value||0);return n>0?a.slice(0,n):a}
+function advance(){if($('order').value!=='continue')return;const p=prefs();p.cursors||={};p.cursors[cursorKey()]=Number(p.cursors[cursorKey()]||0)+1;store(PREF_KEY,p)}
+function renderBackup(){if(betaState?.cards)$('backupStatus').innerHTML=`<span class="good">✓ Backup carregado</span> · ${cards('en').length} English · ${cards('de').length} Deutsch · ${logs().length} avaliações.`;else $('backupStatus').innerHTML=`Decks: ${remote.en.length} English · ${remote.de.length} Deutsch. Importe backup para Weak Spots.`}
+function updateUi(){const src=$('source').value;$('tagWrap').style.display=src==='tag'?'':'none';$('ptWrap').style.display=$('mode').value==='production'?'none':'';$('available').textContent=`${sourceCards().length} frase(s) disponíveis.`;savePrefs()}
+function audioId(c,id){const x=String(c.remoteId||'');return new RegExp('^'+id+'-\\d+$').test(x)?x:null}
+function audioUrl(c,id){const rid=audioId(c,id);return rid?`./audio/${id}/${encodeURIComponent(rid)}.caf`:null}
+async function primeAudio(c,id){const src=audioUrl(c,id);if(!src)return false;const el=$('player');try{el.pause();el.src=src;el.currentTime=0;el.muted=true;const p=el.play();if(p)await p;el.pause();el.currentTime=0;el.muted=false;$('audioStatus').innerHTML='<span class="good">✓ Player liberado pelo toque.</span>';return true}catch(e){el.muted=false;$('audioStatus').innerHTML='<span class="danger">Não consegui liberar o player; usando fallback.</span>';return false}}
+async function playRecorded(c,id){const src=audioUrl(c,id);if(!src)throw new Error('sem audio');const el=$('player');el.pause();el.muted=false;el.src=src;el.currentTime=0;await new Promise(async(resolve,reject)=>{let done=false;const finish=ok=>{if(done)return;done=true;clearTimeout(tm);el.onended=el.onerror=el.onabort=null;ok?resolve():reject(new Error('audio'))};el.onended=()=>finish(true);el.onerror=()=>finish(false);el.onabort=()=>finish(false);const tm=setTimeout(()=>finish(true),15000);try{await el.play()}catch(e){finish(false)}})}
+async function speak(text,lang){if(!('speechSynthesis'in window)){await sleep(1800);return}await new Promise(resolve=>{try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang=lang;u.rate=1;let done=false;const f=()=>{if(done)return;done=true;resolve()};u.onend=f;u.onerror=f;speechSynthesis.speak(u);setTimeout(f,Math.max(2500,Math.min(9000,String(text).length*85)))}catch{resolve()}})}
+async function target(c,id){try{await playRecorded(c,id);$('audioStatus').innerHTML='<span class="good">✓ Áudio gravado reproduzido.</span>'}catch(e){$('audioStatus').textContent='Áudio gravado indisponível; usando voz do sistema.';await speak(c.front,id==='de'?'de-DE':'en-US')}}
+function stop(){running=false;token++;try{$('player').pause()}catch{}try{speechSynthesis.cancel()}catch{}try{wake?.release()}catch{}wake=null;$('hint').textContent='Parado.'}
+function showRecognition(c,id,pos,total,round,max){$('meta').textContent=`${id==='de'?'🇩🇪 Deutsch':'🇺🇸 English'} · ${pos+1}/${total} · volta ${round}/${max===Infinity?'∞':max}`;$('phrase').textContent=c.front;$('translation').textContent=c.back;$('translation').classList.remove('hidden');$('hint').textContent='Ouça a frase, confira a tradução e repita em voz alta durante a pausa.'}
+function showProductionPrompt(c,id,pos,total,round,max){$('meta').textContent=`${id==='de'?'🇩🇪 Deutsch':'🇺🇸 English'} · ${pos+1}/${total} · volta ${round}/${max===Infinity?'∞':max}`;$('phrase').textContent=c.back;$('translation').textContent='';$('translation').classList.add('hidden');$('hint').textContent='Produza a frase no idioma-alvo antes da resposta.'}
+function revealProduction(c){$('phrase').textContent=c.front;$('translation').textContent=c.back;$('translation').classList.remove('hidden');$('hint').textContent='Resposta correta. Ouça e compare com o que você falou.'}
+async function start(){stop();savePrefs();let queue=buildQueue();if(!queue.length){$('phrase').textContent=betaState?'Nenhuma frase nesta seleção.':'Importe seu backup para usar este filtro.';$('translation').textContent='';$('hint').textContent=$('source').value==='weak'?'Weak Spots precisa do seu histórico.':'Escolha Todas as frases para testar sem backup.';return}const id=$('deck').value,mode=$('mode').value,pause=Number($('pause').value)*1000,repeats=Number($('repeats').value),loop=$('loop').value,max=loop==='infinite'?Infinity:Number(loop),pt=$('speakPt').checked;await primeAudio(queue[0],id);running=true;const mine=++token;try{wake=await navigator.wakeLock?.request('screen')}catch{}let round=1;while(running&&mine===token&&round<=max){if(round>1&&$('order').value==='random')queue=shuffle(queue);for(let i=0;i<queue.length&&running&&mine===token;i++){const c=queue[i];if(mode==='production'){showProductionPrompt(c,id,i,queue.length,round,max);await sleep(pause);if(!running||mine!==token)break;revealProduction(c);for(let n=0;n<repeats&&running&&mine===token;n++){await target(c,id);if(n<repeats-1)await sleep(450)}}else{showRecognition(c,id,i,queue.length,round,max);for(let n=0;n<repeats&&running&&mine===token;n++){await target(c,id);if(n<repeats-1)await sleep(450)}if(pt&&running&&mine===token){await speak(c.back,'pt-BR');await sleep(250)}if(running&&mine===token)await sleep(pause)}advance()}round++}if(running&&mine===token){running=false;$('hint').textContent='Sessão concluída.';try{wake?.release()}catch{}wake=null}}
+$('backupFile').onchange=e=>{const f=e.target.files?.[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const x=JSON.parse(String(r.result));if(!x?.cards||!Array.isArray(x.cards.en)||!Array.isArray(x.cards.de))throw new Error();betaState=x;store(STATE_KEY,x);renderBackup();updateUi();$('phrase').textContent='Backup carregado.';$('translation').textContent='';$('hint').textContent='Agora Weak Spots usa seu histórico real.'}catch{$('backupStatus').innerHTML='<span class="danger">Backup inválido ou incompatível.</span>'}};r.readAsText(f);e.target.value=''};
+$('clearBackup').onclick=()=>{stop();betaState=null;localStorage.removeItem(STATE_KEY);renderBackup();updateUi()};
+for(const id of ['deck','source','tag','size','order','loop','mode','pause','repeats','speakPt'])$(id).addEventListener(id==='tag'?'input':'change',updateUi);
+$('start').onclick=start;$('stop').onclick=stop;restorePrefs();boot();
+})();
+</script>
+</body>
+</html>
