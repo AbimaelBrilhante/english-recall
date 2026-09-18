@@ -160,7 +160,6 @@
     ensureBrand();
     const root=ensureRoot();
     if(!root)return;
-    const selected=state().settings?.selectedDeck||'en';
     const qEn=queue('en'),qDe=queue('de'),fEn=forecastFor('en'),fDe=forecastFor('de');
     const errors=lastErrors();
     root.innerHTML=
@@ -189,7 +188,7 @@
       '</section>'+
       '<div class="rv20-section-title"><b>⚡ Ações rápidas</b><span>ferramentas atuais</span></div>'+
       '<section class="rv20-panel"><div class="rv20-quick">'+
-        '<button id="rv20Zero"><span>⚡</span>Zerar '+esc(DECKS[selected]?.name||'dia')+'</button>'+
+        '<button id="rv20Zero"><span>⚡</span>Zerar decks</button>'+
         '<button id="rv20Hands"><span>🎧</span>Hands-free</button>'+
         '<button id="rv20Session"><span>▣</span>Sessão</button>'+
         '<button id="rv20Progress"><span>📈</span>Progresso</button>'+
@@ -225,8 +224,23 @@
     document.querySelectorAll('[data-rv20-continue]').forEach(b=>b.onclick=()=>continueDeck(b.dataset.rv20Continue));
     document.getElementById('rv20Errors').onclick=()=>{ if(!clickOriginal('rf199RecentErrors')) core.showView('rf199-errors'); };
     document.getElementById('rv20Zero').onclick=()=>{
-      const id=state().settings?.selectedDeck||'en';
-      if(!clickOriginal(id==='de'?'rf199ZeroDe':'rf199ZeroEn')) message('Abra novamente a Home e tente de novo.');
+      const en=pendingToday('en'),de=pendingToday('de');
+      const box=document.getElementById('rv20Msg');
+      if(!box)return;
+      if(!en&&!de){
+        box.textContent='Nenhum card previsto até 21h para zerar.';
+        return;
+      }
+      box.innerHTML='<div class="rv20-zero-chooser"><span>Qual deck você quer zerar?</span><div>'+
+        '<button data-rv20-zero="en" '+(!en?'disabled':'')+'>🇺🇸 English · '+en+'</button>'+
+        '<button data-rv20-zero="de" '+(!de?'disabled':'')+'>🇩🇪 Deutsch · '+de+'</button>'+
+        '</div><small>Inclui os cards previstos até 21h.</small></div>';
+      box.querySelectorAll('[data-rv20-zero]').forEach(btn=>btn.onclick=()=>{
+        const id=btn.dataset.rv20Zero;
+        state().settings.selectedDeck=id;
+        core.save();
+        if(!clickOriginal(id==='de'?'rf199ZeroDe':'rf199ZeroEn')) message('Abra novamente a Home e tente de novo.');
+      });
     };
     document.getElementById('rv20Hands').onclick=()=>{
       core.showView('rf3-session');
