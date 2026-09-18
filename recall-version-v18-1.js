@@ -2,7 +2,7 @@
   'use strict';
   if (window.__recallVersionV181) return;
   window.__recallVersionV181 = true;
-  const VERSION='19.6';
+  const VERSION='19.7';
   function enforce(){
     document.documentElement.dataset.recallAppVersion=VERSION;
     document.querySelectorAll('.rf3-version').forEach(el=>{
