@@ -1,0 +1,107 @@
+/* Recall v20 — Home / Decks redesign only */
+:root{
+  --rv20-cyan:#22b8cf;
+  --rv20-mint:#18b98a;
+  --rv20-warn:#f0a44a;
+  --rv20-home-shadow:0 10px 30px rgba(35,60,110,.08);
+}
+html[data-recall-theme="dark"]{
+  --rv20-cyan:#2bc6df;
+  --rv20-mint:#35d7a8;
+  --rv20-warn:#ffb65d;
+  --rv20-home-shadow:0 12px 34px rgba(0,0,0,.24);
+}
+
+body.rv20-home-active .summary{display:none!important}
+body.rv20-home-active #view-decks>*:not(#rv20Home){display:none!important}
+body.rv20-home-active #view-decks{display:block}
+
+.rv20-brand-ready .brand{display:flex;align-items:center;gap:10px}
+.rv20-brand-ready .brand>small{display:none!important}
+.rv20-brand-ready .brand h1{margin:0!important;font-size:21px!important;line-height:1!important;color:var(--ink)!important}
+.rv20-brandmark{width:36px;height:36px;border-radius:11px;background:linear-gradient(145deg,#5b8cff,#284ef6);display:grid;place-items:center;color:white;font-size:21px;box-shadow:0 8px 18px rgba(49,92,255,.24);flex:0 0 36px}
+.rv20-brandcopy span{display:block;color:var(--muted);font-size:10px;margin-top:3px;font-weight:600}
+.rv20-brand-ready .topbar{margin:5px 0 13px!important}
+.rv20-brand-ready .topstats{gap:8px}
+.rv20-brand-ready .topstats .pill{min-width:auto;border-radius:15px;padding:8px 11px;display:flex;align-items:center;gap:4px}
+.rv20-brand-ready .topstats .pill b{font-size:13px}
+.rv20-brand-ready .topstats .pill span{font-size:10px}
+.rv20-brand-ready .topstats .rv20-due-pill{display:none!important}
+.rv20-brand-ready .theme-toggle{width:40px;height:40px;flex-basis:40px;border-radius:15px;font-size:17px}
+
+.rv20-brand-ready .nav{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;background:transparent;border:0;padding:0;margin:0 0 15px}
+.rv20-brand-ready .nav button{height:43px;border:1px solid var(--line);background:var(--surface);border-radius:13px;color:var(--muted);font-size:11px;font-weight:800;box-shadow:0 3px 12px rgba(30,60,100,.035)}
+.rv20-brand-ready .nav button.active{background:color-mix(in srgb,var(--primary) 11%,var(--surface));color:var(--primary);border-color:color-mix(in srgb,var(--primary) 24%,var(--line));box-shadow:none}
+
+#rv20Home{margin:0}
+.rv20-section-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:16px 2px 9px}
+.rv20-section-title b{font-size:14px;letter-spacing:-.01em}
+.rv20-section-title span{font-size:10px;color:var(--muted)}
+.rv20-deck-grid{display:grid;gap:11px}
+.rv20-deck{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:13px;box-shadow:var(--rv20-home-shadow)}
+.rv20-deck-head{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center}
+.rv20-flag{width:44px;height:44px;border-radius:13px;background:var(--surface2);display:grid;place-items:center;font-size:27px}
+.rv20-deck-name{min-width:0}
+.rv20-deck-name b{font-size:18px;letter-spacing:-.025em}
+.rv20-mode{display:inline-flex;margin-left:6px;padding:3px 7px;border-radius:999px;background:color-mix(in srgb,var(--primary) 11%,var(--surface));color:var(--primary);font-size:9px;font-weight:900;vertical-align:2px}
+.rv20-deck-name p{margin:3px 0 0;color:var(--muted);font-size:10.5px;line-height:1.3}
+.rv20-ring{--p:0;position:relative;width:51px;height:51px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--rv20-mint) calc(var(--p)*1%),var(--surface2) 0)}
+.rv20-ring:after{content:"";position:absolute;inset:5px;border-radius:50%;background:var(--surface)}
+.rv20-ring b{position:relative;z-index:1;font-family:ui-rounded,"SF Pro Rounded",-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;font-size:11px;font-weight:800}
+.rv20-ring-label{text-align:center}.rv20-ring-label small{display:block;font-size:8px;color:var(--muted);margin-top:2px}
+
+.rv20-deck-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin:12px 0 10px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.rv20-ds{padding:11px 6px}
+.rv20-ds+.rv20-ds{border-left:1px solid var(--line)}
+.rv20-ds b{display:block;font-family:ui-rounded,"SF Pro Rounded",-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;font-size:20px;line-height:1;font-weight:800;letter-spacing:-.025em;font-variant-numeric:tabular-nums}
+.rv20-ds.today b{color:var(--rv20-mint)}
+.rv20-ds.cards b{color:var(--primary)}
+.rv20-ds span{display:block;margin-top:5px;font-size:10px;line-height:1.15;font-weight:650;color:var(--muted)}
+
+.rv20-actions{display:grid;grid-template-columns:1fr 1fr auto;gap:7px}
+.rv20-actions button{min-height:40px;border:1px solid var(--line);border-radius:12px;background:var(--surface2);color:var(--ink);font-size:10px;font-weight:800;padding:0 10px}
+.rv20-actions button.active{background:color-mix(in srgb,var(--primary) 11%,var(--surface));color:var(--primary);border-color:color-mix(in srgb,var(--primary) 26%,var(--line))}
+.rv20-actions button.continue{width:42px;padding:0;background:var(--primary);color:#fff;border-color:var(--primary);font-size:15px}
+.rv20-progress-mini{margin-top:10px}
+.rv20-progress-label{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-bottom:6px}
+.rv20-progress-label b{font-family:ui-rounded,"SF Pro Rounded",-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;font-size:11px;font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums}
+.rv20-track{height:6px;background:var(--surface2);border-radius:999px;overflow:hidden}
+.rv20-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--rv20-cyan),var(--primary))}
+
+.rv20-grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.rv20-panel{background:var(--surface);border:1px solid var(--line);border-radius:17px;padding:12px;box-shadow:var(--rv20-home-shadow)}
+.rv20-panel h3{font-size:12px;margin:0 0 9px}
+.rv20-goal-row{margin:9px 0}
+.rv20-goal-head{display:flex;justify-content:space-between;font-size:10px;margin-bottom:5px}
+.rv20-goal-head b{font-size:10px}.rv20-goal-head span{color:var(--muted)}
+.rv20-goal-row.en .rv20-fill{background:linear-gradient(90deg,#2bb8e8,#315cff)}
+.rv20-goal-row.de .rv20-fill{background:linear-gradient(90deg,#22cfa0,#16a889)}
+.rv20-queue{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.rv20-qbox{background:var(--surface2);border-radius:11px;padding:9px}
+.rv20-qbox b{display:block;font-family:ui-rounded,"SF Pro Rounded",-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;font-size:16px;font-weight:800}
+.rv20-qbox span{font-size:9px;color:var(--muted)}
+.rv20-forecast{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.rv20-fc{text-align:center;background:var(--surface2);border-radius:11px;padding:9px 5px}
+.rv20-fc b{display:block;color:var(--rv20-cyan);font-family:ui-rounded,"SF Pro Rounded",-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;font-size:17px;font-weight:800}
+.rv20-fc span{font-size:8.5px;color:var(--muted)}
+.rv20-errors{display:grid;gap:6px}
+.rv20-error{display:grid;grid-template-columns:auto 1fr auto;gap:7px;align-items:center;font-size:9.5px}
+.rv20-error i{font-style:normal;color:var(--danger)}
+.rv20-error span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rv20-error small{color:var(--muted)}
+.rv20-errors-btn{width:100%;margin-top:8px;border:0;background:transparent;color:var(--primary);font-size:9.5px;font-weight:800;text-align:left;padding:0}
+.rv20-quick{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.rv20-quick button{min-height:51px;border:1px solid var(--line);background:var(--surface2);color:var(--ink);border-radius:12px;font-size:9px;font-weight:800;padding:6px}
+.rv20-quick button span{display:block;font-size:16px;margin-bottom:3px}
+.rv20-note{min-height:15px;margin:7px 2px 0;color:var(--muted);font-size:9px}
+
+@media(max-width:480px){
+  .rv20-grid2{grid-template-columns:1fr 1fr}
+  .rv20-quick{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:370px){
+  .rv20-deck-name p{display:none}
+  .rv20-grid2{grid-template-columns:1fr}
+  .rv20-quick{grid-template-columns:1fr 1fr}
+  .rv20-actions{grid-template-columns:1fr 1fr auto}
+}
