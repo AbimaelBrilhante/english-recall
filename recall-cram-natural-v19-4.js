@@ -10,6 +10,7 @@
   const sleep = ms => new Promise(r => setTimeout(r, ms));
   let shared = null;
   let fallbackToken = 0;
+  let suppressCardClickUntil = 0;
 
   function ensureAudio() {
     if (shared) return shared;
@@ -125,27 +126,89 @@
 
   function makeCardClickable() {
     const card = document.getElementById('rf3CramCard');
-    if (!card || card.dataset.rf194Clickable === '1') return;
+    if (!card || card.dataset.rf196Gestures === '1') return;
+    card.dataset.rf196Gestures = '1';
     card.dataset.rf194Clickable = '1';
     card.setAttribute('role', 'button');
     card.setAttribute('tabindex', '0');
-    card.setAttribute('aria-label', 'Virar card');
+    card.setAttribute('aria-label', 'Toque para virar. Deslize para a esquerda para avançar e para a direita para voltar.');
     card.style.cursor = 'pointer';
+    card.style.touchAction = 'pan-y';
+
+    let touchX = 0;
+    let touchY = 0;
+    let touching = false;
 
     const flip = () => {
       const btn = document.getElementById('rf3CramFlip');
       if (btn) btn.click();
     };
+    const navigate = direction => {
+      const btn = document.getElementById(direction === 'next' ? 'rf3CramNext' : 'rf3CramPrev');
+      if (!btn) return;
+      try {
+        card.animate(
+          direction === 'next'
+            ? [{transform:'translateX(0)',opacity:1},{transform:'translateX(-28px)',opacity:.72},{transform:'translateX(0)',opacity:1}]
+            : [{transform:'translateX(0)',opacity:1},{transform:'translateX(28px)',opacity:.72},{transform:'translateX(0)',opacity:1}],
+          {duration:180,easing:'ease-out'}
+        );
+      } catch {}
+      btn.click();
+    };
+
+    card.addEventListener('touchstart', e => {
+      if (e.touches?.length !== 1) { touching = false; return; }
+      const t = e.touches[0];
+      touchX = t.clientX;
+      touchY = t.clientY;
+      touching = true;
+    }, {passive:true});
+
+    card.addEventListener('touchend', e => {
+      if (!touching) return;
+      touching = false;
+      const t = e.changedTouches?.[0];
+      if (!t) return;
+      const dx = t.clientX - touchX;
+      const dy = t.clientY - touchY;
+      const horizontal = Math.abs(dx) >= 55 && Math.abs(dx) > Math.abs(dy) * 1.2;
+      if (!horizontal) return;
+
+      suppressCardClickUntil = Date.now() + 550;
+      if (e.cancelable) e.preventDefault();
+      navigate(dx < 0 ? 'next' : 'prev');
+    }, {passive:false});
+
+    card.addEventListener('touchcancel', () => { touching = false; }, {passive:true});
+
     card.addEventListener('click', e => {
+      if (Date.now() < suppressCardClickUntil) {
+        e.preventDefault();
+        e.stopPropagation();
+        return;
+      }
       if (e.target.closest('button,a,input,select,textarea')) return;
       flip();
     });
+
     card.addEventListener('keydown', e => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
         flip();
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        navigate('prev');
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        navigate('next');
       }
     });
+  }
+
+  function updateGestureHint() {
+    const badge = document.getElementById('rf14AutoBadge');
+    if (badge) badge.textContent = '🔊 Áudio automático · toque para virar · deslize ←/→ para navegar';
   }
 
   document.addEventListener('click', e => {
@@ -175,9 +238,11 @@
 
   function init() {
     makeCardClickable();
+    updateGestureHint();
     let tries = 0;
     const timer = setInterval(() => {
       makeCardClickable();
+      updateGestureHint();
       if (++tries > 40) clearInterval(timer);
     }, 150);
   }
