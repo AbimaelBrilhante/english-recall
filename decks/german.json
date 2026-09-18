@@ -538,6 +538,12 @@
       "front": "Ich habe zehn Minuten.",
       "back": "Eu tenho dez minutos.",
       "initial_due_days": 0
+    },
+    {
+      "id": "de-090",
+      "front": "Ich bin neu hier.",
+      "back": "Eu sou novo aqui.",
+      "initial_due_days": 0
     }
   ]
 }
