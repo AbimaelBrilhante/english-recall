@@ -4,6 +4,7 @@
   const core = window.recallCore;
   if (!core) return;
   window.__recallCramNaturalV194 = true;
+  // v19.5: silent priming prevents a fixed deck phrase from leaking before cards.
 
   const state = () => core.getState();
   const sleep = ms => new Promise(r => setTimeout(r, ms));
@@ -45,24 +46,20 @@
     return card ? { card, deckId, mode, frontEl, backEl } : null;
   }
 
-  function primeDeck(deckId) {
-    const card = (state().cards?.[deckId] || []).find(c => audioPath(c, deckId));
-    const src = card && audioPath(card, deckId);
-    if (!src) return;
-
+  const SILENT_PRIME = 'data:audio/wav;base64,UklGRkQDAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YSADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==';
+  function primeDeck() {
+    // Unlock the shared iPhone media element using silence only.
+    // Never use a real deck phrase here, otherwise the first deck audio can leak
+    // before every Cram card.
     const el = ensureAudio();
     try {
       el.pause();
-      el.src = src;
+      el.src = SILENT_PRIME;
       el.currentTime = 0;
-      el.muted = true;
+      el.muted = false;
       const p = el.play();
-      Promise.resolve(p).then(() => {
-        try { el.pause(); el.currentTime = 0; el.muted = false; } catch {}
-      }).catch(() => { try { el.muted = false; } catch {} });
-    } catch {
-      try { el.muted = false; } catch {}
-    }
+      if (p?.catch) p.catch(() => {});
+    } catch {}
   }
 
   function mediaAlreadyPlaying() {
