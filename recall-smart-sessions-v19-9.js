@@ -11,6 +11,9 @@
   const baseCandidates = core.getCandidateItems();
 
   let zeroDayDeck = null;
+  let zeroDayInitialKeys = new Set();
+  let zeroDayDoneKeys = new Set();
+  const itemKey = x => `${x?.card?.id||''}|${x?.direction||''}`;
 
   function save(){ core.save(); }
   function now(){ return Date.now(); }
@@ -70,15 +73,31 @@
   }
 
   core.setCandidateItems(function(deckId=core.selectedDeck(), cutoff=Date.now(), selectedMode=core.selectedMode(deckId)){
-    if(zeroDayDeck===deckId){
-      return baseCandidates(deckId, Math.max(Number(cutoff)||0, atEndOfDay(0)), selectedMode);
+    const actual=baseCandidates(deckId, cutoff, selectedMode);
+    if(zeroDayDeck!==deckId) return actual;
+
+    const promoted=baseCandidates(deckId, atEndOfDay(0), selectedMode);
+    const merged=new Map(actual.map(x=>[itemKey(x),x]));
+    for(const x of promoted){
+      const k=itemKey(x);
+      if(zeroDayInitialKeys.has(k) && !zeroDayDoneKeys.has(k) && !merged.has(k)) merged.set(k,x);
     }
-    return baseCandidates(deckId, cutoff, selectedMode);
+    return [...merged.values()].sort((a,b)=>Number(a.due||0)-Number(b.due||0));
+  });
+
+  const baseRateCard=core.getRateCard();
+  core.setRateCard(function(kind){
+    const item=core.current?.();
+    if(zeroDayDeck && item && core.selectedDeck()===zeroDayDeck){
+      zeroDayDoneKeys.add(itemKey(item));
+    }
+    return baseRateCard(kind);
   });
 
   function clearZeroDay(){
-    if(!zeroDayDeck) return;
     zeroDayDeck=null;
+    zeroDayInitialKeys=new Set();
+    zeroDayDoneKeys=new Set();
     document.getElementById('rf199ZeroChip')?.remove();
   }
 
@@ -105,6 +124,8 @@
       return;
     }
     zeroDayDeck=deckId;
+    zeroDayDoneKeys=new Set();
+    zeroDayInitialKeys=new Set(baseCandidates(deckId,atEndOfDay(0),mode(deckId)).map(itemKey));
     state().settings.selectedDeck=deckId;
     save();
     core.clearCurrentItem();
@@ -270,8 +291,11 @@
       <div id="rf199HomeMsg" class="rf2-muted" style="margin-top:7px"></div>`;
 
     const msg=document.getElementById('syncMsg');
-    if(msg?.parentElement===view) msg.insertAdjacentElement('afterend',panel);
-    else view.appendChild(panel);
+    if(msg?.parentElement===view){
+      if(msg.nextElementSibling!==panel) msg.insertAdjacentElement('afterend',panel);
+    }else if(panel.parentElement!==view){
+      view.appendChild(panel);
+    }
 
     document.getElementById('rf199ZeroEn').onclick=()=>startZeroDay('en');
     document.getElementById('rf199ZeroDe').onclick=()=>startZeroDay('de');
