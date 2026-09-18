@@ -52,7 +52,7 @@ button{font:inherit;touch-action:manipulation}
     <div class="topactions"><div class="streak">🔥 <strong id="streak">0</strong> dias</div><button class="iconbtn" id="themeBtn" aria-label="Alternar tema">◐</button></div>
   </header>
 
-  <div class="beta"><span><b>HOME BETA</b> · somente visual e leitura do seu progresso</span><span>v20 preview</span></div>
+  <div class="beta"><span><b>HOME BETA</b> · prévia visual com dados 100% fictícios</span><span>v20 preview</span></div>
 
   <nav class="nav">
     <button class="active">Decks</button><button data-beta-msg>Revisar</button><button data-beta-msg>Adicionar</button><button data-beta-msg>Biblioteca</button>
@@ -96,25 +96,48 @@ button{font:inherit;touch-action:manipulation}
       <button data-beta-msg><span>🩺</span>Saúde</button>
       <button data-beta-msg><span>↻</span>Sincronizar</button>
     </div>
-    <div class="note" id="msg">Nenhuma ação desta beta altera seus dados.</div>
+    <div class="note" id="msg">Dados fictícios. Nenhuma ação desta beta altera o Recall real.</div>
   </section>
 </main>
 <script>
 (() => {
   'use strict';
-  const STORE='englishRecallPwaV4';
   const DAY=86400000;
   const DECKS={
     en:{name:'English',label:'Inglês',flag:'🇬🇧',unlockReps:2,desc:'Vocabulário, expressões e fluência no dia a dia'},
     de:{name:'Deutsch',label:'Alemão',flag:'🇩🇪',unlockReps:3,desc:'Estruturas, casos e conversação prática'}
   };
   const $=id=>document.getElementById(id);
-  const demo={
-    version:4,cards:{en:Array.from({length:640},(_,i)=>({id:'e'+i,front:'Example '+i,back:'Exemplo',schedules:{recognition:{due:Date.now()+i*100000,reps:3,lapses:0},production:{due:Date.now()+i*120000,reps:2,lapses:0}}})),de:Array.from({length:410},(_,i)=>({id:'d'+i,front:'Beispiel '+i,back:'Exemplo',schedules:{recognition:{due:Date.now()+i*150000,reps:2,lapses:0},production:{due:Date.now()+i*180000,reps:1,lapses:0}}}))},activeDays:[],reviewLog:[],settings:{selectedDeck:'en',modeByDeck:{en:'recognition',de:'production'},newCardLimits:{en:10,de:5},rf18:{goals:{en:{daily:20,weekly:140},de:{daily:10,weekly:70}}}}}
+
+  // Esta beta é propositalmente isolada da produção.
+  // Todos os números abaixo são fictícios para avaliar apenas o layout.
+  const DEMO={
+    streak:42,
+    en:{mode:'Compreensão',retention:94,totalReviews:1420,today:35,cards:850,due:38,tomorrow:26,seven:181,goal:50,newUsed:8,newLimit:10,reviews:38},
+    de:{mode:'Fala',retention:89,totalReviews:980,today:18,cards:520,due:27,tomorrow:22,seven:129,goal:30,newUsed:4,newLimit:5,reviews:27},
+    errors:[
+      {text:'Tell me a little about yourself.',when:'há 2h',rating:'again'},
+      {text:'I have been working with data since 2022.',when:'há 5h',rating:'hard'},
+      {text:'Was machst du beruflich?',when:'há 1 dia',rating:'again'}
+    ]
   };
-  let state;
-  try{state=JSON.parse(localStorage.getItem(STORE))||demo;}catch{state=demo;}
-  state.cards ||= {en:[],de:[]}; state.reviewLog ||= []; state.activeDays ||= []; state.settings ||= {};
+
+  const demoCard=(id,i)=>({id:id+'-'+i,front:'Demo '+i,back:'Exemplo',schedules:{recognition:{due:Date.now()+DAY,reps:3,lapses:0},production:{due:Date.now()+DAY,reps:2,lapses:0}}});
+  const state={
+    version:4,
+    cards:{
+      en:Array.from({length:DEMO.en.cards},(_,i)=>demoCard('en',i)),
+      de:Array.from({length:DEMO.de.cards},(_,i)=>demoCard('de',i))
+    },
+    activeDays:[],
+    reviewLog:[],
+    settings:{
+      selectedDeck:'en',
+      modeByDeck:{en:'recognition',de:'production'},
+      newCardLimits:{en:DEMO.en.newLimit,de:DEMO.de.newLimit},
+      rf18:{goals:{en:{daily:DEMO.en.goal,weekly:300},de:{daily:DEMO.de.goal,weekly:180}}}
+    }
+  };
 
   function dayKey(date=new Date()){return date.getFullYear()+'-'+String(date.getMonth()+1).padStart(2,'0')+'-'+String(date.getDate()).padStart(2,'0');}
   function startDay(offset=0){const d=new Date();d.setDate(d.getDate()+offset);d.setHours(0,0,0,0);return d.getTime();}
@@ -130,40 +153,17 @@ button{font:inherit;touch-action:manipulation}
     }
     return out;
   }
-  function reviewsToday(id){return state.reviewLog.filter(x=>x.deckId===id && (x.day===dayKey() || (x.ts>=startDay()&&x.ts<startDay(1)))).length;}
-  function totalReviews(id){return state.reviewLog.filter(x=>x.deckId===id).length;}
-  function dueToday(id){return entries(id).filter(x=>x.due<=endStudy()).length;}
-  function forecast(id,offset){const a=offset===0?0:endStudy(offset-1),b=endStudy(offset);return entries(id).filter(x=>x.due>a&&x.due<=b).length;}
-  function retention(id){
-    const since=Date.now()-30*DAY;
-    const logs=state.reviewLog.filter(x=>x.deckId===id && Number(x.ts||0)>=since);
-    if(!logs.length)return 0;
-    return Math.round(logs.filter(x=>x.rating!=='again').length/logs.length*100);
-  }
-  function activeStreak(){
-    const set=new Set(state.activeDays||[]);let n=0,d=new Date();
-    while(set.has(dayKey(d))){n++;d.setDate(d.getDate()-1);}
-    if(!n){d=new Date();d.setDate(d.getDate()-1);while(set.has(dayKey(d))){n++;d.setDate(d.getDate()-1);}}
-    return n;
-  }
-  function goal(id){
-    const g=state.settings.rf18?.goals?.[id];
-    const daily=Number(g?.daily || (id==='en'?20:10));
-    return {daily,done:reviewsToday(id),pct:Math.min(100,Math.round(reviewsToday(id)/Math.max(1,daily)*100))};
-  }
-  function newQueue(id){
-    const limit=Number(state.settings.newCardLimits?.[id] ?? (id==='en'?10:5));
-    const today=dayKey();
-    const used=(state.cards[id]||[]).filter(c=>c.introducedDay===today).length;
-    const rev=entries(id).filter(x=>x.due<=endStudy() && ((Number(x.c.schedules?.recognition?.reps||0)+Number(x.c.schedules?.production?.reps||0))>0)).length;
-    return {limit,used,rev};
-  }
-  function lastErrors(){
-    const logs=state.reviewLog.filter(x=>x.rating==='again'||x.rating==='hard').sort((a,b)=>Number(b.ts||0)-Number(a.ts||0)).slice(0,3);
-    return logs.map(l=>{const id=l.deckId||'en';const c=(state.cards[id]||[]).find(x=>x.id===l.id);return {text:c?.front||'Card difícil',ts:Number(l.ts||0),rating:l.rating};});
-  }
+  function reviewsToday(id){return DEMO[id].today;}
+  function totalReviews(id){return DEMO[id].totalReviews;}
+  function dueToday(id){return DEMO[id].due;}
+  function forecast(id,offset){if(offset===0)return DEMO[id].due;if(offset===1)return DEMO[id].tomorrow;return Math.round(DEMO[id].seven/7);}
+  function retention(id){return DEMO[id].retention;}
+  function activeStreak(){return DEMO.streak;}
+  function goal(id){const daily=DEMO[id].goal,done=DEMO[id].today;return {daily,done,pct:Math.min(100,Math.round(done/daily*100))};}
+  function newQueue(id){return {limit:DEMO[id].newLimit,used:DEMO[id].newUsed,rev:DEMO[id].reviews};}
+  function lastErrors(){return DEMO.errors.map(x=>({text:x.text,when:x.when,rating:x.rating}));}
   function ago(ts){if(!ts)return '';const h=Math.max(0,Math.round((Date.now()-ts)/3600000));return h<1?'agora':h<24?'há '+h+'h':'há '+Math.round(h/24)+'d';}
-  function modeLabel(id){return mode(id)==='production'?'Fala':'Compreensão';}
+  function modeLabel(id){return DEMO[id].mode;}
 
   function renderDeck(id){
     const cfg=DECKS[id],g=goal(id),ret=retention(id),today=reviewsToday(id),total=totalReviews(id),cards=(state.cards[id]||[]).length;
@@ -178,18 +178,18 @@ button{font:inherit;touch-action:manipulation}
   function render(){
     $('streak').textContent=activeStreak();
     $('deckGrid').innerHTML=renderDeck('en')+renderDeck('de');
-    $('dueAll').textContent=(dueToday('en')+dueToday('de'))+' pendentes hoje';
+    $('dueAll').textContent=(DEMO.en.due+DEMO.de.due)+' pendentes hoje';
 
     $('goals').innerHTML=['en','de'].map(id=>{const g=goal(id);return '<div class="goal-row"><div class="goal-head"><b>'+DECKS[id].flag+' '+DECKS[id].label+'</b><span>'+g.pct+'%</span></div><div class="track"><div class="fill '+id+'" style="width:'+g.pct+'%"></div></div></div>';}).join('');
 
     $('queue').innerHTML=['en','de'].map(id=>{const q=newQueue(id);return '<div class="qbox"><b>'+DECKS[id].flag+' '+q.rev+'</b><span>revisões hoje</span></div><div class="qbox"><b>'+q.used+'/'+q.limit+'</b><span>novas '+DECKS[id].label.toLowerCase()+'</span></div>';}).join('');
 
-    const f0=dueToday('en')+dueToday('de'),f1=forecast('en',1)+forecast('de',1),f7=Array.from({length:7},(_,i)=>forecast('en',i)+forecast('de',i)).reduce((a,b)=>a+b,0);
+    const f0=DEMO.en.due+DEMO.de.due,f1=DEMO.en.tomorrow+DEMO.de.tomorrow,f7=DEMO.en.seven+DEMO.de.seven;
     $('forecast').innerHTML='<div class="fc"><b>'+f0+'</b><span>hoje</span></div><div class="fc"><b>'+f1+'</b><span>amanhã</span></div><div class="fc"><b>'+f7+'</b><span>7 dias</span></div>';
     $('forecastNote').textContent='Janela de estudo: 08h–21h.';
 
     const errs=lastErrors();
-    $('errors').innerHTML=errs.length?errs.map(x=>'<div class="error"><i>'+ (x.rating==='again'?'●':'◐') +'</i><span>'+x.text.replace(/</g,'&lt;')+'</span><small>'+ago(x.ts)+'</small></div>').join(''):'<div class="note">Nenhum erro recente.</div>';
+    $('errors').innerHTML=errs.length?errs.map(x=>'<div class="error"><i>'+ (x.rating==='again'?'●':'◐') +'</i><span>'+x.text.replace(/</g,'&lt;')+'</span><small>'+x.when+'</small></div>').join(''):'<div class="note">Nenhum erro recente.</div>';
 
     bindBeta();
   }
