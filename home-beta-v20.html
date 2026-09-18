@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#f5f8ff">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Recall · Home Beta</title>
+<!-- Prevent the production service worker from injecting app modules into this isolated visual beta:
+theme-hotfix.css voice-diagnostics.js audio-bridge.js home-controls.js recall-features-v2.js home-layout-v2.js recall-advanced-v3.js recall-flow-fixes-v14.js recall-single-audio-v14-1.js recall-auto-tags-v15.js recall-practice-v16.js recall-review-layout-v16-1.js recall-modern-v17.js recall-audio-dedupe-v17-1.js recall-insights-v18.js recall-cefr-v18-1.js recall-learning-v19.js recall-ios-pt-speech-v19-3.js recall-handsfree-production-v19-2.js recall-cram-natural-v19-4.js recall-study-window-v19-8.js recall-smart-sessions-v19-9.js recall-version-v18-1.js
+-->
+<style>
+:root{
+  --bg:#f4f7fb;--surface:#ffffff;--surface2:#f5f8fc;--surface3:#eef4fb;
+  --ink:#14203b;--muted:#71809b;--line:#dce5f0;--primary:#315cff;--primary2:#5a7cff;
+  --cyan:#22b8cf;--mint:#18b98a;--danger:#eb4d66;--warn:#f0a44a;--shadow:0 10px 30px rgba(35,60,110,.08);
+}
+html[data-theme="dark"]{
+  --bg:#071120;--surface:#0d1a2d;--surface2:#12223a;--surface3:#172944;
+  --ink:#f3f7ff;--muted:#8fa0bb;--line:#223653;--primary:#3b7cff;--primary2:#26a7ff;
+  --cyan:#2bc6df;--mint:#35d7a8;--danger:#ff647b;--warn:#ffb65d;--shadow:0 12px 34px rgba(0,0,0,.24);
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif}
+body{padding:calc(env(safe-area-inset-top) + 10px) 14px calc(env(safe-area-inset-bottom) + 24px)}
+button{font:inherit;touch-action:manipulation}
+.app{max-width:760px;margin:0 auto}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:5px 2px 13px}
+.brand{display:flex;align-items:center;gap:10px}.brandmark{width:36px;height:36px;border-radius:11px;background:linear-gradient(145deg,#5b8cff,#284ef6);display:grid;place-items:center;color:white;font-size:21px;box-shadow:0 8px 18px rgba(49,92,255,.24)}.brandtext b{display:block;font-size:21px;letter-spacing:-.03em}.brandtext span{display:block;color:var(--muted);font-size:10px;margin-top:1px}
+.topactions{display:flex;gap:8px;align-items:center}.streak,.iconbtn{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:15px;box-shadow:var(--shadow)}.streak{padding:8px 11px;font-size:11px;font-weight:850}.streak strong{font-size:13px;margin-right:3px}.iconbtn{width:40px;height:40px;padding:0;display:grid;place-items:center;font-size:17px}
+.beta{display:flex;justify-content:space-between;align-items:center;gap:10px;background:linear-gradient(90deg,color-mix(in srgb,var(--primary) 10%,var(--surface)),var(--surface));border:1px solid color-mix(in srgb,var(--primary) 22%,var(--line));border-radius:15px;padding:9px 11px;margin-bottom:10px;font-size:10px;color:var(--muted)}.beta b{color:var(--primary);font-size:10px;letter-spacing:.06em}
+.nav{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:0 0 15px}.nav button{height:43px;border:1px solid var(--line);background:var(--surface);border-radius:13px;color:var(--muted);font-size:11px;font-weight:800;box-shadow:0 3px 12px rgba(30,60,100,.035)}.nav button.active{background:color-mix(in srgb,var(--primary) 11%,var(--surface));color:var(--primary);border-color:color-mix(in srgb,var(--primary) 24%,var(--line))}
+.section-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:16px 2px 9px}.section-title b{font-size:14px}.section-title span,.section-title button{font-size:10px;color:var(--muted)}.section-title button{background:none;border:0;padding:0}
+.deck-grid{display:grid;gap:11px}.deck{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:13px;box-shadow:var(--shadow)}.deck-head{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center}.flag{width:44px;height:44px;border-radius:13px;background:var(--surface2);display:grid;place-items:center;font-size:27px}.deck-name{min-width:0}.deck-name b{font-size:18px;letter-spacing:-.025em}.mode{display:inline-flex;margin-left:6px;padding:3px 7px;border-radius:999px;background:color-mix(in srgb,var(--primary) 11%,var(--surface));color:var(--primary);font-size:9px;font-weight:900;vertical-align:2px}.deck-name p{margin:3px 0 0;color:var(--muted);font-size:10.5px;line-height:1.3}.ring{--p:80;position:relative;width:51px;height:51px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--mint) calc(var(--p)*1%),var(--surface3) 0)}.ring:after{content:"";position:absolute;inset:5px;border-radius:50%;background:var(--surface)}.ring b{position:relative;z-index:1;font-size:11px}.ring-label{text-align:center}.ring-label small{display:block;font-size:8px;color:var(--muted);margin-top:2px}
+.deck-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin:12px 0 10px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}.ds{padding:9px 5px}.ds+.ds{border-left:1px solid var(--line)}.ds b{display:block;font-size:14px}.ds.today b{color:var(--mint)}.ds.cards b{color:var(--primary)}.ds span{font-size:8.5px;color:var(--muted)}
+.actions{display:grid;grid-template-columns:1fr 1fr auto;gap:7px}.actions button{min-height:40px;border:1px solid var(--line);border-radius:12px;background:var(--surface2);color:var(--ink);font-size:10px;font-weight:800;padding:0 10px}.actions button.continue{width:42px;padding:0;background:var(--primary);color:#fff;border-color:var(--primary);font-size:15px}
+.progress-mini{margin-top:10px}.progress-label{display:flex;justify-content:space-between;font-size:9px;color:var(--muted);margin-bottom:5px}.track{height:6px;background:var(--surface3);border-radius:999px;overflow:hidden}.fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--cyan),var(--primary))}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.panel{background:var(--surface);border:1px solid var(--line);border-radius:17px;padding:12px;box-shadow:var(--shadow)}.panel h3{font-size:12px;margin:0 0 9px}.goal-row{margin:9px 0}.goal-head{display:flex;justify-content:space-between;font-size:10px;margin-bottom:5px}.goal-head b{font-size:10px}.goal-head span{color:var(--muted)}.goal-row .fill.en{background:linear-gradient(90deg,#2bb8e8,#315cff)}.goal-row .fill.de{background:linear-gradient(90deg,#22cfa0,#16a889)}
+.queue{display:grid;grid-template-columns:1fr 1fr;gap:7px}.qbox{background:var(--surface2);border-radius:11px;padding:9px}.qbox b{display:block;font-size:15px}.qbox span{font-size:8.5px;color:var(--muted)}
+.forecast{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.fc{text-align:center;background:var(--surface2);border-radius:11px;padding:9px 5px}.fc b{display:block;color:var(--cyan);font-size:16px}.fc span{font-size:8px;color:var(--muted)}
+.errors{display:grid;gap:6px}.error{display:grid;grid-template-columns:auto 1fr auto;gap:7px;align-items:center;font-size:9.5px}.error i{font-style:normal;color:var(--danger)}.error span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.error small{color:var(--muted)}
+.quick{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.quick button{min-height:51px;border:1px solid var(--line);background:var(--surface2);color:var(--ink);border-radius:12px;font-size:9px;font-weight:800;padding:6px}.quick button span{display:block;font-size:16px;margin-bottom:3px}
+.note{min-height:15px;margin:7px 2px 0;color:var(--muted);font-size:9px}
+@media(max-width:480px){.grid2{grid-template-columns:1fr 1fr}.quick{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:370px){.deck-name p{display:none}.grid2{grid-template-columns:1fr}.quick{grid-template-columns:1fr 1fr}.actions{grid-template-columns:1fr 1fr auto}}
+</style>
+</head>
+<body>
+<main class="app">
+  <header class="topbar">
+    <div class="brand"><div class="brandmark">◫</div><div class="brandtext"><b>Recall</b><span>Aprenda hoje. Lembre sempre.</span></div></div>
+    <div class="topactions"><div class="streak">🔥 <strong id="streak">0</strong> dias</div><button class="iconbtn" id="themeBtn" aria-label="Alternar tema">◐</button></div>
+  </header>
+
+  <div class="beta"><span><b>HOME BETA</b> · somente visual e leitura do seu progresso</span><span>v20 preview</span></div>
+
+  <nav class="nav">
+    <button class="active">Decks</button><button data-beta-msg>Revisar</button><button data-beta-msg>Adicionar</button><button data-beta-msg>Biblioteca</button>
+  </nav>
+
+  <div class="section-title"><b>▱ Meus Decks em Foco</b><span id="dueAll">— pendentes hoje</span></div>
+  <section class="deck-grid" id="deckGrid"></section>
+
+  <div class="section-title"><b>▥ Metas e fila</b><span>Hoje</span></div>
+  <section class="grid2">
+    <div class="panel">
+      <h3>▥ Metas de Retenção</h3>
+      <div id="goals"></div>
+    </div>
+    <div class="panel">
+      <h3>⟳ Novas x revisões</h3>
+      <div class="queue" id="queue"></div>
+    </div>
+  </section>
+
+  <div class="section-title"><b>◫ Diagnóstico rápido</b><span>atualizado pelo histórico</span></div>
+  <section class="grid2">
+    <div class="panel">
+      <h3>⌁ Previsão de Carga</h3>
+      <div class="forecast" id="forecast"></div>
+      <div class="note" id="forecastNote"></div>
+    </div>
+    <div class="panel">
+      <h3>⚠ Últimos erros</h3>
+      <div class="errors" id="errors"></div>
+    </div>
+  </section>
+
+  <div class="section-title"><b>⚡ Ações rápidas</b><span>ferramentas atuais</span></div>
+  <section class="panel">
+    <div class="quick">
+      <button data-beta-msg><span>⚡</span>Zerar dia</button>
+      <button data-beta-msg><span>🎧</span>Hands-free</button>
+      <button data-beta-msg><span>▣</span>Sessão</button>
+      <button data-beta-msg><span>📈</span>Progresso</button>
+      <button data-beta-msg><span>🩺</span>Saúde</button>
+      <button data-beta-msg><span>↻</span>Sincronizar</button>
+    </div>
+    <div class="note" id="msg">Nenhuma ação desta beta altera seus dados.</div>
+  </section>
+</main>
+<script>
+(() => {
+  'use strict';
+  const STORE='englishRecallPwaV4';
+  const DAY=86400000;
+  const DECKS={
+    en:{name:'English',label:'Inglês',flag:'🇬🇧',unlockReps:2,desc:'Vocabulário, expressões e fluência no dia a dia'},
+    de:{name:'Deutsch',label:'Alemão',flag:'🇩🇪',unlockReps:3,desc:'Estruturas, casos e conversação prática'}
+  };
+  const $=id=>document.getElementById(id);
+  const demo={
+    version:4,cards:{en:Array.from({length:640},(_,i)=>({id:'e'+i,front:'Example '+i,back:'Exemplo',schedules:{recognition:{due:Date.now()+i*100000,reps:3,lapses:0},production:{due:Date.now()+i*120000,reps:2,lapses:0}}})),de:Array.from({length:410},(_,i)=>({id:'d'+i,front:'Beispiel '+i,back:'Exemplo',schedules:{recognition:{due:Date.now()+i*150000,reps:2,lapses:0},production:{due:Date.now()+i*180000,reps:1,lapses:0}}}))},activeDays:[],reviewLog:[],settings:{selectedDeck:'en',modeByDeck:{en:'recognition',de:'production'},newCardLimits:{en:10,de:5},rf18:{goals:{en:{daily:20,weekly:140},de:{daily:10,weekly:70}}}}}
+  };
+  let state;
+  try{state=JSON.parse(localStorage.getItem(STORE))||demo;}catch{state=demo;}
+  state.cards ||= {en:[],de:[]}; state.reviewLog ||= []; state.activeDays ||= []; state.settings ||= {};
+
+  function dayKey(date=new Date()){return date.getFullYear()+'-'+String(date.getMonth()+1).padStart(2,'0')+'-'+String(date.getDate()).padStart(2,'0');}
+  function startDay(offset=0){const d=new Date();d.setDate(d.getDate()+offset);d.setHours(0,0,0,0);return d.getTime();}
+  function endStudy(offset=0){const d=new Date();d.setDate(d.getDate()+offset);d.setHours(21,0,0,0);return d.getTime();}
+  function mode(id){return state.settings.modeByDeck?.[id]||'recognition';}
+  function unlock(c,id){return Number(c.schedules?.recognition?.reps||0)>=DECKS[id].unlockReps;}
+  function entries(id){
+    const m=mode(id), out=[];
+    for(const c of state.cards[id]||[]){
+      if(c.suspended) continue;
+      if(m!=='production'){const d=Number(c.schedules?.recognition?.due);if(Number.isFinite(d))out.push({c,direction:'recognition',due:d});}
+      if(m!=='recognition' && (m==='production'||unlock(c,id))){const d=Number(c.schedules?.production?.due);if(Number.isFinite(d))out.push({c,direction:'production',due:d});}
+    }
+    return out;
+  }
+  function reviewsToday(id){return state.reviewLog.filter(x=>x.deckId===id && (x.day===dayKey() || (x.ts>=startDay()&&x.ts<startDay(1)))).length;}
+  function totalReviews(id){return state.reviewLog.filter(x=>x.deckId===id).length;}
+  function dueToday(id){return entries(id).filter(x=>x.due<=endStudy()).length;}
+  function forecast(id,offset){const a=offset===0?0:endStudy(offset-1),b=endStudy(offset);return entries(id).filter(x=>x.due>a&&x.due<=b).length;}
+  function retention(id){
+    const since=Date.now()-30*DAY;
+    const logs=state.reviewLog.filter(x=>x.deckId===id && Number(x.ts||0)>=since);
+    if(!logs.length)return 0;
+    return Math.round(logs.filter(x=>x.rating!=='again').length/logs.length*100);
+  }
+  function activeStreak(){
+    const set=new Set(state.activeDays||[]);let n=0,d=new Date();
+    while(set.has(dayKey(d))){n++;d.setDate(d.getDate()-1);}
+    if(!n){d=new Date();d.setDate(d.getDate()-1);while(set.has(dayKey(d))){n++;d.setDate(d.getDate()-1);}}
+    return n;
+  }
+  function goal(id){
+    const g=state.settings.rf18?.goals?.[id];
+    const daily=Number(g?.daily || (id==='en'?20:10));
+    return {daily,done:reviewsToday(id),pct:Math.min(100,Math.round(reviewsToday(id)/Math.max(1,daily)*100))};
+  }
+  function newQueue(id){
+    const limit=Number(state.settings.newCardLimits?.[id] ?? (id==='en'?10:5));
+    const today=dayKey();
+    const used=(state.cards[id]||[]).filter(c=>c.introducedDay===today).length;
+    const rev=entries(id).filter(x=>x.due<=endStudy() && ((Number(x.c.schedules?.recognition?.reps||0)+Number(x.c.schedules?.production?.reps||0))>0)).length;
+    return {limit,used,rev};
+  }
+  function lastErrors(){
+    const logs=state.reviewLog.filter(x=>x.rating==='again'||x.rating==='hard').sort((a,b)=>Number(b.ts||0)-Number(a.ts||0)).slice(0,3);
+    return logs.map(l=>{const id=l.deckId||'en';const c=(state.cards[id]||[]).find(x=>x.id===l.id);return {text:c?.front||'Card difícil',ts:Number(l.ts||0),rating:l.rating};});
+  }
+  function ago(ts){if(!ts)return '';const h=Math.max(0,Math.round((Date.now()-ts)/3600000));return h<1?'agora':h<24?'há '+h+'h':'há '+Math.round(h/24)+'d';}
+  function modeLabel(id){return mode(id)==='production'?'Fala':'Compreensão';}
+
+  function renderDeck(id){
+    const cfg=DECKS[id],g=goal(id),ret=retention(id),today=reviewsToday(id),total=totalReviews(id),cards=(state.cards[id]||[]).length;
+    return '<article class="deck">'+
+      '<div class="deck-head"><div class="flag">'+cfg.flag+'</div><div class="deck-name"><b>'+cfg.label+'</b><span class="mode">'+modeLabel(id)+'</span><p>'+cfg.desc+'</p></div><div class="ring-label"><div class="ring" style="--p:'+ret+'"><b>'+ret+'%</b></div><small>retenção</small></div></div>'+
+      '<div class="deck-stats"><div class="ds"><b>'+total.toLocaleString("pt-BR")+'</b><span>exercícios</span></div><div class="ds today"><b>'+today+'</b><span>hoje</span></div><div class="ds cards"><b>'+cards.toLocaleString("pt-BR")+'</b><span>frases</span></div></div>'+
+      '<div class="actions"><button data-beta-msg>🎧 Compreensão</button><button data-beta-msg>🎙 Fala</button><button class="continue" data-beta-msg>▶</button></div>'+
+      '<div class="progress-mini"><div class="progress-label"><span>Ritmo diário</span><b>'+g.done+' / '+g.daily+' cards</b></div><div class="track"><div class="fill" style="width:'+g.pct+'%"></div></div></div>'+
+      '</article>';
+  }
+
+  function render(){
+    $('streak').textContent=activeStreak();
+    $('deckGrid').innerHTML=renderDeck('en')+renderDeck('de');
+    $('dueAll').textContent=(dueToday('en')+dueToday('de'))+' pendentes hoje';
+
+    $('goals').innerHTML=['en','de'].map(id=>{const g=goal(id);return '<div class="goal-row"><div class="goal-head"><b>'+DECKS[id].flag+' '+DECKS[id].label+'</b><span>'+g.pct+'%</span></div><div class="track"><div class="fill '+id+'" style="width:'+g.pct+'%"></div></div></div>';}).join('');
+
+    $('queue').innerHTML=['en','de'].map(id=>{const q=newQueue(id);return '<div class="qbox"><b>'+DECKS[id].flag+' '+q.rev+'</b><span>revisões hoje</span></div><div class="qbox"><b>'+q.used+'/'+q.limit+'</b><span>novas '+DECKS[id].label.toLowerCase()+'</span></div>';}).join('');
+
+    const f0=dueToday('en')+dueToday('de'),f1=forecast('en',1)+forecast('de',1),f7=Array.from({length:7},(_,i)=>forecast('en',i)+forecast('de',i)).reduce((a,b)=>a+b,0);
+    $('forecast').innerHTML='<div class="fc"><b>'+f0+'</b><span>hoje</span></div><div class="fc"><b>'+f1+'</b><span>amanhã</span></div><div class="fc"><b>'+f7+'</b><span>7 dias</span></div>';
+    $('forecastNote').textContent='Janela de estudo: 08h–21h.';
+
+    const errs=lastErrors();
+    $('errors').innerHTML=errs.length?errs.map(x=>'<div class="error"><i>'+ (x.rating==='again'?'●':'◐') +'</i><span>'+x.text.replace(/</g,'&lt;')+'</span><small>'+ago(x.ts)+'</small></div>').join(''):'<div class="note">Nenhum erro recente.</div>';
+
+    bindBeta();
+  }
+  function bindBeta(){
+    document.querySelectorAll('[data-beta-msg]').forEach(b=>b.onclick=()=>{$('msg').textContent='Esta beta valida apenas o novo visual da Home/Decks. Nenhuma ação foi executada.';});
+  }
+
+  function applyTheme(theme){
+    document.documentElement.dataset.theme=theme;
+    localStorage.setItem('recallHomeBetaTheme',theme);
+    document.querySelector('meta[name=theme-color]').setAttribute('content',theme==='dark'?'#071120':'#f4f7fb');
+  }
+  const saved=localStorage.getItem('recallThemeV1')||localStorage.getItem('recallHomeBetaTheme');
+  applyTheme(saved==='dark'?'dark':'light');
+  $('themeBtn').onclick=()=>applyTheme(document.documentElement.dataset.theme==='dark'?'light':'dark');
+  render();
+})();
+</script>
+</body>
+</html>
