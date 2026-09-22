@@ -544,6 +544,12 @@
       "front": "Ich bin neu hier.",
       "back": "Eu sou novo aqui.",
       "initial_due_days": 0
+    },
+    {
+      "id": "de-091",
+      "front": "Ist das weit?",
+      "back": "É longe?",
+      "initial_due_days": 0
     }
   ]
 }
