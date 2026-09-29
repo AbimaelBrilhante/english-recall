@@ -550,6 +550,24 @@
       "front": "Ist das weit?",
       "back": "É longe?",
       "initial_due_days": 0
+    },
+    {
+      "id": "de-092",
+      "front": "Ich suche eine Wohnung.",
+      "back": "Estou procurando um apartamento.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "de-093",
+      "front": "Ist die Wohnung noch frei?",
+      "back": "O apartamento ainda está disponível?",
+      "initial_due_days": 0
+    },
+    {
+      "id": "de-094",
+      "front": "Wie hoch ist die Miete?",
+      "back": "Qual é o valor do aluguel?",
+      "initial_due_days": 0
     }
   ]
 }
