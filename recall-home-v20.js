@@ -217,9 +217,14 @@
     core.save();
     core.clearCurrentItem();
 
-    // Use the original, proven deck-entry path first. This avoids relying on
-    // transient handlers inside the redesigned Home.
-    if(openLegacyDeck(id)) return;
+    // Remove the Home-only display override before navigating.
+    document.body.classList.remove('rv20-home-active');
+
+    // Call the app's original deck-opening function exposed by the bridge.
+    if(typeof core.selectDeck==='function'){
+      core.selectDeck(id,true);
+      return;
+    }
 
     if(typeof core.startSession==='function'){
       core.startSession(id);
