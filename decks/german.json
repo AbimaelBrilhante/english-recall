@@ -568,6 +568,24 @@
       "front": "Wie hoch ist die Miete?",
       "back": "Qual é o valor do aluguel?",
       "initial_due_days": 0
+    },
+    {
+      "id": "de-095",
+      "front": "Ich hätte gern ein Brot, bitte.",
+      "back": "Eu gostaria de um pão, por favor.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "de-096",
+      "front": "Wie viel kostet das?",
+      "back": "Quanto custa isso?",
+      "initial_due_days": 0
+    },
+    {
+      "id": "de-097",
+      "front": "Mit Karte, bitte.",
+      "back": "Com cartão, por favor.",
+      "initial_due_days": 0
     }
   ]
 }
