@@ -198,14 +198,36 @@
     bind();
   }
 
+  function openLegacyDeck(id){
+    const cards=[...document.querySelectorAll('#deckGrid .deck-card')];
+    const target=cards.find(card=>{
+      const title=card.querySelector('.deck-title')?.textContent?.trim().toLowerCase()||'';
+      return id==='de'?title.includes('deutsch'):title.includes('english');
+    });
+    if(target){target.click();return true;}
+    return false;
+  }
+
   function setModeAndStudy(id,m){
-    state().settings ||= {};
-    state().settings.modeByDeck ||= {};
-    state().settings.modeByDeck[id]=m;
-    state().settings.selectedDeck=id;
+    const s=state();
+    s.settings ||= {};
+    s.settings.modeByDeck ||= {};
+    s.settings.modeByDeck[id]=m;
+    s.settings.selectedDeck=id;
     core.save();
     core.clearCurrentItem();
-    core.startSession(id);
+
+    // Use the original, proven deck-entry path first. This avoids relying on
+    // transient handlers inside the redesigned Home.
+    if(openLegacyDeck(id)) return;
+
+    if(typeof core.startSession==='function'){
+      core.startSession(id);
+      return;
+    }
+
+    core.showView('review');
+    core.render();
   }
   function continueDeck(id){
     const m=visualMode(id);
@@ -219,9 +241,29 @@
   function message(text){
     const el=document.getElementById('rv20Msg');if(el)el.textContent=text;
   }
+  function bindDeckDelegation(){
+    const root=ensureRoot();
+    if(!root || root.dataset.rv20DeckDelegation==='1') return;
+    root.dataset.rv20DeckDelegation='1';
+    root.addEventListener('click',event=>{
+      const study=event.target.closest?.('[data-rv20-study]');
+      if(study && root.contains(study)){
+        event.preventDefault();
+        event.stopPropagation();
+        setModeAndStudy(study.dataset.rv20Study,study.dataset.mode);
+        return;
+      }
+      const next=event.target.closest?.('[data-rv20-continue]');
+      if(next && root.contains(next)){
+        event.preventDefault();
+        event.stopPropagation();
+        continueDeck(next.dataset.rv20Continue);
+      }
+    });
+  }
+
   function bind(){
-    document.querySelectorAll('[data-rv20-study]').forEach(b=>b.onclick=()=>setModeAndStudy(b.dataset.rv20Study,b.dataset.mode));
-    document.querySelectorAll('[data-rv20-continue]').forEach(b=>b.onclick=()=>continueDeck(b.dataset.rv20Continue));
+    bindDeckDelegation();
     document.getElementById('rv20Errors').onclick=()=>{ if(!clickOriginal('rf199RecentErrors')) core.showView('rf199-errors'); };
     document.getElementById('rv20Zero').onclick=()=>{
       const en=pendingToday('en'),de=pendingToday('de');
