@@ -282,7 +282,7 @@ $('settingsDeck').addEventListener('change',renderSettings);$('studyMode').addEv
 $('voiceSelect').addEventListener('change',()=>{const id=$('settingsDeck').value;state.settings.voiceByDeck[id]=$('voiceSelect').value;save();});$('settingsSpeed').addEventListener('change',()=>{const id=$('settingsDeck').value;state.settings.speedByDeck[id]=Number($('settingsSpeed').value)||1;if(id===selectedDeck())$('speed').value=String(state.settings.speedByDeck[id]);save();});$('speed').addEventListener('change',()=>{state.settings.speedByDeck[selectedDeck()]=Number($('speed').value)||1;save();});$('autoPlay').addEventListener('change',()=>{state.settings.autoPlay=$('autoPlay').checked;save();});$('testVoice').addEventListener('click',()=>{const id=$('settingsDeck').value,sample=id==='de'?'Hallo! Wie geht es dir?':'Hello! How are you today?';speakText(sample,id,Number($('settingsSpeed').value)||1);});
 
 if('serviceWorker'in navigator){
-  navigator.serviceWorker.register('./sw.js',{updateViaCache:'none'})
+  navigator.serviceWorker.register('./sw.js?v=209-force',{scope:'./',updateViaCache:'none'})
     .then(reg=>reg.update())
     .catch(()=>{});
 }
