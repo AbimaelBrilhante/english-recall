@@ -14,7 +14,7 @@ html[data-recall-theme="dark"]{
 
 body.rv20-home-active .summary{display:none!important}
 body.rv20-home-active #view-decks>*:not(#rv20Home){display:none!important}
-body.rv20-home-active #view-decks{display:block}
+body.rv20-home-active #view-decks.active{display:block}
 
 .rv20-brand-ready .brand{display:flex;align-items:center;gap:10px}
 .rv20-brand-ready .brand>small{display:none!important}
