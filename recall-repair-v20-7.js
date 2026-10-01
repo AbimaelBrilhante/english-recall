@@ -1,7 +1,7 @@
 (() => {
   'use strict';
-  if (window.__recallRepairV208) return;
-  window.__recallRepairV208 = true;
+  if (window.__recallRepairV210) return;
+  window.__recallRepairV210 = true;
 
   const STORE='englishRecallPwaV4';
   const BACKUP='englishRecallPwaV4RepairBackup';
@@ -41,7 +41,7 @@
     const ok=confirm(
       'Reparar o Recall?\n\n' +
       'Isso limpa apenas o cache e o service worker do app. ' +
-      'Seu histórico, SRS, streak, cards e gravações não serão apagados.'
+      'Seu histórico original permanece no armazenamento local e não será duplicado, alterado ou apagado.'
     );
     if(!ok) return;
 
@@ -50,10 +50,12 @@
       btn.textContent='…';
     }
 
-    let stage='backup';
+    let stage='prepare';
     try{
-      // Backup extra antes de qualquer ação. O app principal continua usando STORE.
-      localStorage.setItem(BACKUP,raw);
+      // Não duplicamos mais o estado inteiro no localStorage.
+      // No iPhone isso pode exceder a cota mesmo com o estado original íntegro.
+      // Removemos apenas a cópia temporária criada pelo reparo anterior, se existir.
+      try{ localStorage.removeItem(BACKUP); }catch{}
 
       // No iOS standalone, algumas APIs de Cache/Service Worker podem existir
       // parcialmente. O reparo não deve falhar por causa de uma delas.
