@@ -1,7 +1,7 @@
 (() => {
   'use strict';
-  if (window.__recallRepairV207) return;
-  window.__recallRepairV207 = true;
+  if (window.__recallRepairV208) return;
+  window.__recallRepairV208 = true;
 
   const STORE='englishRecallPwaV4';
   const BACKUP='englishRecallPwaV4RepairBackup';
@@ -50,31 +50,58 @@
       btn.textContent='…';
     }
 
+    let stage='backup';
     try{
       // Backup extra antes de qualquer ação. O app principal continua usando STORE.
       localStorage.setItem(BACKUP,raw);
 
+      // No iOS standalone, algumas APIs de Cache/Service Worker podem existir
+      // parcialmente. O reparo não deve falhar por causa de uma delas.
+      stage='cache';
       if('caches' in window){
-        const keys=await caches.keys();
-        await Promise.all(keys.map(k=>caches.delete(k)));
+        try{
+          const keys=await caches.keys();
+          for(const key of keys){
+            try{ await caches.delete(key); }catch{}
+          }
+        }catch{}
       }
 
+      stage='service-worker';
       if('serviceWorker' in navigator){
-        const regs=await navigator.serviceWorker.getRegistrations();
-        await Promise.all(regs.map(r=>r.unregister()));
+        try{
+          if(typeof navigator.serviceWorker.getRegistrations==='function'){
+            const regs=await navigator.serviceWorker.getRegistrations();
+            for(const reg of regs){
+              try{ await reg.unregister(); }catch{}
+            }
+          }else if(typeof navigator.serviceWorker.getRegistration==='function'){
+            const reg=await navigator.serviceWorker.getRegistration();
+            if(reg){
+              try{ await reg.unregister(); }catch{}
+            }
+          }
+        }catch{}
       }
 
+      stage='reload';
       const u=new URL(location.href);
       u.search='';
       u.hash='';
       u.searchParams.set('repair',String(Date.now()));
-      location.replace(u.toString());
+
+      // Give WebKit one turn to finish storage/service-worker operations.
+      setTimeout(()=>{
+        try{ location.replace(u.toString()); }
+        catch{ location.href=u.toString(); }
+      },180);
     }catch(err){
       if(btn){
         btn.disabled=false;
         btn.textContent='🛠';
       }
-      alert('Não consegui concluir o reparo. Seus dados locais foram preservados.');
+      const detail=err?.name ? ' ('+stage+': '+err.name+')' : '';
+      alert('Não consegui concluir o reparo'+detail+'. Seus dados locais foram preservados.');
     }
   }
 
