@@ -36,15 +36,7 @@
 
   try { synth.speak = wrappedSpeak; } catch {}
 
-  // Prime Portuguese speech inside the user's tap before Hands-free reaches
-  // its first await. Production always needs it; Compreensão needs it when
-  // "Falar tradução em português" is enabled.
-  document.addEventListener('click', e => {
-    const start = e.target?.closest?.('#rf2HfStart');
-    if (!start) return;
-    const mode = document.getElementById('rf2HfMode')?.value || 'recognition';
-    const wantsPortuguese = mode === 'production' || Boolean(document.getElementById('rf2HfPt')?.checked);
-    if (!wantsPortuguese) return;
+  function primePortuguese() {
     try {
       nativeResume();
       const u = new SpeechSynthesisUtterance('\u00A0');
@@ -55,5 +47,18 @@
       nativeSpeak(u);
       setTimeout(() => { try { nativeCancel(); } catch {} }, 40);
     } catch {}
+  }
+
+  // Prime Portuguese speech from the user's Start tap. In Compreensão the
+  // recognition controller first stops any previous session, so prime just
+  // after that synchronous cleanup. Production keeps its proven immediate path.
+  document.addEventListener('click', e => {
+    const start = e.target?.closest?.('#rf2HfStart');
+    if (!start) return;
+    const mode = document.getElementById('rf2HfMode')?.value || 'recognition';
+    const wantsPortuguese = mode === 'production' || Boolean(document.getElementById('rf2HfPt')?.checked);
+    if (!wantsPortuguese) return;
+    if (mode === 'recognition') setTimeout(primePortuguese, 80);
+    else primePortuguese();
   }, true);
 })();
