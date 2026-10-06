@@ -586,6 +586,24 @@
       "front": "Mit Karte, bitte.",
       "back": "Com cartão, por favor.",
       "initial_due_days": 0
+    },
+    {
+      "id": "de-098",
+      "front": "Ich brauche etwas gegen Halsschmerzen.",
+      "back": "Preciso de algo para dor de garganta.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "de-099",
+      "front": "Haben Sie etwas dafür?",
+      "back": "O senhor / a senhora tem algo para isso?",
+      "initial_due_days": 0
+    },
+    {
+      "id": "de-100",
+      "front": "Wie nehme ich das?",
+      "back": "Como eu tomo isso?",
+      "initial_due_days": 0
     }
   ]
 }
