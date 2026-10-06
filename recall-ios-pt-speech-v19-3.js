@@ -36,12 +36,15 @@
 
   try { synth.speak = wrappedSpeak; } catch {}
 
-  // Prime speech synthesis inside the user's tap before the production flow
-  // reaches its first await. The utterance is silent and immediately canceled.
+  // Prime Portuguese speech inside the user's tap before Hands-free reaches
+  // its first await. Production always needs it; Compreensão needs it when
+  // "Falar tradução em português" is enabled.
   document.addEventListener('click', e => {
     const start = e.target?.closest?.('#rf2HfStart');
     if (!start) return;
-    if ((document.getElementById('rf2HfMode')?.value || 'recognition') !== 'production') return;
+    const mode = document.getElementById('rf2HfMode')?.value || 'recognition';
+    const wantsPortuguese = mode === 'production' || Boolean(document.getElementById('rf2HfPt')?.checked);
+    if (!wantsPortuguese) return;
     try {
       nativeResume();
       const u = new SpeechSynthesisUtterance('\u00A0');
