@@ -1,115 +1,116 @@
 (() => {
   'use strict';
-  if (window.__recallPtSpeechV2012) return;
+  if (window.__recallPtSpeechV2013) return;
   if (!('speechSynthesis' in window) || !window.SpeechSynthesisUtterance) return;
-  window.__recallPtSpeechV2012 = true;
+  window.__recallPtSpeechV2013 = true;
 
   const synth = window.speechSynthesis;
-  const nativeSpeak = synth.speak.bind(synth);
-  const nativeCancel = synth.cancel.bind(synth);
-  const nativeResume = synth.resume ? synth.resume.bind(synth) : () => {};
-  let handsFreeActive = false;
-  let primeUtterance = null;
+  const bridgeSpeak = synth.speak.bind(synth);
+  const bridgeCancel = synth.cancel.bind(synth);
+  const raw = window.recallNativeSpeech || {
+    speak: synth.speak.bind(synth),
+    cancel: synth.cancel.bind(synth),
+    resume: synth.resume ? synth.resume.bind(synth) : () => {}
+  };
 
-  function portugueseVoice() {
-    try {
-      const voices = synth.getVoices?.() || [];
-      return voices.find(v => /^pt-BR$/i.test(v.lang || '')) ||
-             voices.find(v => /^pt([_-]|$)/i.test(v.lang || '')) || null;
-    } catch { return null; }
+  function isPortuguese(utterance){
+    return /^pt([_-]|$)/i.test(String(utterance?.lang || ''));
   }
 
-  function makeUtterance(text) {
-    const u = new SpeechSynthesisUtterance(String(text || ''));
+  function clonePortuguese(source){
+    const u = new SpeechSynthesisUtterance(String(source?.text || ''));
     u.lang = 'pt-BR';
-    u.rate = 1;
-    const v = portugueseVoice();
-    if (v) u.voice = v;
+    u.rate = Number(source?.rate) || 1;
+    u.pitch = Number(source?.pitch) || 1;
+    u.volume = Number.isFinite(Number(source?.volume)) ? Number(source.volume) : 1;
     return u;
   }
 
-  // Unlock Portuguese TTS directly inside the user's tap. On iPhone this must
-  // happen synchronously; setTimeout/await before the first speak() is unreliable.
-  function prime() {
-    try {
-      nativeResume();
-      const u = makeUtterance('\u00A0');
-      u.volume = 0.01;
-      primeUtterance = u;
-      const release = () => { if (primeUtterance === u) primeUtterance = null; };
-      u.onend = release;
-      u.onerror = release;
-      nativeSpeak(u);
-      return true;
-    } catch {
-      primeUtterance = null;
-      return false;
-    }
-  }
+  function speakPortugueseDirect(source){
+    let finished = false;
+    let started = false;
+    let attempt = 0;
+    let watchdog = null;
 
-  function speak(text) {
-    return new Promise(resolve => {
+    const finish = (kind, event) => {
+      if (finished) return;
+      finished = true;
+      if (watchdog) clearTimeout(watchdog);
       try {
-        nativeResume();
-        const u = makeUtterance(text);
-        let done = false;
-        const timer = setTimeout(finish, Math.max(3500, Math.min(10000, String(text || '').length * 95)));
-        function finish() {
-          if (done) return;
-          done = true;
-          clearTimeout(timer);
-          u.onend = null;
-          u.onerror = null;
-          resolve();
-        }
-        u.onend = finish;
-        u.onerror = finish;
-        nativeSpeak(u);
-      } catch {
-        resolve();
-      }
-    });
-  }
-
-  function forceCancel() {
-    try { nativeCancel(); } catch {}
-    primeUtterance = null;
-  }
-
-  // The Hands-free controllers call speechSynthesis.cancel() during startup and
-  // immediately before Portuguese TTS. On iOS that destroys the user-gesture
-  // unlock and the later Portuguese utterance is silently dropped. While a
-  // Hands-free session is active, ignore those internal cancels. Stop/Back still
-  // perform a real native cancel below.
-  try {
-    synth.cancel = () => {
-      if (handsFreeActive) return;
-      forceCancel();
+        if (kind === 'end') source?.onend?.call(source, event);
+        else source?.onerror?.call(source, event);
+      } catch {}
     };
-  } catch {}
 
-  document.addEventListener('click', e => {
-    const start = e.target?.closest?.('#rf2HfStart');
-    if (start) {
-      // Starting again is an explicit reset: cancel old speech first, then prime
-      // immediately before the mode controller gets a chance to run.
-      forceCancel();
-      handsFreeActive = true;
-      prime();
+    const run = () => {
+      attempt += 1;
+      started = false;
+      const u = clonePortuguese(source);
+      u.onstart = event => {
+        started = true;
+        try { source?.onstart?.call(source, event); } catch {}
+      };
+      u.onend = event => finish('end', event);
+      u.onerror = event => {
+        if (attempt < 2 && !finished) {
+          setTimeout(run, 120);
+          return;
+        }
+        finish('error', event);
+      };
+
+      try {
+        // iOS is much more reliable when cancel/resume/speak happen together.
+        raw.cancel();
+        raw.resume();
+        raw.speak(u);
+      } catch (error) {
+        if (attempt < 2) setTimeout(run, 120);
+        else finish('error', error);
+        return;
+      }
+
+      if (watchdog) clearTimeout(watchdog);
+      watchdog = setTimeout(() => {
+        if (finished || started) return;
+        if (attempt < 2) {
+          try { raw.cancel(); } catch {}
+          run();
+        } else {
+          finish('error', new Error('pt-speech-did-not-start'));
+        }
+      }, 900);
+    };
+
+    run();
+  }
+
+  // English/German continue through the CAF bridge. Portuguese goes straight
+  // to Safari's native speech engine, avoiding the bridge and stale voice state.
+  synth.speak = function(utterance){
+    if (isPortuguese(utterance)) {
+      speakPortugueseDirect(utterance);
       return;
     }
+    return bridgeSpeak(utterance);
+  };
 
-    const stop = e.target?.closest?.('#rf2HfStop,#rf2HandsBack');
-    if (stop) {
-      handsFreeActive = false;
-      forceCancel();
-    }
-  }, true);
+  synth.cancel = function(){
+    try { raw.cancel(); } catch {}
+    try { return bridgeCancel(); } catch {}
+  };
 
   window.recallPtSpeech = {
-    prime,
-    speak,
-    cancel: forceCancel,
-    setHandsFreeActive(value) { handsFreeActive = Boolean(value); }
+    speak(text){
+      return new Promise(resolve => {
+        const u = new SpeechSynthesisUtterance(String(text || ''));
+        u.lang = 'pt-BR';
+        u.rate = 1;
+        u.onend = resolve;
+        u.onerror = resolve;
+        synth.speak(u);
+      });
+    },
+    cancel(){ try { synth.cancel(); } catch {} }
   };
 })();
