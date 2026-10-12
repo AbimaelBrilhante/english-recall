@@ -1,116 +1,64 @@
 (() => {
   'use strict';
-  if (window.__recallPtSpeechV2013) return;
+  if (window.__recallIosPtSpeechV193) return;
   if (!('speechSynthesis' in window) || !window.SpeechSynthesisUtterance) return;
-  window.__recallPtSpeechV2013 = true;
+  window.__recallIosPtSpeechV193 = true;
 
   const synth = window.speechSynthesis;
-  const bridgeSpeak = synth.speak.bind(synth);
-  const bridgeCancel = synth.cancel.bind(synth);
-  const raw = window.recallNativeSpeech || {
-    speak: synth.speak.bind(synth),
-    cancel: synth.cancel.bind(synth),
-    resume: synth.resume ? synth.resume.bind(synth) : () => {}
-  };
+  const nativeSpeak = synth.speak.bind(synth);
+  const nativeCancel = synth.cancel.bind(synth);
+  const nativeResume = synth.resume ? synth.resume.bind(synth) : () => {};
 
-  function isPortuguese(utterance){
-    return /^pt([_-]|$)/i.test(String(utterance?.lang || ''));
+  function portugueseVoice() {
+    try {
+      const voices = synth.getVoices?.() || [];
+      return voices.find(v => /^pt-BR$/i.test(v.lang || '')) ||
+             voices.find(v => /^pt([_-]|$)/i.test(v.lang || '')) || null;
+    } catch { return null; }
   }
 
-  function clonePortuguese(source){
-    const u = new SpeechSynthesisUtterance(String(source?.text || ''));
-    u.lang = 'pt-BR';
-    u.rate = Number(source?.rate) || 1;
-    u.pitch = Number(source?.pitch) || 1;
-    u.volume = Number.isFinite(Number(source?.volume)) ? Number(source.volume) : 1;
-    return u;
+  // iOS/Safari can drop a pt-BR utterance when cancel() -> speak() happens
+  // immediately after priming an HTMLAudioElement. A short defer keeps the
+  // speech engine alive without changing the Hands-free session timing logic.
+  function wrappedSpeak(utterance) {
+    const lang = String(utterance?.lang || '');
+    if (!/^pt([_-]|$)/i.test(lang)) return nativeSpeak(utterance);
+    try {
+      const v = portugueseVoice();
+      if (v && !utterance.voice) utterance.voice = v;
+      nativeResume();
+    } catch {}
+    setTimeout(() => {
+      try { nativeResume(); } catch {}
+      try { nativeSpeak(utterance); } catch {}
+    }, 180);
   }
 
-  function speakPortugueseDirect(source){
-    let finished = false;
-    let started = false;
-    let attempt = 0;
-    let watchdog = null;
+  try { synth.speak = wrappedSpeak; } catch {}
 
-    const finish = (kind, event) => {
-      if (finished) return;
-      finished = true;
-      if (watchdog) clearTimeout(watchdog);
-      try {
-        if (kind === 'end') source?.onend?.call(source, event);
-        else source?.onerror?.call(source, event);
-      } catch {}
-    };
-
-    const run = () => {
-      attempt += 1;
-      started = false;
-      const u = clonePortuguese(source);
-      u.onstart = event => {
-        started = true;
-        try { source?.onstart?.call(source, event); } catch {}
-      };
-      u.onend = event => finish('end', event);
-      u.onerror = event => {
-        if (attempt < 2 && !finished) {
-          setTimeout(run, 120);
-          return;
-        }
-        finish('error', event);
-      };
-
-      try {
-        // iOS is much more reliable when cancel/resume/speak happen together.
-        raw.cancel();
-        raw.resume();
-        raw.speak(u);
-      } catch (error) {
-        if (attempt < 2) setTimeout(run, 120);
-        else finish('error', error);
-        return;
-      }
-
-      if (watchdog) clearTimeout(watchdog);
-      watchdog = setTimeout(() => {
-        if (finished || started) return;
-        if (attempt < 2) {
-          try { raw.cancel(); } catch {}
-          run();
-        } else {
-          finish('error', new Error('pt-speech-did-not-start'));
-        }
-      }, 900);
-    };
-
-    run();
+  function primePortuguese() {
+    try {
+      nativeResume();
+      const u = new SpeechSynthesisUtterance('\u00A0');
+      u.lang = 'pt-BR';
+      u.volume = 0;
+      const v = portugueseVoice();
+      if (v) u.voice = v;
+      nativeSpeak(u);
+      setTimeout(() => { try { nativeCancel(); } catch {} }, 40);
+    } catch {}
   }
 
-  // English/German continue through the CAF bridge. Portuguese goes straight
-  // to Safari's native speech engine, avoiding the bridge and stale voice state.
-  synth.speak = function(utterance){
-    if (isPortuguese(utterance)) {
-      speakPortugueseDirect(utterance);
-      return;
-    }
-    return bridgeSpeak(utterance);
-  };
-
-  synth.cancel = function(){
-    try { raw.cancel(); } catch {}
-    try { return bridgeCancel(); } catch {}
-  };
-
-  window.recallPtSpeech = {
-    speak(text){
-      return new Promise(resolve => {
-        const u = new SpeechSynthesisUtterance(String(text || ''));
-        u.lang = 'pt-BR';
-        u.rate = 1;
-        u.onend = resolve;
-        u.onerror = resolve;
-        synth.speak(u);
-      });
-    },
-    cancel(){ try { synth.cancel(); } catch {} }
-  };
+  // Prime Portuguese speech from the user's Start tap. In Compreensão the
+  // recognition controller first stops any previous session, so prime just
+  // after that synchronous cleanup. Production keeps its proven immediate path.
+  document.addEventListener('click', e => {
+    const start = e.target?.closest?.('#rf2HfStart');
+    if (!start) return;
+    const mode = document.getElementById('rf2HfMode')?.value || 'recognition';
+    const wantsPortuguese = mode === 'production' || Boolean(document.getElementById('rf2HfPt')?.checked);
+    if (!wantsPortuguese) return;
+    if (mode === 'recognition') setTimeout(primePortuguese, 80);
+    else primePortuguese();
+  }, true);
 })();
