@@ -6,6 +6,14 @@
   const synth = window.speechSynthesis;
   const nativeSpeak = synth.speak.bind(synth);
   const nativeCancel = synth.cancel.bind(synth);
+  const nativeResume = synth.resume ? synth.resume.bind(synth) : () => {};
+
+  // Keep a direct reference to Safari's real speech engine before this bridge
+  // replaces speak/cancel. Portuguese Hands-free uses it to bypass the CAF map.
+  if (!window.recallNativeSpeech) {
+    window.recallNativeSpeech = { speak:nativeSpeak, cancel:nativeCancel, resume:nativeResume };
+  }
+
   const prerecordedByLang = new Map();
   const prerecordedByText = new Map();
   let activeAudio = null;
