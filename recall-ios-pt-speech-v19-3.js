@@ -8,6 +8,7 @@
   const nativeSpeak = synth.speak.bind(synth);
   const nativeCancel = synth.cancel.bind(synth);
   const nativeResume = synth.resume ? synth.resume.bind(synth) : () => {};
+  let handsFreeActive = false;
   let primeUtterance = null;
 
   function portugueseVoice() {
@@ -27,9 +28,8 @@
     return u;
   }
 
-  // iOS only reliably unlocks speechSynthesis when speak() is called directly
-  // inside the user's tap. Controllers call this after their own cancel/cleanup
-  // and immediately after starting the HTMLAudioElement prime, before any await.
+  // Unlock Portuguese TTS directly inside the user's tap. On iPhone this must
+  // happen synchronously; setTimeout/await before the first speak() is unreliable.
   function prime() {
     try {
       nativeResume();
@@ -71,10 +71,45 @@
     });
   }
 
-  function cancel() {
+  function forceCancel() {
     try { nativeCancel(); } catch {}
     primeUtterance = null;
   }
 
-  window.recallPtSpeech = { prime, speak, cancel };
+  // The Hands-free controllers call speechSynthesis.cancel() during startup and
+  // immediately before Portuguese TTS. On iOS that destroys the user-gesture
+  // unlock and the later Portuguese utterance is silently dropped. While a
+  // Hands-free session is active, ignore those internal cancels. Stop/Back still
+  // perform a real native cancel below.
+  try {
+    synth.cancel = () => {
+      if (handsFreeActive) return;
+      forceCancel();
+    };
+  } catch {}
+
+  document.addEventListener('click', e => {
+    const start = e.target?.closest?.('#rf2HfStart');
+    if (start) {
+      // Starting again is an explicit reset: cancel old speech first, then prime
+      // immediately before the mode controller gets a chance to run.
+      forceCancel();
+      handsFreeActive = true;
+      prime();
+      return;
+    }
+
+    const stop = e.target?.closest?.('#rf2HfStop,#rf2HandsBack');
+    if (stop) {
+      handsFreeActive = false;
+      forceCancel();
+    }
+  }, true);
+
+  window.recallPtSpeech = {
+    prime,
+    speak,
+    cancel: forceCancel,
+    setHandsFreeActive(value) { handsFreeActive = Boolean(value); }
+  };
 })();
