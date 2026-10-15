@@ -43,16 +43,55 @@ const nativeGetUserMedia = md.getUserMedia.bind(md);
 const transient = new Set(['NotReadableError', 'AbortError', 'InvalidStateError']);
 let lastMicError = null;
 
+function setAudioSession(type) {
+  try {
+    if (navigator.audioSession && navigator.audioSession.type !== type) {
+      navigator.audioSession.type = type;
+    }
+    return navigator.audioSession?.type || null;
+  } catch {
+    return null;
+  }
+}
+
+function restorePlaybackWhenStopped(stream) {
+  try {
+    const tracks = stream?.getAudioTracks?.() || [];
+    for (const track of tracks) {
+      const nativeStop = track.stop?.bind(track);
+      if (!nativeStop || track.__recallStopWrapped) continue;
+      track.__recallStopWrapped = true;
+      track.stop = () => {
+        try { nativeStop(); }
+        finally {
+          setTimeout(() => {
+            if (inSpeakingBuilder()) setAudioSession('playback');
+          }, 80);
+        }
+      };
+    }
+  } catch {}
+  return stream;
+}
+
+async function captureWithCorrectSession(constraints) {
+  // The Portuguese TTS workaround can leave WebKit in "playback".
+  // Safari requires "play-and-record" before microphone capture.
+  setAudioSession('play-and-record');
+  await sleep(120);
+  return restorePlaybackWhenStopped(await nativeGetUserMedia(constraints));
+}
+
 const wrappedGetUserMedia = async constraints => {
   if (!inSpeakingBuilder() || !constraints?.audio) return nativeGetUserMedia(constraints);
   try {
-    return await nativeGetUserMedia(constraints);
+    return await captureWithCorrectSession(constraints);
   } catch (err) {
     lastMicError = { name: err?.name || 'UnknownError', message: err?.message || '' };
     if (!transient.has(err?.name)) throw err;
-    await sleep(700);
+    await sleep(500);
     try {
-      return await nativeGetUserMedia(constraints);
+      return await captureWithCorrectSession(constraints);
     } catch (err2) {
       lastMicError = { name: err2?.name || 'UnknownError', message: err2?.message || '' };
       throw err2;
