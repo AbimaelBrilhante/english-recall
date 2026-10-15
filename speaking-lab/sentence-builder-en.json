@@ -1,0 +1,126 @@
+{
+  "version": 1,
+  "language": "en-US",
+  "exercises": [
+    {
+      "id": "sb-001",
+      "level": "B1",
+      "type": "past_tense",
+      "label": "Passado",
+      "promptSegments": [
+        {"lang": "en-US", "text": "Change this sentence to the past."},
+        {"lang": "en-US", "text": "I create dashboards."}
+      ],
+      "promptText": "Change this sentence to the past: I create dashboards.",
+      "model": "I created dashboards.",
+      "accepted": ["I created dashboards."],
+      "focus": ["created"],
+      "openEnded": false
+    },
+    {
+      "id": "sb-002",
+      "level": "B1",
+      "type": "grammar_fix",
+      "label": "Gramática",
+      "promptSegments": [
+        {"lang": "en-US", "text": "Correct this sentence."},
+        {"lang": "en-US", "text": "I responsible for the project."}
+      ],
+      "promptText": "Correct this sentence: I responsible for the project.",
+      "model": "I'm responsible for the project.",
+      "accepted": ["I'm responsible for the project.", "I am responsible for the project."],
+      "focus": ["responsible"],
+      "openEnded": false
+    },
+    {
+      "id": "sb-003",
+      "level": "B1",
+      "type": "pt_to_en",
+      "label": "Produção",
+      "promptSegments": [
+        {"lang": "en-US", "text": "Say this in English."},
+        {"lang": "pt-BR", "text": "Eu uso dados para resolver problemas de negócio."}
+      ],
+      "promptText": "Say in English: Eu uso dados para resolver problemas de negócio.",
+      "model": "I use data to solve business problems.",
+      "accepted": ["I use data to solve business problems.", "I use data to solve business issues."],
+      "focus": ["data", "solve", "business"],
+      "openEnded": false
+    },
+    {
+      "id": "sb-004",
+      "level": "B1+",
+      "type": "purpose",
+      "label": "Finalidade",
+      "promptSegments": [
+        {"lang": "en-US", "text": "Complete the idea with a professional purpose."},
+        {"lang": "en-US", "text": "I automated the validation process."}
+      ],
+      "promptText": "Complete the idea with a professional purpose: I automated the validation process...",
+      "model": "I automated the validation process to reduce manual work and improve accuracy.",
+      "accepted": [],
+      "focus": ["to", "reduce", "improve"],
+      "openEnded": true
+    },
+    {
+      "id": "sb-005",
+      "level": "B1+",
+      "type": "professionalize",
+      "label": "Profissionalizar",
+      "promptSegments": [
+        {"lang": "en-US", "text": "Make this sentence sound more professional."},
+        {"lang": "en-US", "text": "I checked the numbers and fixed the problem."}
+      ],
+      "promptText": "Make this more professional: I checked the numbers and fixed the problem.",
+      "model": "I analyzed the data, identified the inconsistency, and corrected the issue.",
+      "accepted": [],
+      "focus": ["analyzed", "identified", "corrected"],
+      "openEnded": true
+    },
+    {
+      "id": "sb-006",
+      "level": "B1+",
+      "type": "combine",
+      "label": "Combinar ideias",
+      "promptSegments": [
+        {"lang": "en-US", "text": "Combine these two ideas naturally."},
+        {"lang": "en-US", "text": "I found an inconsistency. I corrected the source data."}
+      ],
+      "promptText": "Combine naturally: I found an inconsistency. I corrected the source data.",
+      "model": "I found an inconsistency, so I corrected the source data.",
+      "accepted": ["I found an inconsistency, so I corrected the source data.", "I found an inconsistency and corrected the source data."],
+      "focus": ["inconsistency", "corrected", "source"],
+      "openEnded": false
+    },
+    {
+      "id": "sb-007",
+      "level": "B1+",
+      "type": "to_verb",
+      "label": "to + verbo",
+      "promptSegments": [
+        {"lang": "en-US", "text": "Say this in English."},
+        {"lang": "pt-BR", "text": "Eu criei uma regra para validar os dados."}
+      ],
+      "promptText": "Say in English: Eu criei uma regra para validar os dados.",
+      "model": "I created a rule to validate the data.",
+      "accepted": ["I created a rule to validate the data.", "I created a rule to validate data."],
+      "focus": ["to validate", "data"],
+      "openEnded": false
+    },
+    {
+      "id": "sb-008",
+      "level": "B2",
+      "type": "impact",
+      "label": "Impacto",
+      "promptSegments": [
+        {"lang": "en-US", "text": "Finish this answer with professional impact."},
+        {"lang": "en-US", "text": "The process used to be manual, but I automated it."}
+      ],
+      "promptText": "Finish with professional impact: The process used to be manual, but I automated it.",
+      "model": "As a result, the team reduced manual effort, improved consistency, and could focus on higher-value analysis.",
+      "accepted": [],
+      "focus": ["result", "reduced", "improved"],
+      "openEnded": true
+    }
+  ]
+}
