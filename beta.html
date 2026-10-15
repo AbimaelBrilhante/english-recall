@@ -31,10 +31,10 @@ html,body{margin:0;min-height:100%;background:#f7f7fb;font-family:-apple-system,
     if(!r.ok) throw new Error('Falha ao carregar o Recall base: HTTP '+r.status);
     let t=bridge(await r.text());
     t=t.replace("if('serviceWorker'in navigator){","if(false && 'serviceWorker'in navigator){");
-    if(!t.includes('theme-hotfix.css')) t=t.replace('</head>','<link rel="stylesheet" href="./theme-hotfix.css?v=beta-direct-1">\n</head>');
-    if(!t.includes('recall-home-v20.css')) t=t.replace('</head>','<link rel="stylesheet" href="./recall-home-v20.css?v=beta-direct-1">\n</head>');
+    if(!t.includes('theme-hotfix.css')) t=t.replace('</head>','<link rel="stylesheet" href="./theme-hotfix.css?v=beta-direct-2">\n</head>');
+    if(!t.includes('recall-home-v20.css')) t=t.replace('</head>','<link rel="stylesheet" href="./recall-home-v20.css?v=beta-direct-2">\n</head>');
     for(const s of modules){
-      if(!t.includes(s)) t=t.replace('</body>',`<script src="./${s}?v=beta-direct-1"></script>\n</body>`);
+      if(!t.includes(s)) t=t.replace('</body>',`<script src="./${s}?v=beta-direct-2"><\/script>\n</body>`);
     }
     t=t.replace('<title>Recall</title>','<title>Recall Beta</title>');
     document.open();document.write(t);document.close();
