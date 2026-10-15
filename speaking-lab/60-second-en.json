@@ -1,0 +1,101 @@
+{
+  "version": 1,
+  "topics": [
+    {
+      "id": "project-dashboard",
+      "level": "B1",
+      "category": "Projeto",
+      "prompt": "You have sixty seconds. Explain a dashboard or data project you worked on. Describe the problem, what you did, and the result.",
+      "model": "One project I worked on was a dashboard to help the team identify inconsistencies faster. I first understood the business rules and the available data sources. Then I created the data logic and built the dashboard so the analysts could focus on exceptions instead of checking everything manually. As a result, the process became faster and more consistent.",
+      "anchors": ["problem", "what you did", "result"]
+    },
+    {
+      "id": "project-proud",
+      "level": "B1+",
+      "category": "Projeto",
+      "prompt": "Tell me about a project you are proud of. Explain why it mattered, your role, and the impact it created.",
+      "model": "A project I am proud of involved improving a manual validation process. My role was to understand the rules, connect the relevant data, and create a more automated way to identify exceptions. The project mattered because it reduced repetitive work and gave the team more time to investigate the cases that really needed attention.",
+      "anchors": ["why it mattered", "your role", "impact"]
+    },
+    {
+      "id": "automation-process",
+      "level": "B1",
+      "category": "Automação",
+      "prompt": "Describe a process you automated. What was manual before, what did you automate, and what changed after the automation?",
+      "model": "The process used to require analysts to compare information manually. I automated part of the validation by bringing the data together and applying the business rules automatically. After that, the analysts only needed to review the exceptions. This reduced manual effort and made the process easier to control.",
+      "anchors": ["manual before", "automation", "what changed"]
+    },
+    {
+      "id": "automation-measurable",
+      "level": "B2",
+      "category": "Automação",
+      "prompt": "Explain an automation that created measurable impact. Focus on the original problem, your technical approach, and the business result.",
+      "model": "I automated a reconciliation process that previously depended on several manual checks. I mapped the business rules, consolidated the relevant sources, and implemented the validation logic in the data layer. The main result was a reduction in manual analysis time, while also improving consistency and making exceptions easier to monitor.",
+      "anchors": ["original problem", "technical approach", "business result"]
+    },
+    {
+      "id": "sql-daily",
+      "level": "B1",
+      "category": "SQL",
+      "prompt": "Explain how you use SQL in your daily work. Give one concrete example of a problem you solve with it.",
+      "model": "I use SQL mainly to extract, transform, and validate data. For example, when I need to investigate an inconsistency, I query the relevant tables, compare the records using the business keys, and identify where the difference comes from. I also use SQL to prepare datasets for dashboards and automated controls.",
+      "anchors": ["how you use SQL", "concrete example", "result"]
+    },
+    {
+      "id": "sql-quality",
+      "level": "B1+",
+      "category": "SQL",
+      "prompt": "How would you use SQL to investigate a data quality problem? Explain your approach from the first check to the conclusion.",
+      "model": "I would start by understanding what is considered incorrect and which source should be treated as the reference. Then I would use SQL to isolate the affected records, check joins and keys, compare values across sources, and look for patterns. Finally, I would validate the findings with the business rules before proposing a correction.",
+      "anchors": ["define the problem", "investigate with SQL", "validate"]
+    },
+    {
+      "id": "challenge-professional",
+      "level": "B1",
+      "category": "Desafio",
+      "prompt": "Describe a difficult situation at work. What made it difficult, what action did you take, and what happened in the end?",
+      "model": "One difficult situation was dealing with a process where the rules were not completely documented. I first talked to the people who performed the process and compared their explanations with the data. Then I documented the rules and tested the logic with real cases. In the end, we had a clearer process and fewer interpretation problems.",
+      "anchors": ["difficulty", "action", "outcome"]
+    },
+    {
+      "id": "challenge-ambiguity",
+      "level": "B2",
+      "category": "Desafio",
+      "prompt": "Tell me about a time you had incomplete or ambiguous requirements. How did you reduce uncertainty and move the work forward?",
+      "model": "I have worked on situations where the initial requirement was too broad to implement safely. I reduced the uncertainty by breaking the problem into smaller questions, validating examples with the business users, and documenting the decisions. That allowed me to move forward while keeping the solution aligned with the real process.",
+      "anchors": ["ambiguity", "how you clarified it", "decision"]
+    },
+    {
+      "id": "technical-decision",
+      "level": "B1+",
+      "category": "Decisão técnica",
+      "prompt": "Explain a technical decision you made in a project. What options did you consider, why did you choose one, and what was the trade-off?",
+      "model": "In one project, I had to decide whether to keep part of the logic in the visualization layer or move it to the data layer. I chose the data layer because the rule would be reused and was easier to govern there. The trade-off was a little more development effort at the beginning, but the final solution was more consistent and easier to maintain.",
+      "anchors": ["options", "reason", "trade-off"]
+    },
+    {
+      "id": "technical-validation",
+      "level": "B2",
+      "category": "Decisão técnica",
+      "prompt": "How do you decide whether a data solution is reliable enough to release? Explain the checks you consider before users depend on it.",
+      "model": "Before releasing a data solution, I validate both the technical logic and the business meaning of the result. I compare samples with the source systems, test edge cases, check whether important exceptions are handled, and validate the output with business users. I also make sure the process can be monitored after release.",
+      "anchors": ["technical checks", "business validation", "monitoring"]
+    },
+    {
+      "id": "unexpected-mistake",
+      "level": "B1+",
+      "category": "Pergunta inesperada",
+      "prompt": "Tell me about a mistake you made at work and what you learned from it.",
+      "model": "Earlier in my career, I once focused too quickly on the technical solution before confirming all the business rules. I had to revisit part of the work after receiving new information. Since then, I try to validate the process and the expected result earlier, especially when different teams are involved.",
+      "anchors": ["mistake", "what happened", "what you learned"]
+    },
+    {
+      "id": "unexpected-disagree",
+      "level": "B2",
+      "category": "Pergunta inesperada",
+      "prompt": "What would you do if you disagreed with a stakeholder about the interpretation of the data?",
+      "model": "I would avoid treating it as a personal disagreement and go back to the evidence. I would clarify the business definition, compare the data sources, and use concrete examples to understand where our interpretations differ. If the rule is still ambiguous, I would document the alternatives and ask the appropriate owner to make the final decision.",
+      "anchors": ["evidence", "clarify the definition", "resolve ambiguity"]
+    }
+  ]
+}
