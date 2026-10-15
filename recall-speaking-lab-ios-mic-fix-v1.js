@@ -8,13 +8,16 @@ if (!isIOS) return;
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 const inSpeakingBuilder = () => document.getElementById('view-speaking-builder')?.classList.contains('active');
+const inSpeakingSixty = () => document.getElementById('view-speaking-sixty')?.classList.contains('active');
+const inSpeakingCapture = () => inSpeakingBuilder() || inSpeakingSixty();
 
-// Recording is primary in Sentence Builder. Keep SpeechRecognition disabled here on iOS.
+// Recording is primary in Speaking Lab. Keep SpeechRecognition optional on iOS
+// so it cannot contend with MediaRecorder for the audio session.
 function installScopedRecognitionGuard(key) {
   const Native = window[key];
   if (typeof Native !== 'function') return;
   function GuardedRecognition(...args) {
-    if (inSpeakingBuilder()) {
+    if (inSpeakingCapture()) {
       return {
         lang: 'en-US',
         interimResults: false,
@@ -65,7 +68,7 @@ function restorePlaybackWhenStopped(stream) {
         try { nativeStop(); }
         finally {
           setTimeout(() => {
-            if (inSpeakingBuilder()) setAudioSession('playback');
+            if (inSpeakingCapture()) setAudioSession('playback');
           }, 80);
         }
       };
@@ -75,15 +78,15 @@ function restorePlaybackWhenStopped(stream) {
 }
 
 async function captureWithCorrectSession(constraints) {
-  // The Portuguese TTS workaround can leave WebKit in "playback".
-  // Safari requires "play-and-record" before microphone capture.
+  // TTS can leave WebKit in "playback". Safari requires "play-and-record"
+  // before microphone capture in both Sentence Builder and 60-Second Challenge.
   setAudioSession('play-and-record');
   await sleep(120);
   return restorePlaybackWhenStopped(await nativeGetUserMedia(constraints));
 }
 
 const wrappedGetUserMedia = async constraints => {
-  if (!inSpeakingBuilder() || !constraints?.audio) return nativeGetUserMedia(constraints);
+  if (!inSpeakingCapture() || !constraints?.audio) return nativeGetUserMedia(constraints);
   try {
     return await captureWithCorrectSession(constraints);
   } catch (err) {
@@ -102,7 +105,7 @@ const wrappedGetUserMedia = async constraints => {
 try { Object.defineProperty(md, 'getUserMedia', { configurable: true, writable: true, value: wrappedGetUserMedia }); }
 catch { try { md.getUserMedia = wrappedGetUserMedia; } catch {} }
 
-// Replace only the generic Sentence Builder mic alert with the real iOS/WebKit error.
+// Keep the detailed diagnostic for the Sentence Builder alert path.
 const nativeAlert = window.alert.bind(window);
 window.alert = msg => {
   const text = String(msg || '');
