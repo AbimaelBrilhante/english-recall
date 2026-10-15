@@ -9,6 +9,7 @@ if (!isIOS) return;
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 const inSpeakingBuilder = () => document.getElementById('view-speaking-builder')?.classList.contains('active');
 
+// Recording is primary in Sentence Builder. Keep SpeechRecognition disabled here on iOS.
 function installScopedRecognitionGuard(key) {
   const Native = window[key];
   if (typeof Native !== 'function') return;
@@ -38,93 +39,39 @@ installScopedRecognitionGuard('webkitSpeechRecognition');
 
 const md = navigator.mediaDevices;
 if (!md?.getUserMedia) return;
-
 const nativeGetUserMedia = md.getUserMedia.bind(md);
-let sourceStream = null;
-let sourcePromise = null;
-
-function sourceIsLive() {
-  return Boolean(sourceStream?.getAudioTracks?.().some(t => t.readyState === 'live'));
-}
-
-function releaseSource() {
-  try { sourceStream?.getTracks?.().forEach(t => t.stop()); } catch {}
-  sourceStream = null;
-  sourcePromise = null;
-}
-
-async function ensureSource(constraints) {
-  if (sourceIsLive()) return sourceStream;
-  releaseSource();
-  if (!sourcePromise) {
-    sourcePromise = nativeGetUserMedia(constraints)
-      .then(s => {
-        sourceStream = s;
-        sourcePromise = null;
-        return s;
-      })
-      .catch(err => {
-        sourcePromise = null;
-        throw err;
-      });
-  }
-  return sourcePromise;
-}
-
-function cloneForAttempt(source) {
-  const audio = source.getAudioTracks?.() || [];
-  if (!audio.length) throw new DOMException('No live audio track', 'NotReadableError');
-  const cloned = audio.map(track => {
-    const c = track.clone();
-    try { c.enabled = true; } catch {}
-    return c;
-  });
-  return new MediaStream(cloned);
-}
+const transient = new Set(['NotReadableError', 'AbortError', 'InvalidStateError']);
+let lastMicError = null;
 
 const wrappedGetUserMedia = async constraints => {
-  if (!inSpeakingBuilder() || !constraints?.audio) {
-    return nativeGetUserMedia(constraints);
-  }
-
+  if (!inSpeakingBuilder() || !constraints?.audio) return nativeGetUserMedia(constraints);
   try {
-    const source = await ensureSource(constraints);
-    return cloneForAttempt(source);
+    return await nativeGetUserMedia(constraints);
   } catch (err) {
-    if (!['NotReadableError', 'AbortError', 'InvalidStateError'].includes(err?.name)) throw err;
-    releaseSource();
-    await sleep(900);
-    const source = await ensureSource(constraints);
-    return cloneForAttempt(source);
+    lastMicError = { name: err?.name || 'UnknownError', message: err?.message || '' };
+    if (!transient.has(err?.name)) throw err;
+    await sleep(700);
+    try {
+      return await nativeGetUserMedia(constraints);
+    } catch (err2) {
+      lastMicError = { name: err2?.name || 'UnknownError', message: err2?.message || '' };
+      throw err2;
+    }
   }
 };
 
-let wrapperInstalled = false;
-try {
-  Object.defineProperty(md, 'getUserMedia', {
-    configurable: true,
-    writable: true,
-    value: wrappedGetUserMedia
-  });
-  wrapperInstalled = md.getUserMedia === wrappedGetUserMedia;
-} catch {}
-if (!wrapperInstalled) {
-  try {
-    md.getUserMedia = wrappedGetUserMedia;
-    wrapperInstalled = md.getUserMedia === wrappedGetUserMedia;
-  } catch {}
-}
-window.__recallSpeakingLabMicWrapperInstalled = wrapperInstalled;
+try { Object.defineProperty(md, 'getUserMedia', { configurable: true, writable: true, value: wrappedGetUserMedia }); }
+catch { try { md.getUserMedia = wrappedGetUserMedia; } catch {} }
 
-let wasInBuilder = false;
-const watchView = () => {
-  const now = inSpeakingBuilder();
-  if (wasInBuilder && !now) releaseSource();
-  wasInBuilder = now;
+// Replace only the generic Sentence Builder mic alert with the real iOS/WebKit error.
+const nativeAlert = window.alert.bind(window);
+window.alert = msg => {
+  const text = String(msg || '');
+  if (inSpeakingBuilder() && text.startsWith('Não consegui acessar o microfone') && lastMicError) {
+    const detail = lastMicError.message ? `\n\n${lastMicError.message}` : '';
+    nativeAlert(`Falha do microfone no iPhone: ${lastMicError.name}${detail}`);
+    return;
+  }
+  nativeAlert(msg);
 };
-const observer = new MutationObserver(watchView);
-try { observer.observe(document.documentElement, { subtree: true, childList: true, attributes: true, attributeFilter: ['class'] }); } catch {}
-window.addEventListener('pagehide', releaseSource);
-window.addEventListener('beforeunload', releaseSource);
-setInterval(watchView, 500);
 })();
