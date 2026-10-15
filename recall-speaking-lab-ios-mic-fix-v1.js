@@ -9,8 +9,6 @@ if (!isIOS) return;
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 const inSpeakingBuilder = () => document.getElementById('view-speaking-builder')?.classList.contains('active');
 
-// Sentence Builder: recording is primary. Avoid running Web Speech Recognition
-// at the same time as MediaRecorder on iOS; transcription remains optional.
 function installScopedRecognitionGuard(key) {
   const Native = window[key];
   if (typeof Native !== 'function') return;
@@ -84,30 +82,40 @@ function cloneForAttempt(source) {
   return new MediaStream(cloned);
 }
 
-// Reuse one native microphone source throughout the Sentence Builder session.
-// The app still receives a disposable stream per attempt, so its normal cleanup
-// stops only the cloned track and not the native source.
+const wrappedGetUserMedia = async constraints => {
+  if (!inSpeakingBuilder() || !constraints?.audio) {
+    return nativeGetUserMedia(constraints);
+  }
+
+  try {
+    const source = await ensureSource(constraints);
+    return cloneForAttempt(source);
+  } catch (err) {
+    if (!['NotReadableError', 'AbortError', 'InvalidStateError'].includes(err?.name)) throw err;
+    releaseSource();
+    await sleep(900);
+    const source = await ensureSource(constraints);
+    return cloneForAttempt(source);
+  }
+};
+
+let wrapperInstalled = false;
 try {
-  md.getUserMedia = async constraints => {
-    if (!inSpeakingBuilder() || !constraints?.audio) {
-      return nativeGetUserMedia(constraints);
-    }
-
-    try {
-      const source = await ensureSource(constraints);
-      return cloneForAttempt(source);
-    } catch (err) {
-      // One recovery attempt for transient Safari device-state failures.
-      if (!['NotReadableError', 'AbortError', 'InvalidStateError'].includes(err?.name)) throw err;
-      releaseSource();
-      await sleep(900);
-      const source = await ensureSource(constraints);
-      return cloneForAttempt(source);
-    }
-  };
+  Object.defineProperty(md, 'getUserMedia', {
+    configurable: true,
+    writable: true,
+    value: wrappedGetUserMedia
+  });
+  wrapperInstalled = md.getUserMedia === wrappedGetUserMedia;
 } catch {}
+if (!wrapperInstalled) {
+  try {
+    md.getUserMedia = wrappedGetUserMedia;
+    wrapperInstalled = md.getUserMedia === wrappedGetUserMedia;
+  } catch {}
+}
+window.__recallSpeakingLabMicWrapperInstalled = wrapperInstalled;
 
-// Release the native source as soon as the user leaves Sentence Builder.
 let wasInBuilder = false;
 const watchView = () => {
   const now = inSpeakingBuilder();
