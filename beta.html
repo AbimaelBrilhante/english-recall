@@ -16,7 +16,7 @@ html,body{margin:0;min-height:100%;background:#f7f7fb;font-family:-apple-system,
 (async()=>{
   const load=document.getElementById('betaLoading');
   const modules=[
-    'voice-diagnostics.js','audio-bridge.js','home-controls.js','recall-features-v2.js','home-layout-v2.js','recall-advanced-v3.js','recall-flow-fixes-v14.js','recall-single-audio-v14-1.js','recall-auto-tags-v15.js','recall-practice-v16.js','recall-review-layout-v16-1.js','recall-modern-v17.js','recall-audio-dedupe-v17-1.js','recall-insights-v18.js','recall-cefr-v18-1.js','recall-learning-v19.js','recall-ios-pt-speech-v19-3.js','recall-handsfree-recognition-v20-11.js','recall-handsfree-production-v19-2.js','recall-cram-natural-v19-4.js','recall-study-window-v19-8.js','recall-smart-sessions-v19-9.js','recall-home-v20.js','recall-repair-v20-7.js','recall-version-v18-1.js','recall-speaking-lab-ios-mic-fix-v1.js','recall-speaking-lab-beta-v2.js'
+    'voice-diagnostics.js','audio-bridge.js','home-controls.js','recall-features-v2.js','home-layout-v2.js','recall-advanced-v3.js','recall-flow-fixes-v14.js','recall-single-audio-v14-1.js','recall-auto-tags-v15.js','recall-practice-v16.js','recall-review-layout-v16-1.js','recall-modern-v17.js','recall-audio-dedupe-v17-1.js','recall-insights-v18.js','recall-cefr-v18-1.js','recall-learning-v19.js','recall-ios-pt-speech-v19-3.js','recall-handsfree-recognition-v20-11.js','recall-handsfree-production-v19-2.js','recall-cram-natural-v19-4.js','recall-study-window-v19-8.js','recall-smart-sessions-v19-9.js','recall-home-v20.js','recall-repair-v20-7.js','recall-version-v18-1.js','recall-speaking-lab-ios-mic-fix-v1.js','recall-speaking-lab-bank-v1.js','recall-speaking-lab-beta-v2.js'
   ];
   function bridge(text){
     if(text.includes('window.recallCore=')) return text;
@@ -31,10 +31,10 @@ html,body{margin:0;min-height:100%;background:#f7f7fb;font-family:-apple-system,
     if(!r.ok) throw new Error('Falha ao carregar o Recall base: HTTP '+r.status);
     let t=bridge(await r.text());
     t=t.replace("if('serviceWorker'in navigator){","if(false && 'serviceWorker'in navigator){");
-    if(!t.includes('theme-hotfix.css')) t=t.replace('</head>','<link rel="stylesheet" href="./theme-hotfix.css?v=beta-direct-3">\n</head>');
-    if(!t.includes('recall-home-v20.css')) t=t.replace('</head>','<link rel="stylesheet" href="./recall-home-v20.css?v=beta-direct-3">\n</head>');
+    if(!t.includes('theme-hotfix.css')) t=t.replace('</head>','<link rel="stylesheet" href="./theme-hotfix.css?v=beta-direct-4">\n</head>');
+    if(!t.includes('recall-home-v20.css')) t=t.replace('</head>','<link rel="stylesheet" href="./recall-home-v20.css?v=beta-direct-4">\n</head>');
     for(const s of modules){
-      if(!t.includes(s)) t=t.replace('</body>',`<script src="./${s}?v=beta-direct-3"><\/script>\n</body>`);
+      if(!t.includes(s)) t=t.replace('</body>',`<script src="./${s}?v=beta-direct-4"><\/script>\n</body>`);
     }
     t=t.replace('<title>Recall</title>','<title>Recall Beta</title>');
     document.open();document.write(t);document.close();
