@@ -1,0 +1,105 @@
+{
+  "version": 1,
+  "patterns": [
+    {
+      "id": "responsible-be",
+      "label": "be + responsible",
+      "note": "Use am/is/are before responsible.",
+      "exercises": [
+        {"id":"er-001","level":"B1","prompt":"Say in English: Sou responsável por validar os resultados.","lang":"pt-BR","model":"I'm responsible for validating the results."},
+        {"id":"er-002","level":"B1","prompt":"Say in English: Ela é responsável pelo relatório mensal.","lang":"pt-BR","model":"She's responsible for the monthly report."},
+        {"id":"er-003","level":"B1+","prompt":"Complete naturally: In this project, I ___ responsible for the validation process.","lang":"en-US","model":"In this project, I'm responsible for the validation process."}
+      ]
+    },
+    {
+      "id": "information-uncountable",
+      "label": "information",
+      "note": "Information is uncountable: no informations.",
+      "exercises": [
+        {"id":"er-004","level":"B1","prompt":"Say in English: Eu preciso de mais informações sobre o processo.","lang":"pt-BR","model":"I need more information about the process."},
+        {"id":"er-005","level":"B1+","prompt":"Make this natural: We received many useful informations from the users.","lang":"en-US","model":"We received a lot of useful information from the users."},
+        {"id":"er-006","level":"B1+","prompt":"Say in English: Essa informação ajudou a esclarecer a regra de negócio.","lang":"pt-BR","model":"This information helped clarify the business rule."}
+      ]
+    },
+    {
+      "id": "data-usage",
+      "label": "data",
+      "note": "Avoid datas. In professional English, data is normally used without a plural -s.",
+      "exercises": [
+        {"id":"er-007","level":"B1","prompt":"Say in English: Esses dados vêm do SAP.","lang":"pt-BR","model":"This data comes from SAP."},
+        {"id":"er-008","level":"B1+","prompt":"Make this natural: These datas are used in the dashboard.","lang":"en-US","model":"This data is used in the dashboard."},
+        {"id":"er-009","level":"B1+","prompt":"Say in English: Eu comparei os dados de duas fontes diferentes.","lang":"pt-BR","model":"I compared data from two different sources."}
+      ]
+    },
+    {
+      "id": "to-infinitive",
+      "label": "to + verb",
+      "note": "After to, use the base form of the verb.",
+      "exercises": [
+        {"id":"er-010","level":"B1","prompt":"Say in English: Eu criei uma regra para validar os dados.","lang":"pt-BR","model":"I created a rule to validate the data."},
+        {"id":"er-011","level":"B1","prompt":"Say in English: Nós automatizamos o processo para economizar tempo.","lang":"pt-BR","model":"We automated the process to save time."},
+        {"id":"er-012","level":"B1+","prompt":"Make this natural: I use SQL for validate the results.","lang":"en-US","model":"I use SQL to validate the results."}
+      ]
+    },
+    {
+      "id": "responsible-for-gerund",
+      "label": "responsible for + -ing",
+      "note": "After responsible for, use a noun or verb ending in -ing.",
+      "exercises": [
+        {"id":"er-013","level":"B1+","prompt":"Say in English: Sou responsável por revisar as exceções.","lang":"pt-BR","model":"I'm responsible for reviewing the exceptions."},
+        {"id":"er-014","level":"B1+","prompt":"Say in English: Minha equipe é responsável por monitorar o processo.","lang":"pt-BR","model":"My team is responsible for monitoring the process."},
+        {"id":"er-015","level":"B1+","prompt":"Make this natural: I'm responsible to check the dashboard every morning.","lang":"en-US","model":"I'm responsible for checking the dashboard every morning."}
+      ]
+    },
+    {
+      "id": "past-tense",
+      "label": "past tense",
+      "note": "When the event is finished in the past, keep the main verbs in the past.",
+      "exercises": [
+        {"id":"er-016","level":"B1","prompt":"Say in English: Ontem eu validei o arquivo e encontrei uma divergência.","lang":"pt-BR","model":"Yesterday I validated the file and found a discrepancy."},
+        {"id":"er-017","level":"B1+","prompt":"Change to the past: I review the requirement and talk to the user.","lang":"en-US","model":"I reviewed the requirement and talked to the user."},
+        {"id":"er-018","level":"B1+","prompt":"Say in English: No projeto passado, eu desenvolvi a lógica e testei os resultados.","lang":"pt-BR","model":"In the previous project, I developed the logic and tested the results."}
+      ]
+    },
+    {
+      "id": "present-perfect-since",
+      "label": "since + present perfect",
+      "note": "For something that started in the past and continues now, use have/has + past participle, often with since or for.",
+      "exercises": [
+        {"id":"er-019","level":"B1+","prompt":"Say in English: Eu trabalho com dados desde 2022.","lang":"pt-BR","model":"I have been working with data since 2022."},
+        {"id":"er-020","level":"B1+","prompt":"Say in English: Estou trabalhando neste projeto há três meses.","lang":"pt-BR","model":"I have been working on this project for three months."},
+        {"id":"er-021","level":"B2","prompt":"Make this natural: I work with Snowflake since last year.","lang":"en-US","model":"I have been working with Snowflake since last year."}
+      ]
+    },
+    {
+      "id": "third-person-s",
+      "label": "he/she/it + -s",
+      "note": "In the present simple, he/she/it normally takes -s on the verb.",
+      "exercises": [
+        {"id":"er-022","level":"B1","prompt":"Say in English: A solução resolve o problema.","lang":"pt-BR","model":"The solution solves the problem."},
+        {"id":"er-023","level":"B1","prompt":"Say in English: O dashboard mostra as principais exceções.","lang":"pt-BR","model":"The dashboard shows the main exceptions."},
+        {"id":"er-024","level":"B1+","prompt":"Make this natural: The process reduce manual work.","lang":"en-US","model":"The process reduces manual work."}
+      ]
+    },
+    {
+      "id": "be-to-infinitive",
+      "label": "role is to + verb",
+      "note": "After expressions such as my role is, use to + base verb for purpose/responsibility.",
+      "exercises": [
+        {"id":"er-025","level":"B1+","prompt":"Say in English: Meu papel é entender as regras de negócio.","lang":"pt-BR","model":"My role is to understand the business rules."},
+        {"id":"er-026","level":"B1+","prompt":"Say in English: Meu objetivo é reduzir o trabalho manual.","lang":"pt-BR","model":"My goal is to reduce manual work."},
+        {"id":"er-027","level":"B2","prompt":"Make this natural: My responsibility is validate the final output.","lang":"en-US","model":"My responsibility is to validate the final output."}
+      ]
+    },
+    {
+      "id": "impact-conclusion",
+      "label": "finish with impact",
+      "note": "Close professional answers with a clear result or business impact.",
+      "exercises": [
+        {"id":"er-028","level":"B1+","prompt":"Complete this answer with an impact: I automated the validation process, and as a result...","lang":"en-US","model":"I automated the validation process, and as a result, the team spent less time on manual checks."},
+        {"id":"er-029","level":"B2","prompt":"Complete professionally: I consolidated the data into one reliable source. This helped the team...","lang":"en-US","model":"I consolidated the data into one reliable source. This helped the team investigate discrepancies faster and make decisions with more confidence."},
+        {"id":"er-030","level":"B2","prompt":"Say in English: Como resultado, reduzimos o trabalho manual e melhoramos a consistência do processo.","lang":"pt-BR","model":"As a result, we reduced manual work and improved the consistency of the process."}
+      ]
+    }
+  ]
+}
