@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#3C318C">
+<title>Recall · Nova frase Beta</title>
+<style>
+:root{--bg:#f7f7fb;--surface:#fff;--surface2:#f1f0f8;--ink:#1d1d29;--muted:#77778a;--line:#e3e2ec;--primary:#3c318c;--primary2:#5748cc}*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif}body{padding:calc(env(safe-area-inset-top) + 16px) 16px calc(env(safe-area-inset-bottom) + 28px);min-height:100vh}.app{max-width:680px;margin:auto}.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:15px}.top b{font-size:25px}.beta{font-size:9px;font-weight:900;background:var(--surface2);color:var(--primary2);padding:6px 8px;border-radius:999px}.card{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:16px;margin-bottom:12px}.card h1{font-size:21px;margin:0 0 7px}.card p{font-size:11px;line-height:1.5;color:var(--muted);margin:0}.fake{margin-top:12px;border:1px dashed var(--line);border-radius:16px;padding:14px}.fake b{display:block;font-size:16px}.fake span{display:block;margin-top:5px;color:var(--muted);font-size:10px}.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}button{min-height:44px;border:1px solid var(--line);background:var(--surface2);color:var(--ink);border-radius:12px;font-weight:850}button.primary{border:0;background:linear-gradient(135deg,#5f53dc,#8190ff);color:white}@media(prefers-color-scheme:dark){:root{--bg:#12111a;--surface:#1c1a27;--surface2:#242132;--ink:#f5f3fb;--muted:#aaa5b9;--line:#353145}}
+</style>
+<script src="./audio-bridge.js"></script>
+</head>
+<body>
+<main class="app">
+  <div class="top"><b>Recall · Nova frase</b><span class="beta">BETA</span></div>
+  <div class="card"><h1>Teste do ritual de aquisição</h1><p>Esta página não usa seus dados reais do Recall. Ela simula o momento em que uma frase nova aparece, usando o mesmo módulo que será integrado depois da sua validação.</p><div class="fake"><b id="fakeTitle">Carregando frase…</b><span id="fakeMeta">0 revisões · nova</span></div><div class="actions"><button id="nextSample">Trocar frase</button><button id="startAgain" class="primary">Testar introdução</button></div><button id="reset" style="width:100%;margin-top:8px">Resetar testes desta página</button></div>
+  <section id="view-review" class="card active"><p>Quando a introdução termina, o card cairia aqui no SRS normal — sem alterar Again / Hard / Good / Easy.</p></section>
+</main>
+<script>
+(() => {
+  'use strict';
+  const samples = [
+    {id:'en-006',deck:'en',front:'I usually start by understanding the business problem.',back:'Normalmente começo entendendo o problema de negócio.'},
+    {id:'en-037',deck:'en',front:'I am responsible for analyzing data and improving business processes.',back:'Sou responsável por analisar dados e melhorar processos de negócio.'},
+    {id:'en-057',deck:'en',front:'I would like to make sure I understood the question correctly.',back:'Gostaria de ter certeza de que entendi a pergunta corretamente.'},
+    {id:'de-beta-01',deck:'de',front:'Ich möchte einen Kaffee, bitte.',back:'Eu gostaria de um café, por favor.'}
+  ];
+  let idx = 0;
+  const state = {cards:{en:[],de:[]}};
+  for (const s of samples) state.cards[s.deck].push({...s,schedules:{recognition:{reps:0},production:{reps:0}}});
+  let renderReview = () => {
+    const s=samples[idx];
+    document.getElementById('fakeTitle').textContent=s.front;
+    document.getElementById('fakeMeta').textContent=`${s.deck==='de'?'Deutsch':'English'} · 0 revisões · nova`;
+  };
+  function currentSample(){const s=samples[idx];return state.cards[s.deck].find(x=>x.id===s.id);}
+  function speakText(text,deck,rate=1){
+    try{speechSynthesis.cancel()}catch{}
+    const u=new SpeechSynthesisUtterance(text);u.lang=deck==='de'?'de-DE':'en-US';u.rate=rate;try{speechSynthesis.speak(u)}catch{}
+  }
+  window.recallCore={
+    DECKS:{en:{lang:'en-US'},de:{lang:'de-DE'}},
+    getState:()=>state,
+    selectedDeck:()=>samples[idx].deck,
+    current:()=>({card:currentSample(),direction:'recognition'}),
+    speakText,
+    getRenderReview:()=>renderReview,
+    setRenderReview:f=>{renderReview=f;}
+  };
+  window.__betaCtl={
+    next(){idx=(idx+1)%samples.length;renderReview();setTimeout(()=>window.recallNewCardLearning?.maybeLaunch(),40);},
+    rerun(){window.recallNewCardLearning?.reset(currentSample().id);renderReview();setTimeout(()=>window.recallNewCardLearning?.maybeLaunch(),40);},
+    reset(){localStorage.removeItem('recallNewCardLearningV1');window.recallNewCardLearning?.reset();renderReview();setTimeout(()=>window.recallNewCardLearning?.maybeLaunch(),40);}
+  };
+})();
+</script>
+<script src="./recall-new-card-learning-v1.js"></script>
+<script>
+document.getElementById('nextSample').onclick=()=>window.__betaCtl.next();
+document.getElementById('startAgain').onclick=()=>window.__betaCtl.rerun();
+document.getElementById('reset').onclick=()=>window.__betaCtl.reset();
+window.recallCore.getRenderReview()();
+setTimeout(()=>window.recallNewCardLearning?.maybeLaunch(),80);
+</script>
+</body>
+</html>
