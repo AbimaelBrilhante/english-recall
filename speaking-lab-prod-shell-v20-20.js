@@ -3,7 +3,6 @@
 if(window.__speakingLabProdShellV2020)return;
 window.__speakingLabProdShellV2020=true;
 const STATE_KEY='englishRecallPwaV4';
-const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 function dayKey(date=new Date()){return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;}
 function markRecallActive(){
   try{
@@ -28,30 +27,6 @@ function watchCompletedAttempt(){
   if(document.body)obs.observe(document.body,{childList:true,subtree:true,characterData:true});
   check();
 }
-function setAudio(type){try{if(navigator.audioSession)navigator.audioSession.type=type;}catch{}}
-function patchErrorRescueMic(){
-  if(!location.pathname.endsWith('/error-rescue.html'))return;
-  const md=navigator.mediaDevices;
-  if(!md?.getUserMedia||md.__recallErrorRescueMicV2020)return;
-  const native=md.getUserMedia.bind(md);
-  md.__recallErrorRescueMicV2020=true;
-  md.getUserMedia=async function(constraints){
-    try{speechSynthesis.cancel();}catch{}
-    setAudio('play-and-record');
-    await sleep(140);
-    try{
-      return await native(constraints);
-    }catch(err){
-      const transient=['InvalidStateError','NotReadableError','AbortError'].includes(err?.name);
-      if(!transient)throw err;
-      setAudio('playback');
-      await sleep(90);
-      setAudio('play-and-record');
-      await sleep(180);
-      return native(constraints);
-    }
-  };
-}
 function addStyle(){
   const s=document.createElement('style');s.textContent='.sl-prod-back{display:inline-flex;align-items:center;gap:6px;min-height:40px;border:1px solid var(--line,#353145);background:var(--surface,#1c1a27);color:var(--ink,#f5f3fb);border-radius:12px;padding:0 13px;margin:0 0 14px;font:800 12px -apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif}.beta{display:none!important}';document.head.appendChild(s);
 }
@@ -69,7 +44,6 @@ function patchHub(){
 }
 function patchChild(title){document.title=title;addBack('./speaking-lab.html','Speaking Lab');}
 function init(){
-  patchErrorRescueMic();
   addStyle();watchCompletedAttempt();
   const p=location.pathname;
   if(p.endsWith('/speaking-lab.html'))patchHub();
