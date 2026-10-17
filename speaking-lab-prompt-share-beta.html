@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#3C318C">
+<title>Speaking Lab · Prompt de feedback</title>
+<style>
+:root{--bg:#f7f7fb;--surface:#fff;--surface2:#f1f0f8;--ink:#1d1d29;--muted:#77778a;--line:#e3e2ec;--primary:#3c318c}*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif}body{padding:calc(env(safe-area-inset-top) + 18px) 16px calc(env(safe-area-inset-bottom) + 28px)}main{max-width:680px;margin:auto}.card{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:18px;margin-bottom:12px}.card h1{margin:0 0 7px;font-size:24px}.card p{margin:0;color:var(--muted);font-size:11px;line-height:1.5}.mode{display:block;width:100%;text-align:left;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:16px;padding:14px;margin-top:9px;font-weight:850}.mode span{display:block;color:var(--muted);font-size:10px;font-weight:500;margin-top:3px}@media(prefers-color-scheme:dark){:root{--bg:#12111a;--surface:#1c1a27;--surface2:#242132;--ink:#f5f3fb;--muted:#aaa5b9;--line:#353145}}
+</style>
+</head>
+<body>
+<main id="menu">
+  <div class="card"><h1>Feedback no ChatGPT</h1><p>Beta da ponte manual. Faça uma resposta, copie o prompt gerado pelo Recall e compartilhe a gravação na conversa em que quiser receber o feedback.</p></div>
+  <button class="mode" data-mode="sentence">Sentence Builder<span>Prompt com exercício, estrutura e resposta-modelo</span></button>
+  <button class="mode" data-mode="sixty">60-Second Challenge<span>Prompt com tema, pontos esperados e resposta-modelo</span></button>
+  <button class="mode" data-mode="error">Error Rescue<span>Prompt com padrão treinado, regra e resposta-modelo</span></button>
+</main>
+<script>
+(()=>{'use strict';
+const qs=new URLSearchParams(location.search),mode=qs.get('mode');
+if(!mode){document.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>location.href=location.pathname+'?mode='+b.dataset.mode);return;}
+const cfg={sentence:{file:'./speaking-lab.html',feedback:'sentence-builder',auto:true},sixty:{file:'./60-second.html',feedback:'60-second'},error:{file:'./error-rescue.html',feedback:'error-rescue'}}[mode];
+if(!cfg){location.href=location.pathname;return;}
+fetch(cfg.file+'?prompt-share-beta=1',{cache:'no-store'})
+  .then(r=>{if(!r.ok)throw new Error('Falha ao carregar '+cfg.file);return r.text();})
+  .then(html=>{
+    const injected=`<script>window.__slPromptShareMode=${JSON.stringify(cfg.feedback)};<\/script><script src="./speaking-lab-prompt-share-v1.js?v=1"><\/script>${cfg.auto?'<script>setTimeout(()=>document.getElementById("openBuilder")?.click(),350);<\/script>':''}`;
+    html=html.replace('</body>',injected+'\n</body>');
+    document.open();document.write(html);document.close();
+  })
+  .catch(err=>{document.getElementById('menu').innerHTML='<div class="card"><h1>Não consegui abrir o beta</h1><p>'+String(err.message||err)+'</p></div>';});
+})();
+</script>
+</body>
+</html>
