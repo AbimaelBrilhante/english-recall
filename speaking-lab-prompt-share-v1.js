@@ -13,12 +13,10 @@ const DB='recallSpeakingLabBetaV1', STORE='attempts';
 const cache={};
 let queued=false, lastRenderedId='';
 
-const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-
 function openDb(){return new Promise((res,rej)=>{const r=indexedDB.open(DB,1);r.onupgradeneeded=()=>{if(!r.result.objectStoreNames.contains(STORE))r.result.createObjectStore(STORE,{keyPath:'id'});};r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error);});}
 async function allAttempts(){const d=await openDb();const rows=await new Promise((res,rej)=>{const t=d.transaction(STORE,'readonly'),r=t.objectStore(STORE).getAll();r.onsuccess=()=>res(r.result||[]);r.onerror=()=>rej(r.error);});d.close();return rows;}
 async function latestAttempt(){const rows=(await allAttempts()).filter(r=>r.mode===MODE).sort((a,b)=>Number(b.ts||0)-Number(a.ts||0));return rows[0]||null;}
-async function getJson(path){if(!cache[path])cache[path]=fetch(path+'?v=prompt-share-1',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('Falha ao carregar '+path);return r.json();});return cache[path];}
+async function getJson(path){if(!cache[path])cache[path]=fetch(path+'?v=prompt-share-2',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('Falha ao carregar '+path);return r.json();});return cache[path];}
 
 async function contextFor(a){
   if(a.mode==='sentence-builder'){
@@ -83,7 +81,7 @@ function savedHost(){
   return candidates.find(el=>/Resposta salva/i.test(el.textContent||''))||null;
 }
 
-function injectStyle(){if(document.getElementById('slpsStyle'))return;const s=document.createElement('style');s.id='slpsStyle';s.textContent=`.slps{background:var(--surface,#fff);border:1px solid var(--line,#e3e2ec);border-radius:22px;padding:16px;margin:12px 0}.slps-head{display:flex;align-items:center;gap:8px}.slps-head b{font-size:16px}.slps-tag{margin-left:auto;font-size:8px;font-weight:900;color:var(--primary2,#5748cc);background:var(--surface2,#f1f0f8);padding:5px 7px;border-radius:999px}.slps p{font-size:10px;line-height:1.5;color:var(--muted,#77778a);margin:8px 0 0}.slps-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.slps-btn{min-height:44px;border:1px solid var(--line,#e3e2ec);background:var(--surface2,#f1f0f8);color:var(--ink,#1d1d29);border-radius:12px;font-weight:850;font-size:10px}.slps-btn.primary{border:0;background:linear-gradient(135deg,#5f53dc,#8190ff);color:#fff}.slps-status{margin-top:8px;font-size:9px;color:var(--muted,#77778a);min-height:14px}@media(max-width:430px){.slps-grid{grid-template-columns:1fr}}`;document.head.appendChild(s);}
+function injectStyle(){if(document.getElementById('slpsStyle'))return;const s=document.createElement('style');s.id='slpsStyle';s.textContent=`.slps{background:var(--surface,#fff);border:1px solid var(--line,#e3e2ec);border-radius:22px;padding:16px;margin:12px 0}.slps-head{display:flex;align-items:center;gap:8px}.slps-head b{font-size:16px}.slps-tag{margin-left:auto;font-size:8px;font-weight:900;color:var(--primary2,#5748cc);background:var(--surface2,#f1f0f8);padding:5px 7px;border-radius:999px}.slps p{font-size:10px;line-height:1.5;color:var(--muted,#77778a);margin:8px 0 0}.slps-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.slps-btn{min-height:44px;border:1px solid var(--line,#e3e2ec);background:var(--surface2,#f1f0f8);color:var(--ink,#1d1d29);border-radius:12px;font-weight:850;font-size:10px}.slps-btn.primary{border:0;background:linear-gradient(135deg,#5f53dc,#8190ff);color:#fff}.slps-share{margin-top:8px;width:100%}.slps-status{margin-top:8px;font-size:9px;color:var(--muted,#77778a);min-height:14px}@media(max-width:430px){.slps-grid{grid-template-columns:1fr}}`;document.head.appendChild(s);}
 
 async function copyText(text){
   try{await navigator.clipboard.writeText(text);return true}catch{}
@@ -94,8 +92,28 @@ function audioFile(a){
   const blob=a?.blob;if(!(blob instanceof Blob)||!blob.size)return null;
   const type=blob.type||'audio/mp4';
   const ext=type.includes('webm')?'webm':type.includes('wav')?'wav':'m4a';
-  const mode=a.mode==='60-second'?'60-second':a.mode==='error-rescue'?'error-rescue':'sentence-builder';
-  return new File([blob],`recall-${mode}-${new Date(a.ts||Date.now()).toISOString().replace(/[:.]/g,'-')}.${ext}`,{type});
+  const mode=a.mode==='60-second'?'60Second':a.mode==='error-rescue'?'ErrorRescue':'SentenceBuilder';
+  const date=new Date(a.ts||Date.now());
+  const pad=n=>String(n).padStart(2,'0');
+  const stamp=`${date.getFullYear()}-${pad(date.getMonth()+1)}-${pad(date.getDate())}_${pad(date.getHours())}-${pad(date.getMinutes())}`;
+  return new File([blob],`Recall-${mode}-${stamp}.${ext}`,{type});
+}
+
+function saveAudio(a,status){
+  const file=audioFile(a);
+  if(!file){status.textContent='Não encontrei a gravação salva desta tentativa.';return;}
+  try{
+    const url=URL.createObjectURL(file);
+    const link=document.createElement('a');
+    link.href=url;
+    link.download=file.name;
+    link.style.display='none';
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),5000);
+    status.textContent=`Áudio preparado como ${file.name}. No iPhone, procure em Arquivos → Downloads e anexe no ChatGPT.`;
+  }catch(e){status.textContent='Não consegui preparar o áudio para salvar: '+(e?.message||e?.name||'erro');}
 }
 
 async function shareAudio(a,status){
@@ -103,14 +121,12 @@ async function shareAudio(a,status){
   if(!file){status.textContent='Não encontrei a gravação salva desta tentativa.';return;}
   if(navigator.share && (!navigator.canShare || navigator.canShare({files:[file]}))){
     try{
-      await navigator.share({files:[file],title:'Recall · gravação para feedback',text:'Áudio da minha resposta no Speaking Lab. O prompt de feedback pode ser colado separadamente.'});
-      status.textContent='Menu de compartilhamento aberto.';
+      await navigator.share({files:[file]});
+      status.textContent='Arquivo enviado ao menu de compartilhamento.';
       return;
     }catch(e){if(e?.name==='AbortError'){status.textContent='Compartilhamento cancelado.';return;}status.textContent='O iPhone não conseguiu compartilhar este áudio: '+(e?.message||e?.name||'erro');return;}
   }
-  try{
-    const url=URL.createObjectURL(file);const ael=document.createElement('a');ael.href=url;ael.download=file.name;ael.click();setTimeout(()=>URL.revokeObjectURL(url),3000);status.textContent='Compartilhamento de arquivo não disponível; tentei salvar o áudio para você anexar manualmente.';
-  }catch{status.textContent='Este navegador não oferece compartilhamento de arquivo para esta gravação.';}
+  status.textContent='Compartilhamento direto de arquivo não disponível neste navegador. Use “Salvar áudio”.';
 }
 
 async function renderCard(){
@@ -121,9 +137,10 @@ async function renderCard(){
   injectStyle();
   let box=document.getElementById('slpsCard');if(!box){box=document.createElement('section');box.id='slpsCard';box.className='slps';host.insertAdjacentElement('afterend',box);}
   lastRenderedId=attempt.id;
-  box.innerHTML=`<div class="slps-head"><b>Feedback no ChatGPT</b><span class="slps-tag">MANUAL</span></div><p>1) Copie o prompt. 2) Compartilhe ou anexe a gravação na conversa em que quiser receber o feedback.</p><div class="slps-grid"><button class="slps-btn primary" id="slpsCopy">Copiar prompt de feedback</button><button class="slps-btn" id="slpsShare">Compartilhar gravação</button></div><div class="slps-status" id="slpsStatus"></div>`;
+  box.innerHTML=`<div class="slps-head"><b>Feedback no ChatGPT</b><span class="slps-tag">MANUAL</span></div><p>Fluxo recomendado no iPhone: copie o prompt, salve a gravação e depois anexe o arquivo no ChatGPT.</p><div class="slps-grid"><button class="slps-btn primary" id="slpsCopy">Copiar prompt</button><button class="slps-btn" id="slpsSave">Salvar áudio</button></div><button class="slps-btn slps-share" id="slpsShare">Compartilhar gravação (opcional)</button><div class="slps-status" id="slpsStatus"></div>`;
   const status=document.getElementById('slpsStatus');
-  document.getElementById('slpsCopy').onclick=async()=>{const ok=await copyText(prompt);status.textContent=ok?'Prompt copiado. Agora anexe/compartilhe a gravação na conversa.':'Não consegui copiar automaticamente. Tente novamente.';};
+  document.getElementById('slpsCopy').onclick=async()=>{const ok=await copyText(prompt);status.textContent=ok?'Prompt copiado. Agora salve o áudio e anexe os dois na conversa.':'Não consegui copiar automaticamente. Tente novamente.';};
+  document.getElementById('slpsSave').onclick=()=>saveAudio(attempt,status);
   document.getElementById('slpsShare').onclick=()=>shareAudio(attempt,status);
 }
 
