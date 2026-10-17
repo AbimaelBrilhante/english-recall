@@ -11,7 +11,7 @@
 </head>
 <body>
 <main id="menu">
-  <div class="card"><h1>Feedback no ChatGPT</h1><p>Beta da ponte manual. Faça uma resposta, copie o prompt gerado pelo Recall e compartilhe a gravação na conversa em que quiser receber o feedback.</p></div>
+  <div class="card"><h1>Feedback no ChatGPT</h1><p>Beta da ponte manual. No iPhone, o fluxo recomendado agora é copiar o prompt, salvar o áudio em Arquivos e anexar os dois na conversa.</p></div>
   <button class="mode" data-mode="sentence">Sentence Builder<span>Prompt com exercício, estrutura e resposta-modelo</span></button>
   <button class="mode" data-mode="sixty">60-Second Challenge<span>Prompt com tema, pontos esperados e resposta-modelo</span></button>
   <button class="mode" data-mode="error">Error Rescue<span>Prompt com padrão treinado, regra e resposta-modelo</span></button>
@@ -22,10 +22,10 @@ const qs=new URLSearchParams(location.search),mode=qs.get('mode');
 if(!mode){document.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>location.href=location.pathname+'?mode='+b.dataset.mode);return;}
 const cfg={sentence:{file:'./speaking-lab.html',feedback:'sentence-builder',auto:true},sixty:{file:'./60-second.html',feedback:'60-second'},error:{file:'./error-rescue.html',feedback:'error-rescue'}}[mode];
 if(!cfg){location.href=location.pathname;return;}
-fetch(cfg.file+'?prompt-share-beta=1',{cache:'no-store'})
+fetch(cfg.file+'?prompt-share-beta=2',{cache:'no-store'})
   .then(r=>{if(!r.ok)throw new Error('Falha ao carregar '+cfg.file);return r.text();})
   .then(html=>{
-    const injected=`<script>window.__slPromptShareMode=${JSON.stringify(cfg.feedback)};<\/script><script src="./speaking-lab-prompt-share-v1.js?v=1"><\/script>${cfg.auto?'<script>setTimeout(()=>document.getElementById("openBuilder")?.click(),350);<\/script>':''}`;
+    const injected=`<script>window.__slPromptShareMode=${JSON.stringify(cfg.feedback)};<\/script><script src="./speaking-lab-prompt-share-v1.js?v=2"><\/script>${cfg.auto?'<script>setTimeout(()=>document.getElementById("openBuilder")?.click(),350);<\/script>':''}`;
     html=html.replace('</body>',injected+'\n</body>');
     document.open();document.write(html);document.close();
   })
