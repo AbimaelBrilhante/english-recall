@@ -1306,6 +1306,12 @@
       "front": "It's sort of like the brain of the operation.",
       "back": "É meio que o cérebro da operação.",
       "initial_due_days": 0
+    },
+    {
+      "id": "en-218",
+      "front": "This allows the team to focus on analysis instead of preparing data manually.",
+      "back": "Isso permite que a equipe se concentre na análise em vez de preparar os dados manualmente.",
+      "initial_due_days": 0
     }
   ]
 }
