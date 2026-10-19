@@ -1252,6 +1252,24 @@
       "front": "My goal is to reduce manual work and save time.",
       "back": "Meu objetivo é reduzir o trabalho manual e economizar tempo.",
       "initial_due_days": 0
+    },
+    {
+      "id": "en-209",
+      "front": "I am developing a tax reconciliation solution using Snowflake, SQL, and Qlik Sense.",
+      "back": "Estou desenvolvendo uma solução de conciliação fiscal usando Snowflake, SQL e Qlik Sense.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-210",
+      "front": "The project is still in development.",
+      "back": "O projeto ainda está em desenvolvimento.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-211",
+      "front": "Some branches are already in testing.",
+      "back": "Algumas filiais já estão em fase de testes.",
+      "initial_due_days": 0
     }
   ]
 }
