@@ -1270,6 +1270,42 @@
       "front": "Some branches are already in testing.",
       "back": "Algumas filiais já estão em fase de testes.",
       "initial_due_days": 0
+    },
+    {
+      "id": "en-212",
+      "front": "All you have to do is give it a clear prompt.",
+      "back": "Tudo o que você precisa fazer é dar a ele um comando claro.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-213",
+      "front": "Let's plan out the next steps.",
+      "back": "Vamos planejar detalhadamente os próximos passos.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-214",
+      "front": "I'll look through the project files first.",
+      "back": "Vou examinar primeiro os arquivos do projeto.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-215",
+      "front": "Say you're preparing for a product launch.",
+      "back": "Digamos que você esteja se preparando para o lançamento de um produto.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-216",
+      "front": "We can delegate the work to other team members.",
+      "back": "Podemos delegar o trabalho a outros membros da equipe.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-217",
+      "front": "It's sort of like the brain of the operation.",
+      "back": "É meio que o cérebro da operação.",
+      "initial_due_days": 0
     }
   ]
 }
