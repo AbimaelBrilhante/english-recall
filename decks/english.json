@@ -1312,6 +1312,24 @@
       "front": "This allows the team to focus on analysis instead of preparing data manually.",
       "back": "Isso permite que a equipe se concentre na análise em vez de preparar os dados manualmente.",
       "initial_due_days": 0
+    },
+    {
+      "id": "en-219",
+      "front": "I joined the necessary tables to build a report in the Silver layer.",
+      "back": "Juntei as tabelas necessárias para construir um relatório na camada Silver.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-220",
+      "front": "I organized the tax rules into tables and loaded them into Snowflake.",
+      "back": "Organizei as regras tributárias em tabelas e as carreguei no Snowflake.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-221",
+      "front": "I used technical documentation as a reference.",
+      "back": "Usei documentação técnica como referência.",
+      "initial_due_days": 0
     }
   ]
 }
