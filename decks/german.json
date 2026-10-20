@@ -604,6 +604,24 @@
       "front": "Wie nehme ich das?",
       "back": "Como eu tomo isso?",
       "initial_due_days": 0
+    },
+    {
+      "id": "de-101",
+      "front": "Wie heißen Sie?",
+      "back": "Como o senhor / a senhora se chama?",
+      "initial_due_days": 0
+    },
+    {
+      "id": "de-102",
+      "front": "Wohnen Sie auch hier?",
+      "back": "O senhor / a senhora também mora aqui?",
+      "initial_due_days": 0
+    },
+    {
+      "id": "de-103",
+      "front": "Freut mich!",
+      "back": "Prazer!",
+      "initial_due_days": 0
     }
   ]
 }
