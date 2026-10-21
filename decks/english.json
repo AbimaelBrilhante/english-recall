@@ -1330,6 +1330,36 @@
       "front": "I used technical documentation as a reference.",
       "back": "Usei documentação técnica como referência.",
       "initial_due_days": 0
+    },
+    {
+      "id": "en-222",
+      "front": "The system will ask for your permission before contacting anyone.",
+      "back": "O sistema vai pedir sua permissão antes de entrar em contato com alguém.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-223",
+      "front": "There was a lot of back and forth before we agreed on the requirements.",
+      "back": "Houve muita troca de mensagens até chegarmos a um acordo sobre os requisitos.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-224",
+      "front": "I'll read through the documentation before making any changes.",
+      "back": "Vou ler a documentação com atenção antes de fazer qualquer alteração.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-225",
+      "front": "I didn't have access to the data I needed.",
+      "back": "Eu não tinha acesso aos dados de que precisava.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-226",
+      "front": "We need to find a time that works for everyone.",
+      "back": "Precisamos encontrar um horário que funcione para todos.",
+      "initial_due_days": 0
     }
   ]
 }
