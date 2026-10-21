@@ -682,6 +682,24 @@
       "front": "Ich habe zwanzig Euro.",
       "back": "Eu tenho vinte euros.",
       "initial_due_days": 0
+    },
+    {
+      "id": "de-114",
+      "front": "Fährt dieser Bus zum Bahnhof?",
+      "back": "Este ônibus vai para a estação?",
+      "initial_due_days": 0
+    },
+    {
+      "id": "de-115",
+      "front": "Eine Fahrkarte, bitte.",
+      "back": "Uma passagem, por favor.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "de-116",
+      "front": "Wo muss ich aussteigen?",
+      "back": "Onde eu tenho que descer?",
+      "initial_due_days": 0
     }
   ]
 }
