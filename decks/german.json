@@ -622,6 +622,66 @@
       "front": "Freut mich!",
       "back": "Prazer!",
       "initial_due_days": 0
+    },
+    {
+      "id": "de-104",
+      "front": "Ich habe elf Euro.",
+      "back": "Eu tenho onze euros.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "de-105",
+      "front": "Ich habe zwölf Bücher.",
+      "back": "Eu tenho doze livros.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "de-106",
+      "front": "Ich habe dreizehn Fragen.",
+      "back": "Eu tenho treze perguntas.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "de-107",
+      "front": "Ich habe vierzehn Euro.",
+      "back": "Eu tenho quatorze euros.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "de-108",
+      "front": "Ich habe fünfzehn Minuten.",
+      "back": "Eu tenho quinze minutos.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "de-109",
+      "front": "Ich habe sechzehn Bücher.",
+      "back": "Eu tenho dezesseis livros.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "de-110",
+      "front": "Ich habe siebzehn Euro.",
+      "back": "Eu tenho dezessete euros.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "de-111",
+      "front": "Ich habe achtzehn Minuten.",
+      "back": "Eu tenho dezoito minutos.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "de-112",
+      "front": "Ich habe neunzehn Fragen.",
+      "back": "Eu tenho dezenove perguntas.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "de-113",
+      "front": "Ich habe zwanzig Euro.",
+      "back": "Eu tenho vinte euros.",
+      "initial_due_days": 0
     }
   ]
 }
