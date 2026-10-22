@@ -1384,6 +1384,18 @@
       "front": "A query can run without an error and still produce incorrect results.",
       "back": "Uma consulta pode executar sem erros e ainda produzir resultados incorretos.",
       "initial_due_days": 0
+    },
+    {
+      "id": "en-231",
+      "front": "The biggest challenge was understanding the business problem.",
+      "back": "O maior desafio foi entender o problema de negócio.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-232",
+      "front": "I needed to transform the data and prepare it for analysis.",
+      "back": "Eu precisava transformar os dados e prepará-los para análise.",
+      "initial_due_days": 0
     }
   ]
 }
