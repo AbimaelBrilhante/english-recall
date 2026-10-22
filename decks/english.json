@@ -1396,6 +1396,24 @@
       "front": "I needed to transform the data and prepare it for analysis.",
       "back": "Eu precisava transformar os dados e prepará-los para análise.",
       "initial_due_days": 0
+    },
+    {
+      "id": "en-233",
+      "front": "I compared the results with existing SAP reports.",
+      "back": "Comparei os resultados com relatórios existentes no SAP.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-234",
+      "front": "I had to join additional tables to retrieve the information.",
+      "back": "Precisei juntar tabelas adicionais para obter a informação.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-235",
+      "front": "A missing rule does not automatically mean the data is wrong.",
+      "back": "Uma regra ausente não significa automaticamente que os dados estão errados.",
+      "initial_due_days": 0
     }
   ]
 }
