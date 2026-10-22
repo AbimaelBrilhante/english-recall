@@ -1414,6 +1414,30 @@
       "front": "A missing rule does not automatically mean the data is wrong.",
       "back": "Uma regra ausente não significa automaticamente que os dados estão errados.",
       "initial_due_days": 0
+    },
+    {
+      "id": "en-236",
+      "front": "That's pretty much how the process works.",
+      "back": "É basicamente assim que o processo funciona.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-237",
+      "front": "Let me run you through the main steps of the process.",
+      "back": "Deixe-me explicar a você as principais etapas do processo.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-238",
+      "front": "I think we're missing the point of this discussion.",
+      "back": "Acho que não estamos entendendo o ponto principal desta discussão.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-239",
+      "front": "Everyone is making a big fuss about the new update.",
+      "back": "Todo mundo está fazendo um grande alarde por causa da nova atualização.",
+      "initial_due_days": 0
     }
   ]
 }
