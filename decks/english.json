@@ -1456,6 +1456,18 @@
       "front": "We still need to measure the actual impact.",
       "back": "Ainda precisamos medir o impacto real.",
       "initial_due_days": 0
+    },
+    {
+      "id": "en-243",
+      "front": "With no documentation available, I had to reverse engineer the process.",
+      "back": "Como não havia documentação disponível, precisei fazer engenharia reversa do processo.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-244",
+      "front": "I can give you a high-level overview of how the system works.",
+      "back": "Posso dar uma visão geral de alto nível de como o sistema funciona.",
+      "initial_due_days": 0
     }
   ]
 }
