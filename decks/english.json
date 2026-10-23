@@ -1438,6 +1438,24 @@
       "front": "Everyone is making a big fuss about the new update.",
       "back": "Todo mundo está fazendo um grande alarde por causa da nova atualização.",
       "initial_due_days": 0
+    },
+    {
+      "id": "en-240",
+      "front": "The main business tests were performed by the tax analysts.",
+      "back": "Os principais testes de negócio foram realizados pelos analistas fiscais.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-241",
+      "front": "My role combined technical implementation with support for business validation.",
+      "back": "Meu papel combinava implementação técnica com apoio à validação pelo negócio.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-242",
+      "front": "We still need to measure the actual impact.",
+      "back": "Ainda precisamos medir o impacto real.",
+      "initial_due_days": 0
     }
   ]
 }
