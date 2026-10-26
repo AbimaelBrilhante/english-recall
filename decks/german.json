@@ -700,6 +700,24 @@
       "front": "Wo muss ich aussteigen?",
       "back": "Onde eu tenho que descer?",
       "initial_due_days": 0
+    },
+    {
+      "id": "de-117",
+      "front": "Wo finde ich die Milch?",
+      "back": "Onde encontro o leite?",
+      "initial_due_days": 0
+    },
+    {
+      "id": "de-118",
+      "front": "Haben Sie auch Brot?",
+      "back": "O senhor / a senhora também tem pão?",
+      "initial_due_days": 0
+    },
+    {
+      "id": "de-119",
+      "front": "Das ist alles, danke.",
+      "back": "É só isso, obrigado.",
+      "initial_due_days": 0
     }
   ]
 }
