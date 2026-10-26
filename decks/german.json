@@ -718,6 +718,66 @@
       "front": "Das ist alles, danke.",
       "back": "É só isso, obrigado.",
       "initial_due_days": 0
+    },
+    {
+      "id": "de-120",
+      "front": "Ich suche die Milch.",
+      "back": "Eu procuro o leite. / Estou procurando o leite.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "de-121",
+      "front": "Ich suche meine Schlüssel.",
+      "back": "Estou procurando minhas chaves.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "de-122",
+      "front": "Ich finde meine Schlüssel nicht.",
+      "back": "Não encontro minhas chaves.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "de-123",
+      "front": "Wo finde ich Brot?",
+      "back": "Onde encontro pão?",
+      "initial_due_days": 0
+    },
+    {
+      "id": "de-124",
+      "front": "Wie hoch ist die Kaution?",
+      "back": "Qual é o valor da caução?",
+      "initial_due_days": 0
+    },
+    {
+      "id": "de-125",
+      "front": "Wie hoch ist das Gehalt?",
+      "back": "Qual é o salário?",
+      "initial_due_days": 0
+    },
+    {
+      "id": "de-126",
+      "front": "Ich hätte gern einen Kaffee.",
+      "back": "Eu gostaria de um café.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "de-127",
+      "front": "Ich mag Kaffee.",
+      "back": "Eu gosto de café.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "de-128",
+      "front": "Ich gehe gern spazieren.",
+      "back": "Eu gosto de passear a pé.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "de-129",
+      "front": "Ich gehe zum Supermarkt.",
+      "back": "Eu vou ao supermercado.",
+      "initial_due_days": 0
     }
   ]
 }
