@@ -1468,6 +1468,30 @@
       "front": "I can give you a high-level overview of how the system works.",
       "back": "Posso dar uma visão geral de alto nível de como o sistema funciona.",
       "initial_due_days": 0
+    },
+    {
+      "id": "en-245",
+      "front": "To be clear, this solution is still in the testing phase.",
+      "back": "Para deixar claro, essa solução ainda está em fase de testes.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-246",
+      "front": "This technology has been around for years.",
+      "back": "Essa tecnologia existe há anos.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-247",
+      "front": "The point I'm trying to make is that we need to validate the results.",
+      "back": "O que estou tentando dizer é que precisamos validar os resultados.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-248",
+      "front": "It's more of a process issue than a technical problem.",
+      "back": "É mais uma questão de processo do que um problema técnico.",
+      "initial_due_days": 0
     }
   ]
 }
