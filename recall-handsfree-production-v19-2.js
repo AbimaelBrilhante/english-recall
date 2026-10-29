@@ -202,6 +202,7 @@
     if (phrase) phrase.textContent = card.back;
     if (translation) { translation.textContent = ''; translation.classList.add('hidden'); }
     if (hint) hint.textContent = 'Ouça em português, produza a frase no idioma-alvo e aguarde a resposta.';
+    window.dispatchEvent(new CustomEvent('recall:handsfree-card', {detail:{deckId, cardId:card.id}}));
   }
   function reveal(card){
     const phrase = document.getElementById('rf2HfPhrase');
