@@ -221,6 +221,7 @@
       translation.classList.add('hidden');
     }
     if (hint) hint.textContent = 'Ouça a frase. A tradução aparece depois da pausa.';
+    window.dispatchEvent(new CustomEvent('recall:handsfree-card', {detail:{deckId, cardId:card.id}}));
   }
   function revealPortuguese(card, willSpeak){
     const translation = document.getElementById('rf191HfTranslation');
