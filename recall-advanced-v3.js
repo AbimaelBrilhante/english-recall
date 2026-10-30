@@ -7,6 +7,7 @@
 
   const VERSION = '13.0';
   const BACKUP_KEY = 'recallAutoBackupsV1';
+  const MAX_AUTO_BACKUPS = 2;
   const AUDIO_HEALTH_KEY = 'recallAudioHealthV2';
   const RECORD_DB = 'recallRecordingsV1';
   const RECORD_STORE = 'recordings';
@@ -212,13 +213,19 @@
   function decorateDecks(){const cards=[...document.querySelectorAll('#deckGrid .deck-card')];if(!cards.length)return;const due={en:core.dueNow('en').length,de:core.dueNow('de').length};const rec=due.en===0&&due.de===0?null:(due.en>=due.de?'en':'de');for(const el of cards){const title=el.querySelector('.deck-title')?.textContent?.toLowerCase()||'',id=title.includes('deutsch')?'de':title.includes('english')?'en':null;el.querySelector('.rf3-recommended')?.remove();if(id===rec){const b=document.createElement('span');b.className='rf3-recommended';b.textContent=`⭐ Recomendado agora · ${due[id]} pendentes`;el.querySelector('.deck-mode')?.insertAdjacentElement('afterend',b);const action=el.querySelector('.deck-action');if(action)action.textContent='Continuar →';}}}
   function ensureSessionButton(){const row=document.querySelector('#view-decks .sync-row');if(!row||document.getElementById('rf3SessionBtn'))return;const b=document.createElement('button');b.id='rf3SessionBtn';b.className='rf2-topbtn';b.type='button';b.textContent='🎛 Sessão';b.onclick=()=>{ensureSessionViews();core.showView('rf3-session');};row.appendChild(b);}
 
-  function backupList(){try{return JSON.parse(localStorage.getItem(BACKUP_KEY)||'[]');}catch{return[];}}
+  function backupList(){try{const list=JSON.parse(localStorage.getItem(BACKUP_KEY)||'[]');return Array.isArray(list)?list:[];}catch{return[];}}
+  function trimAutoBackups(){
+    const list=backupList();
+    if(list.length<=MAX_AUTO_BACKUPS)return;
+    try{localStorage.setItem(BACKUP_KEY,JSON.stringify(list.slice(0,MAX_AUTO_BACKUPS)));}
+    catch(error){console.warn('[Recall] Não foi possível limpar os backups automáticos antigos.',error);}
+  }
   function stateSignature(){const s=state();return `${(s.reviewLog||[]).length}|${Object.values(s.cards||{}).reduce((n,a)=>n+(a?.length||0),0)}|${Math.max(0,...(s.reviewLog||[]).map(x=>Number(x.ts)||0))}`;}
   function maybeAutoBackup(force=false){
-    const list=backupList(),now=Date.now(),sig=stateSignature(),last=list[0];if(!force&&last&&now-last.ts<6*3600000&&last.sig===sig)return;const snapshot=JSON.stringify(state());list.unshift({ts:now,sig,data:snapshot});localStorage.setItem(BACKUP_KEY,JSON.stringify(list.slice(0,5)));renderBackupUi();
+    const list=backupList(),now=Date.now(),sig=stateSignature(),last=list[0];if(!force&&last&&now-last.ts<6*3600000&&last.sig===sig)return;const snapshot=JSON.stringify(state());list.unshift({ts:now,sig,data:snapshot});localStorage.setItem(BACKUP_KEY,JSON.stringify(list.slice(0,MAX_AUTO_BACKUPS)));renderBackupUi();
   }
   function restoreBackup(i){const list=backupList(),b=list[i];if(!b||!confirm('Restaurar este backup automático? O estado atual será substituído.'))return;try{const x=JSON.parse(b.data),s=state();for(const k of Object.keys(s))delete s[k];Object.assign(s,x);save();core.clearCurrentItem();core.render();alert('Backup restaurado.');}catch{alert('Não foi possível restaurar este backup.');}}
-  function ensureBackupUi(){const add=document.getElementById('view-add');if(!add||document.getElementById('rf3BackupPanel'))return;const sec=document.createElement('div');sec.id='rf3BackupPanel';sec.className='section';sec.innerHTML='<h2>Backups automáticos</h2><p>Até 5 snapshots locais do progresso. As gravações de voz não entram nesses backups.</p><div id="rf3BackupList" class="rf3-backups"></div>';add.appendChild(sec);}
+  function ensureBackupUi(){const add=document.getElementById('view-add');if(!add||document.getElementById('rf3BackupPanel'))return;const sec=document.createElement('div');sec.id='rf3BackupPanel';sec.className='section';sec.innerHTML='<h2>Backups automáticos</h2><p>Até 2 snapshots locais do progresso. As gravações de voz não entram nesses backups.</p><div id="rf3BackupList" class="rf3-backups"></div>';add.appendChild(sec);}
   function renderBackupUi(){ensureBackupUi();const box=document.getElementById('rf3BackupList');if(!box)return;const list=backupList();box.innerHTML=list.length?list.map((b,i)=>`<div class="rf3-backup"><span>${new Date(b.ts).toLocaleString('pt-BR')}</span><button class="rf3-btn" data-i="${i}">Restaurar</button></div>`).join(''):'<div class="rf3-muted">O primeiro backup será criado automaticamente.</div>';box.querySelectorAll('[data-i]').forEach(b=>b.onclick=()=>restoreBackup(Number(b.dataset.i)));}
 
   function ensureVersion(){if(document.getElementById('rf3Version'))return;const v=document.createElement('div');v.id='rf3Version';v.className='rf3-version';v.textContent=`Recall v${VERSION}`;document.querySelector('main.app')?.appendChild(v);}
@@ -232,5 +239,5 @@
   document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')maybeAutoBackup(false);});
   setInterval(()=>maybeAutoBackup(false),5*60*1000);
 
-  ensureState();styles();ensureSessionViews();ensureSessionButton();ensureBackupUi();renderBackupUi();ensureVersion();decorateDecks();enhanceReview();maybeAutoBackup(false);
+  ensureState();styles();ensureSessionViews();ensureSessionButton();ensureBackupUi();trimAutoBackups();renderBackupUi();ensureVersion();decorateDecks();enhanceReview();maybeAutoBackup(false);
 })();
