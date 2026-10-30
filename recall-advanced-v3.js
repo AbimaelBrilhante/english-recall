@@ -5,7 +5,7 @@
   if (!core) return;
   window.__recallAdvancedV3 = true;
 
-  const VERSION = '13.0';
+  const VERSION = '20.23';
   const BACKUP_KEY = 'recallAutoBackupsV1';
   const MAX_AUTO_BACKUPS = 2;
   const AUDIO_HEALTH_KEY = 'recallAudioHealthV2';
