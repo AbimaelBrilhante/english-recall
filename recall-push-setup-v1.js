@@ -127,7 +127,7 @@
     section.className='section';
     section.innerHTML=`
       <h2>Notificações do Recall</h2>
-      <p>Todos os dias: 09h desafio de inglês, 12h desafio de alemão e 14h lembrete de estudo (horário de Fortaleza). GitHub Pages + GitHub Actions, sem API paga.</p>
+      <p>Todos os dias, aproximadamente: 09h11 desafio de inglês, 12h11 desafio de alemão e 14h11 lembrete de estudo (horário de Fortaleza). GitHub Pages + GitHub Actions, sem API paga.</p>
       <p style="font-size:12px">Etapas: preparar chaves → permitir notificações → criar inscrição → copiar configuração → salvar como segredo no GitHub. A configuração contém uma chave privada: não compartilhe em conversas nem coloque em arquivos públicos.</p>
       <div style="display:grid;gap:9px;max-width:420px">
         <button type="button" class="secondary-btn" id="recallPushPrepare">1. Preparar chaves neste iPhone</button>
