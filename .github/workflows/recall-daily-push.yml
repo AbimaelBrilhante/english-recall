@@ -1,12 +1,13 @@
 name: Recall · Notificações diárias
 on:
   schedule:
-    - cron: '0 9 * * *'
-      timezone: 'America/Fortaleza'
-    - cron: '0 12 * * *'
-      timezone: 'America/Fortaleza'
-    - cron: '0 14 * * *'
-      timezone: 'America/Fortaleza'
+    # Fortaleza = UTC-3. Usar minutos fora de 00 reduz riscos de jobs descartados.
+    # 12:11 UTC = 09:11 Fortaleza
+    - cron: '11 12 * * *'
+    # 15:11 UTC = 12:11 Fortaleza
+    - cron: '11 15 * * *'
+    # 17:11 UTC = 14:11 Fortaleza
+    - cron: '11 17 * * *'
   workflow_dispatch:
     inputs:
       kind:
