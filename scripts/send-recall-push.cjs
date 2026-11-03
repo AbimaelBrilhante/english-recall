@@ -14,9 +14,9 @@ if(!config?.vapidPublicKey||!config?.vapidPrivateKey||!config?.subscription?.end
 const schedule=process.env.RECALL_SCHEDULE||'';
 const requested=process.env.RECALL_KIND||'';
 const kind=(requested==='challenge'?'english':requested) || (
-  schedule==='0 9 * * *'?'english':
-  schedule==='0 12 * * *'?'german':
-  schedule==='0 14 * * *'?'reminder':null
+  schedule==='11 12 * * *'?'english':
+  schedule==='11 15 * * *'?'german':
+  schedule==='11 17 * * *'?'reminder':null
 );
 if(!['english','german','reminder'].includes(kind))abort('Tipo de notificação não identificado.');
 
