@@ -36,30 +36,44 @@
       const x=fromB64url(publicJwk.x), y=fromB64url(publicJwk.y);
       const publicBytes=new Uint8Array(65);
       publicBytes[0]=4;publicBytes.set(x,1);publicBytes.set(y,33);
+      const reg=readyReg || await navigator.serviceWorker.ready;
+      readyReg=reg;
+      const existing=await reg.pushManager.getSubscription();
+      if(existing) {
+        keys=null;
+        return setStatus('Este aparelho já tem inscrição push. Para renovar as chaves, use “Desativar neste aparelho” primeiro.');
+      }
       keys = {publicKey:b64url(publicBytes),privateKey:privateJwk.d};
       bundle = null;
       $('recallPushAllow').disabled = false;
+      $('recallPushSubscribe').disabled = true;
       $('recallPushCopy').disabled = true;
-      setStatus('Chaves criadas apenas neste aparelho. Agora toque em “Autorizar notificações”.');
+      setStatus('Chaves prontas. Toque em “Permitir notificações” e depois em “Criar inscrição”.');
     } catch(error) {
       setStatus('Falha ao preparar as chaves: ' + (error?.message || error?.name || 'erro'));
     }
   }
 
-  async function enable() {
-    if (!keys) return setStatus('Primeiro prepare as chaves.');
-    if (!standalone()) return setStatus('Abra o Recall pelo ícone instalado na Tela de Início.');
+  async function allow() {
+    if (!keys || !readyReg) return setStatus('Prepare as chaves primeiro.');
+    if (Notification.permission==='denied') return setStatus('Notificações bloqueadas. Autorize o Recall nos Ajustes do iPhone.');
     try {
-      // A solicitação de permissão precisa começar a partir deste toque.
+      // Solicitação iniciada diretamente por um toque, sem trabalho assíncrono prévio.
       const permission = await Notification.requestPermission();
-      if (permission !== 'granted') return setStatus('O iPhone não autorizou notificações do Recall.');
-      const reg = readyReg || await navigator.serviceWorker.ready;
-      const previous = await reg.pushManager.getSubscription();
-      if (previous) {
-        // Evitar cancelar silenciosamente uma inscrição que já esteja ativa.
-        return setStatus('Já existe inscrição push neste aparelho. Não foi substituída. Se precisar renová-la, cancele a inscrição existente primeiro.');
-      }
-      const subscription = await reg.pushManager.subscribe({
+      if (permission!=='granted') return setStatus('O iPhone não autorizou notificações do Recall.');
+      $('recallPushSubscribe').disabled=false;
+      $('recallPushAllow').disabled=true;
+      setStatus('Permissão concedida. Agora toque em “Criar inscrição” para concluir a ativação.');
+    } catch(error) {setStatus('Falha ao pedir permissão: '+(error?.message||'erro'))}
+  }
+
+  async function subscribe() {
+    if (!keys || !readyReg) return setStatus('Prepare as chaves primeiro.');
+    if (Notification.permission!=='granted') return setStatus('Autorize as notificações no passo anterior.');
+    if (!standalone()) return setStatus('Abra o Recall pelo ícone da Tela de Início.');
+    try {
+      // A inscrição deve ser a primeira operação assíncrona deste segundo toque (exigência do Safari).
+      const subscription = await readyReg.pushManager.subscribe({
         userVisibleOnly:true,
         applicationServerKey:fromB64url(keys.publicKey)
       });
@@ -69,11 +83,11 @@
         subscription:subscription.toJSON()
       });
       keys=null;
-      $('recallPushAllow').disabled=true;
+      $('recallPushSubscribe').disabled=true;
       $('recallPushCopy').disabled=false;
-      setStatus('Inscrição criada. Agora copie a configuração privada e salve como um único segredo no GitHub.');
+      setStatus('Inscrição criada. Copie a configuração privada e salve como um único segredo no GitHub.');
     } catch(error) {
-      setStatus('Não foi possível ativar: '+(error?.message || error?.name || 'erro'));
+      setStatus('Falha ao criar inscrição: '+(error?.message || error?.name || 'erro'));
     }
   }
 
@@ -100,6 +114,7 @@
       keys=null;bundle=null;
       $('recallPushCopy').disabled=true;
       $('recallPushAllow').disabled=true;
+      $('recallPushSubscribe').disabled=true;
       setStatus('Inscrição removida deste aparelho. Remova também RECALL_PUSH_CONFIG dos GitHub Actions Secrets.');
     } catch(error){setStatus('Falha ao cancelar inscrição: '+(error?.message||'erro'))}
   }
@@ -113,11 +128,12 @@
     section.innerHTML=`
       <h2>Notificações do Recall</h2>
       <p>Diariamente, 09h: desafio em inglês. 14h: lembrete de estudo (horário de Fortaleza). GitHub Pages + GitHub Actions, sem API paga.</p>
-      <p style="font-size:12px">Etapas: preparar chaves → autorizar no iPhone → copiar configuração → salvar como segredo no GitHub. A configuração contém uma chave privada: não compartilhe em conversas nem coloque em arquivos públicos.</p>
+      <p style="font-size:12px">Etapas: preparar chaves → permitir notificações → criar inscrição → copiar configuração → salvar como segredo no GitHub. A configuração contém uma chave privada: não compartilhe em conversas nem coloque em arquivos públicos.</p>
       <div style="display:grid;gap:9px;max-width:420px">
         <button type="button" class="secondary-btn" id="recallPushPrepare">1. Preparar chaves neste iPhone</button>
-        <button type="button" class="secondary-btn" id="recallPushAllow" disabled>2. Autorizar notificações</button>
-        <button type="button" class="primary-btn" id="recallPushCopy" disabled>3. Copiar configuração para GitHub Secret</button>
+        <button type="button" class="secondary-btn" id="recallPushAllow" disabled>2. Permitir notificações</button>
+        <button type="button" class="secondary-btn" id="recallPushSubscribe" disabled>3. Criar inscrição</button>
+        <button type="button" class="primary-btn" id="recallPushCopy" disabled>4. Copiar configuração para GitHub Secret</button>
         <button type="button" class="secondary-btn" id="recallPushRemove">Desativar neste aparelho</button>
         <textarea id="recallPushOutput" hidden readonly rows="4" aria-label="Configuração privada" style="width:100%"></textarea>
       </div>
@@ -125,7 +141,8 @@
     `;
     settings.appendChild(section);
     $('recallPushPrepare').addEventListener('click',prepare);
-    $('recallPushAllow').addEventListener('click',enable);
+    $('recallPushAllow').addEventListener('click',allow);
+    $('recallPushSubscribe').addEventListener('click',subscribe);
     $('recallPushCopy').addEventListener('click',copySecret);
     $('recallPushRemove').addEventListener('click',removeSubscription);
     if (!supported()) {
