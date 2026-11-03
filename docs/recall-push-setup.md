@@ -1,8 +1,9 @@
 # Recall — notificações diárias (GitHub Pages + GitHub Actions)
 
-**Escopo:** uso pessoal, uma inscrição push (um iPhone) e duas notificações todos os dias em `America/Fortaleza`.
+**Escopo:** uso pessoal, uma inscrição push (um iPhone) e três notificações todos os dias em `America/Fortaleza`.
 
 - 09h — desafio com frase em português selecionada do deck de inglês.
+- 12h — desafio com frase em português selecionada do deck de alemão.
 - 14h — lembrete fixo de estudo.
 - Nenhum acesso ao progresso do SRS, `localStorage` ou histórico.
 - Nenhum serviço pago ou servidor permanente.
@@ -14,7 +15,9 @@
 3. Toque em **Preparar chaves**, **Permitir notificações**, **Criar inscrição** e **Copiar configuração para GitHub Secret**. Os toques são separados por exigência de ativação do Safari.
 4. No GitHub, abra o repositório `AbimaelBrilhante/english-recall`, depois **Settings → Secrets and variables → Actions → New repository secret**.
 5. Nome do segredo: `RECALL_PUSH_CONFIG`. Cole o texto copiado do Recall em **Secret**. Salve.
-6. Para testar imediatamente, abra **Actions → Recall · Notificações diárias → Run workflow** e selecione `challenge` ou `reminder`.
+6. Para testar imediatamente, abra **Actions → Recall · Notificações diárias → Run workflow** e selecione `english`, `german` ou `reminder`.
+
+**Quem já ativou as notificações:** não precisa refazer inscrição nem alterar `RECALL_PUSH_CONFIG`; o agendamento novo usa o mesmo segredo.
 
 **Não cole a configuração em issue, commit, arquivo público, chat ou README.** Ela contém uma chave privada VAPID e a inscrição do seu dispositivo. O GitHub Actions Secret é o único local em que esse pacote deve ser armazenado fora do dispositivo.
 
