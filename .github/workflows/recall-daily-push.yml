@@ -3,6 +3,8 @@ on:
   schedule:
     - cron: '0 9 * * *'
       timezone: 'America/Fortaleza'
+    - cron: '0 12 * * *'
+      timezone: 'America/Fortaleza'
     - cron: '0 14 * * *'
       timezone: 'America/Fortaleza'
   workflow_dispatch:
@@ -11,9 +13,10 @@ on:
         description: 'Notificação para teste manual'
         type: choice
         required: true
-        default: challenge
+        default: english
         options:
-          - challenge
+          - english
+          - german
           - reminder
 permissions:
   contents: read
