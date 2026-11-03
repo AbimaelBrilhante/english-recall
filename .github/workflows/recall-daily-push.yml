@@ -1,0 +1,37 @@
+name: Recall · Notificações diárias
+on:
+  schedule:
+    - cron: '0 9 * * *'
+      timezone: 'America/Fortaleza'
+    - cron: '0 14 * * *'
+      timezone: 'America/Fortaleza'
+  workflow_dispatch:
+    inputs:
+      kind:
+        description: 'Notificação para teste manual'
+        type: choice
+        required: true
+        default: challenge
+        options:
+          - challenge
+          - reminder
+permissions:
+  contents: read
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baixar o Recall
+        uses: actions/checkout@v4
+      - name: Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Instalar biblioteca Web Push
+        run: npm install --no-save --ignore-scripts --no-audit --no-fund web-push@3.6.7
+      - name: Enviar mensagem
+        env:
+          RECALL_PUSH_CONFIG: ${{ secrets.RECALL_PUSH_CONFIG }}
+          RECALL_SCHEDULE: ${{ github.event.schedule }}
+          RECALL_KIND: ${{ inputs.kind }}
+        run: node scripts/send-recall-push.cjs
