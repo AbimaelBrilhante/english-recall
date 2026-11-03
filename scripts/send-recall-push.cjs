@@ -13,8 +13,12 @@ if(!config?.vapidPublicKey||!config?.vapidPrivateKey||!config?.subscription?.end
 
 const schedule=process.env.RECALL_SCHEDULE||'';
 const requested=process.env.RECALL_KIND||'';
-const kind=requested || (schedule==='0 9 * * *'?'challenge':schedule==='0 14 * * *'?'reminder':null);
-if(!['challenge','reminder'].includes(kind))abort('Tipo de notificação não identificado.');
+const kind=(requested==='challenge'?'english':requested) || (
+  schedule==='0 9 * * *'?'english':
+  schedule==='0 12 * * *'?'german':
+  schedule==='0 14 * * *'?'reminder':null
+);
+if(!['english','german','reminder'].includes(kind))abort('Tipo de notificação não identificado.');
 
 function fortalezaDate(){
   const parts=new Intl.DateTimeFormat('en-US',{timeZone:'America/Fortaleza',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());
@@ -27,15 +31,19 @@ function messageFor(type){
     body:'Seu treino de hoje está te esperando. Reserve alguns minutos para praticar!',
     url:'./?open=review&deck=en',type:'reminder'
   };
-  const data=JSON.parse(fs.readFileSync('decks/english.json','utf8'));
+  const german=type==='german';
+  const deckId=german?'de':'en';
+  const deckName=german?'alemão':'inglês';
+  const data=JSON.parse(fs.readFileSync(`decks/${german?'german':'english'}.json`,'utf8'));
   const cards=(data.cards||[]).filter(x=>typeof x.back==='string'&&x.back.trim().length>=10&&x.back.trim().length<=105);
-  if(!cards.length)abort('Deck de inglês sem frases elegíveis para desafio.');
-  const seed=crypto.createHash('sha256').update(fortalezaDate()).digest().readUInt32BE(0);
+  if(!cards.length)abort('Deck de '+deckName+' sem frases elegíveis para desafio.');
+  const seed=crypto.createHash('sha256').update(`${fortalezaDate()}|${deckId}`).digest().readUInt32BE(0);
   const card=cards[seed%cards.length];
   return {
-    title:'Recall · Desafio das 9h',
-    body:`Como você diria em inglês: "${card.back.trim()}"?`,
-    url:'./?open=review&deck=en',type:'challenge'
+    title:german?'Recall · Desafio de alemão':'Recall · Desafio de inglês',
+    body:`Como você diria em ${deckName}: "${card.back.trim()}"?`,
+    url:`./?open=review&deck=${deckId}`,
+    type:german?'challenge-german':'challenge-english'
   };
 }
 
