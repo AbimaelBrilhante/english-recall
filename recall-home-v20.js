@@ -193,7 +193,8 @@
         '<button id="rv20Session"><span>▣</span>Sessão</button>'+
         '<button id="rv20Progress"><span>📈</span>Progresso</button>'+
         '<button id="rv20Health"><span>🩺</span>Saúde</button>'+
-        '<button id="rv20Sync"><span>↻</span>Sincronizar</button>'+
+        '<button id="rv20Sync"><span>↻</span>Sincronizar</button>'+ 
+        '<button id="rv20Notifications"><span>🔔</span>Notificações</button>'+
       '</div><div id="rv20Msg" class="rv20-note"></div></section>';
     bind();
   }
@@ -296,6 +297,15 @@
     document.getElementById('rv20Session').onclick=()=>{ if(!clickOriginal('rf3SessionBtn')) core.showView('rf3-session'); };
     document.getElementById('rv20Progress').onclick=()=>{ if(!clickOriginal('rf18ProgressBtn')) core.showView('rf18-progress'); };
     document.getElementById('rv20Health').onclick=()=>{ if(!clickOriginal('rf2HealthBtn')) core.showView('rf2-health'); };
+    document.getElementById('rv20Notifications').onclick=()=>{
+      core.showView('settings');
+      const panel=document.getElementById('recallPushPanel');
+      if(panel){
+        panel.scrollIntoView({behavior:'smooth',block:'start'});
+      }else{
+        document.getElementById('view-settings')?.scrollIntoView({behavior:'smooth',block:'start'});
+      }
+    };
     document.getElementById('rv20Sync').onclick=async()=>{
       const b=document.getElementById('rv20Sync'); if(b)b.disabled=true;
       const ok=await core.syncAll(true);
