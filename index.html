@@ -317,7 +317,7 @@ sessionInitial=dueNow().length;render();syncAll(false).then(()=>{sessionInitial=
   const home=document.getElementById('view-decks');
   if(home) new MutationObserver(ensureButton).observe(home,{subtree:true,childList:true});
   ensureButton();
-})();
+})(); // Notification UI fallback; keep service-worker core bridge pointed at app IIFE.
 </script>
 
 </body>
