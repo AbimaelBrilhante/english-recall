@@ -778,6 +778,48 @@
       "front": "Ich gehe zum Supermarkt.",
       "back": "Eu vou ao supermercado.",
       "initial_due_days": 0
+    },
+    {
+      "front": "Ich arbeite am Donnerstag mit Daten.",
+      "back": "Eu trabalho com dados na quinta-feira.",
+      "initial_due_days": 0,
+      "id": "de-130"
+    },
+    {
+      "front": "Ich lerne Deutsch am Montag.",
+      "back": "Eu estudo alemão na segunda-feira.",
+      "initial_due_days": 0,
+      "id": "de-131"
+    },
+    {
+      "front": "Ich mache am Samstag Sport.",
+      "back": "Eu pratico esporte no sábado.",
+      "initial_due_days": 0,
+      "id": "de-132"
+    },
+    {
+      "front": "Ich suche am Mittwoch eine Wohnung.",
+      "back": "Eu procuro um apartamento na quarta-feira.",
+      "initial_due_days": 0,
+      "id": "de-133"
+    },
+    {
+      "front": "Ich bleibe am Sonntag zu Hause.",
+      "back": "Eu fico em casa no domingo.",
+      "initial_due_days": 0,
+      "id": "de-134"
+    },
+    {
+      "front": "Ich gehe am Dienstag zum Supermarkt.",
+      "back": "Eu vou ao supermercado na terça-feira.",
+      "initial_due_days": 0,
+      "id": "de-135"
+    },
+    {
+      "front": "Ich trinke am Freitag gern Kaffee.",
+      "back": "Eu gosto de tomar café na sexta-feira.",
+      "initial_due_days": 0,
+      "id": "de-136"
     }
   ]
 }
