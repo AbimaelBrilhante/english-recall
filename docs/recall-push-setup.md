@@ -2,9 +2,11 @@
 
 **Escopo:** uso pessoal, uma inscrição push (um iPhone) e três notificações todos os dias em `America/Fortaleza`.
 
-- 09h — desafio com frase em português selecionada do deck de inglês.
-- 12h — desafio com frase em português selecionada do deck de alemão.
-- 14h — lembrete fixo de estudo.
+- Por volta de 09h11 — desafio com frase em português selecionada do deck de inglês.
+- Por volta de 12h11 — desafio com frase em português selecionada do deck de alemão.
+- Por volta de 14h11 — lembrete fixo de estudo.
+
+Agendamento expresso diretamente em UTC (12:11, 15:11, 17:11) para Fortaleza (UTC-3), sem depender de uma extensão de fuso horário no workflow. Os minutos fora do início da hora reduzem a chance de omissões por sobrecarga do GitHub Actions, mas não dão garantia de entrega.
 - Nenhum acesso ao progresso do SRS, `localStorage` ou histórico.
 - Nenhum serviço pago ou servidor permanente.
 
