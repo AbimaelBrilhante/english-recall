@@ -5,7 +5,7 @@ const webpush = require('web-push');
 
 function abort(message){console.error(message);process.exit(1)}
 const raw=process.env.RECALL_PUSH_CONFIG;
-if(!raw)abort('RECALL_PUSH_CONFIG ausente. Configure este segredo nos Settings do GitHub.');
+if(!raw){console.log('Notificações ainda não ativadas: segredo RECALL_PUSH_CONFIG ausente. Nenhum envio realizado.');process.exit(0)}
 
 let config;
 try{config=JSON.parse(raw)}catch{abort('RECALL_PUSH_CONFIG não contém JSON válido.')}
