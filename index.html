@@ -49,11 +49,12 @@ textarea,input[type=search],select.setting{width:100%;border:1px solid var(--lin
   <div class="metric"><b id="activeTotal">0</b><span>dias ativos</span></div>
 </section>
 
-<nav class="nav">
+<nav class="nav" style="grid-template-columns:repeat(5,minmax(0,1fr))">
   <button type="button" data-view="decks" class="active">Decks</button>
   <button type="button" data-view="review">Revisar</button>
   <button type="button" data-view="add">Adicionar</button>
   <button type="button" data-view="library">Biblioteca</button>
+  <button type="button" data-view="settings" id="recallNotificationsTab" aria-label="Configurar notificações" style="font-size:10px">🔔 Avisos</button>
 </nav>
 
 <section id="view-decks" class="view active">
@@ -282,7 +283,7 @@ $('settingsDeck').addEventListener('change',renderSettings);$('studyMode').addEv
 $('voiceSelect').addEventListener('change',()=>{const id=$('settingsDeck').value;state.settings.voiceByDeck[id]=$('voiceSelect').value;save();});$('settingsSpeed').addEventListener('change',()=>{const id=$('settingsDeck').value;state.settings.speedByDeck[id]=Number($('settingsSpeed').value)||1;if(id===selectedDeck())$('speed').value=String(state.settings.speedByDeck[id]);save();});$('speed').addEventListener('change',()=>{state.settings.speedByDeck[selectedDeck()]=Number($('speed').value)||1;save();});$('autoPlay').addEventListener('change',()=>{state.settings.autoPlay=$('autoPlay').checked;save();});$('testVoice').addEventListener('click',()=>{const id=$('settingsDeck').value,sample=id==='de'?'Hallo! Wie geht es dir?':'Hello! How are you today?';speakText(sample,id,Number($('settingsSpeed').value)||1);});
 
 if('serviceWorker'in navigator){
-  navigator.serviceWorker.register('./sw.js?v=2231-force',{scope:'./',updateViaCache:'none'})
+  navigator.serviceWorker.register('./sw.js?v=2242-force',{scope:'./',updateViaCache:'none'})
     .then(reg=>reg.update())
     .catch(()=>{});
 }
@@ -290,5 +291,34 @@ window.addEventListener('online',()=>syncAll(false));
 sessionInitial=dueNow().length;render();syncAll(false).then(()=>{sessionInitial=dueNow().length;render();});
 })();
 </script>
+<script>
+(() => {
+  'use strict';
+  // Inline fallback survives a stale service-worker script cache.
+  const scrollToPanel = () => {
+    setTimeout(() => {
+      document.getElementById('recallPushPanel')?.scrollIntoView({behavior:'smooth',block:'start'});
+    }, 90);
+  };
+  document.getElementById('recallNotificationsTab')?.addEventListener('click',scrollToPanel);
+  const ensureButton = () => {
+    const quick=document.querySelector('#rv20Home .rv20-quick');
+    if (!quick || quick.querySelector('#rv20Notifications,#recallNotifFallback')) return;
+    const btn=document.createElement('button');
+    btn.type='button';
+    btn.id='recallNotifFallback';
+    btn.innerHTML='<span aria-hidden="true">🔔</span>Notificações';
+    btn.addEventListener('click', () => {
+      document.getElementById('settingsBtn')?.click();
+      scrollToPanel();
+    });
+    quick.appendChild(btn);
+  };
+  const home=document.getElementById('view-decks');
+  if(home) new MutationObserver(ensureButton).observe(home,{subtree:true,childList:true});
+  ensureButton();
+})();
+</script>
+
 </body>
 </html>
