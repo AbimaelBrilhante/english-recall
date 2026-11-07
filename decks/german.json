@@ -820,6 +820,54 @@
       "back": "Eu gosto de tomar café na sexta-feira.",
       "initial_due_days": 0,
       "id": "de-136"
+    },
+    {
+      "front": "Suchst du am Mittwoch eine Wohnung?",
+      "back": "Você procura um apartamento na quarta-feira?",
+      "initial_due_days": 0,
+      "id": "de-137"
+    },
+    {
+      "front": "Am Mittwoch suche ich eine Wohnung.",
+      "back": "Na quarta-feira, procuro um apartamento.",
+      "initial_due_days": 0,
+      "id": "de-138"
+    },
+    {
+      "front": "Wann ist die Besichtigung?",
+      "back": "Quando é a visita ao apartamento?",
+      "initial_due_days": 0,
+      "id": "de-139"
+    },
+    {
+      "front": "Die Wohnung ist noch frei.",
+      "back": "O apartamento ainda está disponível.",
+      "initial_due_days": 0,
+      "id": "de-140"
+    },
+    {
+      "front": "Ich komme am Freitag.",
+      "back": "Eu vou na sexta-feira.",
+      "initial_due_days": 0,
+      "id": "de-141"
+    },
+    {
+      "front": "Am Freitag finde ich eine Wohnung.",
+      "back": "Na sexta-feira, encontro um apartamento.",
+      "initial_due_days": 0,
+      "id": "de-142"
+    },
+    {
+      "front": "Gern.",
+      "back": "Com prazer.",
+      "initial_due_days": 0,
+      "id": "de-143"
+    },
+    {
+      "front": "Gut.",
+      "back": "Ótimo. / Bem.",
+      "initial_due_days": 0,
+      "id": "de-144"
     }
   ]
 }
