@@ -192,7 +192,20 @@ function current(){
   }
   currentItem=nextItem();return currentItem;
 }
-function streak(){const set=new Set(state.activeDays);if(!set.size)return 0;let d=new Date();if(!set.has(dayKey(d)))d.setDate(d.getDate()-1);let n=0;while(set.has(dayKey(d))){n++;d.setDate(d.getDate()-1);}return n;}
+function streak(){
+  const active=new Set(state.activeDays||[]);
+  // An explicitly approved pause preserves continuity without creating a fictitious study day.
+  const pauses=new Set((Array.isArray(state.settings?.streakGraceDays)?state.settings.streakGraceDays:[]).filter(d=>d==='2026-11-08'));
+  if(!active.size)return 0;
+  let d=new Date();
+  if(!active.has(dayKey(d)))d.setDate(d.getDate()-1);
+  let n=0;
+  while(active.has(dayKey(d))||pauses.has(dayKey(d))){
+    if(active.has(dayKey(d)))n++;
+    d.setDate(d.getDate()-1);
+  }
+  return n;
+}
 function todayStudyCount(){const k=dayKey();return state.reviewLog.filter(r=>r.day===k).length;}
 function markActive(){const k=dayKey();if(!state.activeDays.includes(k))state.activeDays.push(k);}
 function formatDue(ts){const diff=Number(ts)-Date.now();if(diff<=0)return 'Agora';const min=Math.ceil(diff/60000);if(min<60)return `em ${min} min`;const h=Math.ceil(diff/3600000);if(h<24)return `em ${h} h`;const d=Math.ceil(diff/DAY);return `em ${d} ${d===1?'dia':'dias'}`;}
@@ -283,7 +296,7 @@ $('settingsDeck').addEventListener('change',renderSettings);$('studyMode').addEv
 $('voiceSelect').addEventListener('change',()=>{const id=$('settingsDeck').value;state.settings.voiceByDeck[id]=$('voiceSelect').value;save();});$('settingsSpeed').addEventListener('change',()=>{const id=$('settingsDeck').value;state.settings.speedByDeck[id]=Number($('settingsSpeed').value)||1;if(id===selectedDeck())$('speed').value=String(state.settings.speedByDeck[id]);save();});$('speed').addEventListener('change',()=>{state.settings.speedByDeck[selectedDeck()]=Number($('speed').value)||1;save();});$('autoPlay').addEventListener('change',()=>{state.settings.autoPlay=$('autoPlay').checked;save();});$('testVoice').addEventListener('click',()=>{const id=$('settingsDeck').value,sample=id==='de'?'Hallo! Wie geht es dir?':'Hello! How are you today?';speakText(sample,id,Number($('settingsSpeed').value)||1);});
 
 if('serviceWorker'in navigator){
-  navigator.serviceWorker.register('./sw.js?v=2251-force',{scope:'./',updateViaCache:'none'})
+  navigator.serviceWorker.register('./sw.js?v=2252-force',{scope:'./',updateViaCache:'none'})
     .then(reg=>reg.update())
     .catch(()=>{});
 }
