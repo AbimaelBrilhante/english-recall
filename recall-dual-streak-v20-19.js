@@ -67,14 +67,15 @@ function restoreOneDay(){
   s.settings.streakGraceDays=[...new Set([...existing,RECOVERY_DAY])];
   try{
     core.save();
-    core.render();
-    render();
   }catch(error){
     if(original===undefined)delete s.settings.streakGraceDays;
     else s.settings.streakGraceDays=original;
     const box=document.getElementById('rdsRecoveryError');
     if(box)box.textContent='Não foi possível salvar a proteção. Nenhuma revisão foi alterada.';
+    return;
   }
+  try{core.render();}catch(error){/* The saved pause will be visible on the next render. */}
+  render();
 }
 function style(){
   if(document.getElementById('rdsStyle'))return;
