@@ -868,6 +868,36 @@
       "back": "Ótimo. / Bem.",
       "initial_due_days": 0,
       "id": "de-144"
+    },
+    {
+      "front": "Ich lerne Deutsch im November.",
+      "back": "Eu estudo alemão em novembro.",
+      "initial_due_days": 0,
+      "id": "de-145"
+    },
+    {
+      "front": "Ich suche eine Wohnung im Januar.",
+      "back": "Eu procuro um apartamento em janeiro.",
+      "initial_due_days": 0,
+      "id": "de-146"
+    },
+    {
+      "front": "Ich gehe zum Supermarkt im April.",
+      "back": "Eu vou ao supermercado em abril.",
+      "initial_due_days": 0,
+      "id": "de-147"
+    },
+    {
+      "front": "Ich lerne Deutsch am Montag im November.",
+      "back": "Eu estudo alemão na segunda-feira, em novembro.",
+      "initial_due_days": 0,
+      "id": "de-148"
+    },
+    {
+      "front": "Die Besichtigung ist im November.",
+      "back": "A visita ao apartamento é em novembro.",
+      "initial_due_days": 0,
+      "id": "de-149"
     }
   ]
 }
