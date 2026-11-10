@@ -898,6 +898,36 @@
       "back": "A visita ao apartamento é em novembro.",
       "initial_due_days": 0,
       "id": "de-149"
+    },
+    {
+      "id": "de-150",
+      "front": "Wie viel kostet ein Kaffee?",
+      "back": "Quanto custa um café?",
+      "initial_due_days": 0
+    },
+    {
+      "id": "de-151",
+      "front": "Ein Wasser kostet zwei Euro.",
+      "back": "Uma água custa dois euros.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "de-152",
+      "front": "Eine Apfelschorle kostet vier Euro.",
+      "back": "Uma Apfelschorle custa quatro euros.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "de-153",
+      "front": "Das kostet fünf Euro.",
+      "back": "Isso custa cinco euros.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "de-154",
+      "front": "Ich möchte ein Wasser, bitte.",
+      "back": "Eu gostaria de uma água, por favor.",
+      "initial_due_days": 0
     }
   ]
 }
