@@ -1522,6 +1522,36 @@
       "front": "We can get a lot of value out of this tool if we use it properly.",
       "back": "Podemos tirar bastante proveito dessa ferramenta se a utilizarmos corretamente.",
       "initial_due_days": 0
+    },
+    {
+      "id": "en-254",
+      "front": "Recently, I extracted XML files and SAP data.",
+      "back": "Recentemente, extraí arquivos XML e dados do SAP.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-255",
+      "front": "I converted the data into a tabular format.",
+      "back": "Converti os dados para um formato tabular.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-256",
+      "front": "My main task was to map different XML structures and understand their fields.",
+      "back": "Minha principal tarefa foi mapear estruturas XML diferentes e entender seus campos.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-257",
+      "front": "The biggest challenge was that the structures were different depending on the file.",
+      "back": "O maior desafio foi que as estruturas eram diferentes, dependendo do arquivo.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-258",
+      "front": "To solve this problem, I created tests using sample XML files before converting the data.",
+      "back": "Para resolver esse problema, criei testes com arquivos XML de exemplo antes de converter os dados.",
+      "initial_due_days": 0
     }
   ]
 }
