@@ -928,6 +928,36 @@
       "front": "Ich möchte ein Wasser, bitte.",
       "back": "Eu gostaria de uma água, por favor.",
       "initial_due_days": 0
+    },
+    {
+      "id": "de-155",
+      "front": "Das ist ein Hut.",
+      "back": "Isto é um chapéu.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "de-156",
+      "front": "Das ist eine Uhr.",
+      "back": "Isto é um relógio.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "de-157",
+      "front": "Der Hut ist schön.",
+      "back": "O chapéu é bonito.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "de-158",
+      "front": "Die Uhr ist neu.",
+      "back": "O relógio é novo.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "de-159",
+      "front": "Ich habe einen Hut.",
+      "back": "Eu tenho um chapéu.",
+      "initial_due_days": 0
     }
   ]
 }
