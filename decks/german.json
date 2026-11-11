@@ -958,6 +958,60 @@
       "front": "Ich habe einen Hut.",
       "back": "Eu tenho um chapéu.",
       "initial_due_days": 0
+    },
+    {
+      "front": "Ich habe eine Wohnung.",
+      "back": "Eu tenho um apartamento.",
+      "initial_due_days": 0,
+      "id": "de-160"
+    },
+    {
+      "front": "Ich habe eine Besichtigung im November.",
+      "back": "Eu tenho uma visita ao apartamento em novembro.",
+      "initial_due_days": 0,
+      "id": "de-161"
+    },
+    {
+      "front": "Ich habe am Freitag Zeit.",
+      "back": "Eu tenho tempo na sexta-feira.",
+      "initial_due_days": 0,
+      "id": "de-162"
+    },
+    {
+      "front": "Hast du am Freitag Zeit?",
+      "back": "Você tem tempo na sexta-feira?",
+      "initial_due_days": 0,
+      "id": "de-163"
+    },
+    {
+      "front": "Ja, ich habe Zeit.",
+      "back": "Sim, eu tenho tempo.",
+      "initial_due_days": 0,
+      "id": "de-164"
+    },
+    {
+      "front": "Hast du eine Besichtigung?",
+      "back": "Você tem uma visita ao apartamento?",
+      "initial_due_days": 0,
+      "id": "de-165"
+    },
+    {
+      "front": "Suchst du eine Wohnung?",
+      "back": "Você está procurando um apartamento?",
+      "initial_due_days": 0,
+      "id": "de-166"
+    },
+    {
+      "front": "Ja, ich suche eine Wohnung.",
+      "back": "Sim, estou procurando um apartamento.",
+      "initial_due_days": 0,
+      "id": "de-167"
+    },
+    {
+      "front": "Ich habe eine Besichtigung im Januar.",
+      "back": "Eu tenho uma visita ao apartamento em janeiro.",
+      "initial_due_days": 0,
+      "id": "de-168"
     }
   ]
 }
