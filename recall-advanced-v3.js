@@ -216,16 +216,41 @@
   function backupList(){try{const list=JSON.parse(localStorage.getItem(BACKUP_KEY)||'[]');return Array.isArray(list)?list:[];}catch{return[];}}
   function trimAutoBackups(){
     const list=backupList();
-    if(list.length<=MAX_AUTO_BACKUPS)return;
+    if(list.length<=MAX_AUTO_BACKUPS||window.recallStorageMode==='indexeddb')return;
     try{localStorage.setItem(BACKUP_KEY,JSON.stringify(list.slice(0,MAX_AUTO_BACKUPS)));}
     catch(error){console.warn('[Recall] Não foi possível limpar os backups automáticos antigos.',error);}
   }
   function stateSignature(){const s=state();return `${(s.reviewLog||[]).length}|${Object.values(s.cards||{}).reduce((n,a)=>n+(a?.length||0),0)}|${Math.max(0,...(s.reviewLog||[]).map(x=>Number(x.ts)||0))}`;}
   function maybeAutoBackup(force=false){
+    // Do not recreate whole-state backups in the already-full localStorage.
+    // In IndexedDB mode, use the transactional snapshot plus exported JSON backups.
+    if(window.recallStorageMode==='indexeddb')return;
     const list=backupList(),now=Date.now(),sig=stateSignature(),last=list[0];if(!force&&last&&now-last.ts<6*3600000&&last.sig===sig)return;const snapshot=JSON.stringify(state());list.unshift({ts:now,sig,data:snapshot});localStorage.setItem(BACKUP_KEY,JSON.stringify(list.slice(0,MAX_AUTO_BACKUPS)));renderBackupUi();
   }
-  function restoreBackup(i){const list=backupList(),b=list[i];if(!b||!confirm('Restaurar este backup automático? O estado atual será substituído.'))return;try{const x=JSON.parse(b.data),s=state();for(const k of Object.keys(s))delete s[k];Object.assign(s,x);save();core.clearCurrentItem();core.render();alert('Backup restaurado.');}catch{alert('Não foi possível restaurar este backup.');}}
-  function ensureBackupUi(){const add=document.getElementById('view-add');if(!add||document.getElementById('rf3BackupPanel'))return;const sec=document.createElement('div');sec.id='rf3BackupPanel';sec.className='section';sec.innerHTML='<h2>Backups automáticos</h2><p>Até 2 snapshots locais do progresso. As gravações de voz não entram nesses backups.</p><div id="rf3BackupList" class="rf3-backups"></div>';add.appendChild(sec);}
+  async function restoreBackup(i){
+    const list=backupList(),b=list[i];
+    if(!b||!confirm('Restaurar este backup automático? O estado atual será substituído.'))return;
+    const target=state();
+    const before=JSON.parse(JSON.stringify(target));
+    try{
+      const restored=JSON.parse(b.data);
+      if(!restored||restored.version!==4||!restored.cards)throw new Error('Formato inválido');
+      for(const k of Object.keys(target))delete target[k];
+      Object.assign(target,restored);
+      if(!await core.save()){
+        for(const k of Object.keys(target))delete target[k];
+        Object.assign(target,before);
+        alert('A restauração não pôde ser salva. Seu estado anterior foi mantido.');
+        return;
+      }
+      core.clearCurrentItem();core.render();alert('Backup restaurado.');
+    }catch(error){
+      for(const k of Object.keys(target))delete target[k];
+      Object.assign(target,before);
+      alert('Não foi possível restaurar este backup.');
+    }
+  }
+  function ensureBackupUi(){const add=document.getElementById('view-add');if(!add||document.getElementById('rf3BackupPanel'))return;const sec=document.createElement('div');sec.id='rf3BackupPanel';sec.className='section';sec.innerHTML='<h2>Backups automáticos</h2><p>Backups antigos preservados. O progresso atual é gravado no IndexedDB. Exporte backups atualizados em 🛟 Diagnóstico e backup.</p><div id="rf3BackupList" class="rf3-backups"></div>';add.appendChild(sec);}
   function renderBackupUi(){ensureBackupUi();const box=document.getElementById('rf3BackupList');if(!box)return;const list=backupList();box.innerHTML=list.length?list.map((b,i)=>`<div class="rf3-backup"><span>${new Date(b.ts).toLocaleString('pt-BR')}</span><button class="rf3-btn" data-i="${i}">Restaurar</button></div>`).join(''):'<div class="rf3-muted">O primeiro backup será criado automaticamente.</div>';box.querySelectorAll('[data-i]').forEach(b=>b.onclick=()=>restoreBackup(Number(b.dataset.i)));}
 
   function ensureVersion(){if(document.getElementById('rf3Version'))return;const v=document.createElement('div');v.id='rf3Version';v.className='rf3-version';v.textContent=`Recall v${VERSION}`;document.querySelector('main.app')?.appendChild(v);}
