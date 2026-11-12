@@ -88,11 +88,15 @@
   const baseRateCard=core.getRateCard();
   core.setRateCard(function(kind){
     const item=core.current?.();
+    const deckId=core.selectedDeck();
     const result=baseRateCard(kind);
-    if(result!==false && zeroDayDeck && item && core.selectedDeck()===zeroDayDeck){
-      zeroDayDoneKeys.add(itemKey(item));
-    }
-    return result;
+    const mark=ok=>{
+      if(ok!==false && zeroDayDeck && item && deckId===zeroDayDeck){
+        zeroDayDoneKeys.add(itemKey(item));
+      }
+      return ok;
+    };
+    return result&&typeof result.then==='function'?result.then(mark):mark(result);
   });
 
   function clearZeroDay(){
