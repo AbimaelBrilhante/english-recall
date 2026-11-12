@@ -74,12 +74,16 @@
     const newlyIntroduced=Boolean(item?.card && unseen(item.card));
     const previousDay=item?.card?.introducedDay;
     if(newlyIntroduced)item.card.introducedDay=core.dayKey();
-    // Keep the new-card flag and the review in the same successful save.
-    const result=baseRateCard(kind);
-    if(newlyIntroduced && result===false){
+    const undo=()=>{
+      if(!newlyIntroduced)return;
       if(previousDay===undefined)delete item.card.introducedDay;
       else item.card.introducedDay=previousDay;
+    };
+    const result=baseRateCard(kind);
+    if(result&&typeof result.then==='function'){
+      return result.then(ok=>{if(ok===false)undo();return ok;},error=>{undo();throw error;});
     }
+    if(result===false)undo();
     return result;
   });
 
