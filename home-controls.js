@@ -72,7 +72,7 @@
 
   function applyTheme(theme) {
     document.documentElement.dataset.recallTheme = theme;
-    localStorage.setItem(THEME_KEY, theme);
+    try{localStorage.setItem(THEME_KEY, theme);}catch{/* full legacy storage must not break theme controls */}
     const toggle = document.getElementById('themeToggle');
     if (toggle) {
       toggle.textContent = theme === 'dark' ? '☀️' : '🌙';
