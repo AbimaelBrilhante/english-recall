@@ -78,9 +78,14 @@
       const item=core.current?.();
       const snapshot=item?{cardId:item.card.id,deckId:core.selectedDeck(),direction:item.direction}:null;
       const result=baseRate(kind);
-      if(result!==false&&kind==='again'&&snapshot){
-        if(result&&typeof result.then==='function') result.finally(()=>setTimeout(()=>askFailure(snapshot),40));
-        else setTimeout(()=>askFailure(snapshot),40);
+      if(kind==='again'&&snapshot){
+        if(result&&typeof result.then==='function'){
+          return result.then(ok=>{
+            if(ok!==false)setTimeout(()=>askFailure(snapshot),40);
+            return ok;
+          });
+        }
+        if(result!==false)setTimeout(()=>askFailure(snapshot),40);
       }
       return result;
     });
