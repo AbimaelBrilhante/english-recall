@@ -13,8 +13,23 @@
     if(raw===null||raw.length===0)throw new Error('Histórico local não encontrado.');
     return raw;
   }
-  function source(){
-    const raw=getSaved();
+  async function source(){
+    let raw,origin='localStorage (original)';
+    if(window.recallIDB){
+      try{
+        const state=await window.recallIDB.read();
+        if(state){
+          raw=JSON.stringify(state);
+          origin='IndexedDB (atual)';
+        }
+      }catch(error){
+        // Never export stale legacy data as if it were the current database.
+        if(window.recallStorageMode==='indexeddb'||window.recallStorageMode==='error'){
+          throw new Error('Falha ao ler o IndexedDB: '+String(error.message||error));
+        }
+      }
+    }
+    if(raw===undefined)raw=getSaved();
     let valid=false,stats={cards:0,reviews:0,days:0};
     try{
       const data=JSON.parse(raw);
@@ -27,29 +42,29 @@
         };
       }
     }catch{}
-    return {raw,valid,stats,estimatedBytes:raw.length*2};
+    return {raw,origin,valid,stats,estimatedBytes:raw.length*2};
   }
-  function savedFile(){
-    const info=source();
-    const filename='recall-backup-local-'+date()+(info.valid?'.json':'-resgate.txt');
+  async function savedFile(){
+    const info=await source();
+    const filename='recall-backup-'+(info.origin.startsWith('IndexedDB')?'indexeddb-':'original-')+date()+(info.valid?'.json':'-resgate.txt');
     return new File([info.raw],filename,{type:info.valid?'application/json':'text/plain'});
   }
-  function download(){
+  async function download(){
     try{
-      const file=savedFile();
+      const file=await savedFile();
       const url=URL.createObjectURL(file);
       const a=document.createElement('a');
       a.href=url;a.download=file.name;
       document.body.appendChild(a);a.click();a.remove();
       setTimeout(()=>URL.revokeObjectURL(url),60000);
-      $('rsdMessage').textContent='Backup gerado. Confira se foi salvo no app Arquivos, preferencialmente em No Meu iPhone.';
+      $('rsdMessage').textContent='Backup preparado. Confira no app Arquivos se o JSON foi salvo em No Meu iPhone.';
     }catch(error){
       $('rsdMessage').textContent='Não foi possível exportar: '+String(error.message||error);
     }
   }
   async function share(){
     try{
-      const file=savedFile();
+      const file=await savedFile();
       if(!navigator.share || (navigator.canShare&&!navigator.canShare({files:[file]}))){
         download();return;
       }
@@ -123,7 +138,9 @@
     makePanel();
     const host=$('rsdReport');host.replaceChildren();
     try{
-      const v=source();
+      const v=await source();
+      line(host,'Armazenamento em uso',v.origin);
+      if(window.recallStorageMigration==='verified')line(host,'Migração','Cópia e leitura verificadas. O original permanece no iPhone.');
       line(host,'Histórico salvo',v.valid?'JSON válido':'Arquivo encontrado, mas não validado');
       line(host,'Tamanho estimado do JSON no localStorage',size(v.estimatedBytes)+' (aproximação)');
       if(v.valid){
@@ -133,7 +150,7 @@
       }
     }catch(error){line(host,'Histórico local',String(error.message||error));}
     const fault=window.recallStorageFault;
-    line(host,'Gravação nesta abertura',fault?fault.message:'Nenhuma falha de gravação detectada nesta abertura (não é teste de capacidade).');
+    line(host,'Gravação nesta abertura',fault?fault.message:'Nenhuma falha de gravação detectada nesta abertura.');
     if(navigator.storage?.estimate){
       try{
         const estimate=await navigator.storage.estimate();
