@@ -344,7 +344,7 @@ function render(){
   // Reviews and explicit edits save immediately. Re-rendering only schedules a
   // quiet follow-up so every UI refresh does not rewrite the entire database.
   clearTimeout(renderSaveTimer);
-  renderSaveTimer=setTimeout(()=>{renderSaveTimer=null;void save();},240);
+  renderSaveTimer=setTimeout(()=>{renderSaveTimer=null;if(!ratingBusy)void save();},240);
 }
 
 function loadVoices(){if(!('speechSynthesis'in window))return;voices=speechSynthesis.getVoices()||[];if(currentView==='settings')renderSettings();}
@@ -494,6 +494,6 @@ sessionInitial=dueNow().length;render();syncAll(false).then(()=>{sessionInitial=
 })(); // Notification UI fallback; keep service-worker core bridge pointed at app IIFE.
 </script>
 
-<script src="./recall-storage-diagnostics-v1.js?v=2253"></script>
+<script src="./recall-storage-diagnostics-v1.js?v=2254"></script>
 </body>
 </html>
