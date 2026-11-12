@@ -88,10 +88,11 @@
   const baseRateCard=core.getRateCard();
   core.setRateCard(function(kind){
     const item=core.current?.();
-    if(zeroDayDeck && item && core.selectedDeck()===zeroDayDeck){
+    const result=baseRateCard(kind);
+    if(result!==false && zeroDayDeck && item && core.selectedDeck()===zeroDayDeck){
       zeroDayDoneKeys.add(itemKey(item));
     }
-    return baseRateCard(kind);
+    return result;
   });
 
   function clearZeroDay(){
