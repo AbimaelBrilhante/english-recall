@@ -21,11 +21,14 @@
         if(state){
           raw=JSON.stringify(state);
           origin='IndexedDB (atual)';
+        }else if(window.recallStorageMode==='indexeddb'){
+          origin='localStorage (resgate antigo: IndexedDB não encontrado)';
         }
       }catch(error){
-        // Never export stale legacy data as if it were the current database.
+        // The preserved original is still exportable as an explicitly labeled
+        // rescue file, but it must never be presented as the latest progress.
         if(window.recallStorageMode==='indexeddb'||window.recallStorageMode==='error'){
-          throw new Error('Falha ao ler o IndexedDB: '+String(error.message||error));
+          origin='localStorage (resgate antigo: IndexedDB inacessível)';
         }
       }
     }
@@ -46,7 +49,7 @@
   }
   async function savedFile(){
     const info=await source();
-    const filename='recall-backup-'+(info.origin.startsWith('IndexedDB')?'indexeddb-':'original-')+date()+(info.valid?'.json':'-resgate.txt');
+    const filename='recall-backup-'+(info.origin.startsWith('IndexedDB')?'indexeddb-atual-':'localstorage-resgate-')+date()+(info.valid?'.json':'-resgate.txt');
     return new File([info.raw],filename,{type:info.valid?'application/json':'text/plain'});
   }
   async function download(){
@@ -140,6 +143,9 @@
     try{
       const v=await source();
       line(host,'Armazenamento em uso',v.origin);
+      if(v.origin.includes('resgate antigo')){
+        line(host,'Atenção','O banco atual não foi lido. O JSON exportado é apenas uma cópia antiga, sem estudos realizados após a migração.');
+      }
       if(window.recallStorageMigration==='verified')line(host,'Migração','Cópia e leitura verificadas. O original permanece no iPhone.');
       line(host,'Histórico salvo',v.valid?'JSON válido':'Arquivo encontrado, mas não validado');
       line(host,'Tamanho estimado do JSON no localStorage',size(v.estimatedBytes)+' (aproximação)');
