@@ -1012,6 +1012,36 @@
       "back": "Eu tenho uma visita ao apartamento em janeiro.",
       "initial_due_days": 0,
       "id": "de-168"
+    },
+    {
+      "id": "de-169",
+      "front": "Ich habe Hunger.",
+      "back": "Estou com fome.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "de-170",
+      "front": "Ich habe Durst.",
+      "back": "Estou com sede.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "de-171",
+      "front": "Hast du Hunger?",
+      "back": "Você está com fome?",
+      "initial_due_days": 0
+    },
+    {
+      "id": "de-172",
+      "front": "Ich möchte Wasser trinken.",
+      "back": "Eu gostaria de beber água.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "de-173",
+      "front": "Ich habe Lust auf Kaffee.",
+      "back": "Estou com vontade de tomar café.",
+      "initial_due_days": 0
     }
   ]
 }
