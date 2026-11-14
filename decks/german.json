@@ -1042,6 +1042,18 @@
       "front": "Ich habe Lust auf Kaffee.",
       "back": "Estou com vontade de tomar café.",
       "initial_due_days": 0
+    },
+    {
+      "front": "Passt das?",
+      "back": "Isso serve? / Está bom assim?",
+      "initial_due_days": 0,
+      "id": "de-174"
+    },
+    {
+      "front": "Ja, das passt.",
+      "back": "Sim, está bom.",
+      "initial_due_days": 0,
+      "id": "de-175"
     }
   ]
 }
