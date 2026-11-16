@@ -1552,6 +1552,24 @@
       "front": "To solve this problem, I created tests using sample XML files before converting the data.",
       "back": "Para resolver esse problema, criei testes com arquivos XML de exemplo antes de converter os dados.",
       "initial_due_days": 0
+    },
+    {
+      "id": "en-259",
+      "front": "I believe I'm a good fit for this role.",
+      "back": "Acredito que tenho o perfil adequado para esta vaga.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-260",
+      "front": "My skills match the requirements of this role.",
+      "back": "Minhas habilidades correspondem aos requisitos desta vaga.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-261",
+      "front": "I can bring this experience to your team.",
+      "back": "Posso levar essa experiência para a sua equipe.",
+      "initial_due_days": 0
     }
   ]
 }
