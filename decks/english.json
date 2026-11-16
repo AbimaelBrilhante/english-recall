@@ -1570,6 +1570,30 @@
       "front": "I can bring this experience to your team.",
       "back": "Posso levar essa experiência para a sua equipe.",
       "initial_due_days": 0
+    },
+    {
+      "id": "en-262",
+      "front": "First, I check whether the joins and filters are necessary.",
+      "back": "Primeiro, verifico se os JOINs e filtros são necessários.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-263",
+      "front": "I check whether the query is processing more data than needed.",
+      "back": "Verifico se a consulta está processando mais dados do que o necessário.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-264",
+      "front": "I review the query execution plan to identify slow operations.",
+      "back": "Analiso o plano de execução da consulta para identificar operações lentas.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-265",
+      "front": "Finally, I compare the execution time before and after the changes.",
+      "back": "Por fim, comparo o tempo de execução antes e depois das alterações.",
+      "initial_due_days": 0
     }
   ]
 }
