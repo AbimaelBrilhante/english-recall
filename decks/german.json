@@ -1054,6 +1054,54 @@
       "back": "Sim, está bom.",
       "initial_due_days": 0,
       "id": "de-175"
+    },
+    {
+      "front": "Es ist acht Uhr.",
+      "back": "São oito horas.",
+      "initial_due_days": 0,
+      "id": "de-176"
+    },
+    {
+      "front": "Ich lerne Deutsch um acht Uhr.",
+      "back": "Eu estudo alemão às oito horas.",
+      "initial_due_days": 0,
+      "id": "de-177"
+    },
+    {
+      "front": "Die Besichtigung ist um zehn Uhr.",
+      "back": "A visita ao apartamento é às dez horas.",
+      "initial_due_days": 0,
+      "id": "de-178"
+    },
+    {
+      "front": "Am Freitag habe ich um acht Uhr Zeit.",
+      "back": "Na sexta-feira, eu tenho tempo às oito horas.",
+      "initial_due_days": 0,
+      "id": "de-179"
+    },
+    {
+      "front": "Um acht Uhr habe ich Zeit.",
+      "back": "Às oito horas, eu tenho tempo.",
+      "initial_due_days": 0,
+      "id": "de-180"
+    },
+    {
+      "front": "Um zehn Uhr.",
+      "back": "Às dez horas.",
+      "initial_due_days": 0,
+      "id": "de-181"
+    },
+    {
+      "front": "Hast du am Freitag um zehn Uhr Zeit?",
+      "back": "Você tem tempo na sexta-feira às dez horas?",
+      "initial_due_days": 0,
+      "id": "de-182"
+    },
+    {
+      "front": "Ja, ich habe am Freitag um zehn Uhr Zeit.",
+      "back": "Sim, eu tenho tempo na sexta-feira às dez horas.",
+      "initial_due_days": 0,
+      "id": "de-183"
     }
   ]
 }
