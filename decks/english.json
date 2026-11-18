@@ -1594,6 +1594,30 @@
       "front": "Finally, I compare the execution time before and after the changes.",
       "back": "Por fim, comparo o tempo de execução antes e depois das alterações.",
       "initial_due_days": 0
+    },
+    {
+      "id": "en-266",
+      "front": "One project where I had to clean data was a tax mapping project.",
+      "back": "Um projeto em que precisei limpar dados foi um projeto de mapeamento tributário.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-267",
+      "front": "I had to standardize some special characters and accents.",
+      "back": "Eu precisei padronizar alguns caracteres especiais e acentuações.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-268",
+      "front": "I loaded the data into Snowflake.",
+      "back": "Eu carreguei os dados no Snowflake.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-269",
+      "front": "So far, the results look correct.",
+      "back": "Até agora, os resultados parecem corretos.",
+      "initial_due_days": 0
     }
   ]
 }
