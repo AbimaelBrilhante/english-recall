@@ -1618,6 +1618,24 @@
       "front": "So far, the results look correct.",
       "back": "Até agora, os resultados parecem corretos.",
       "initial_due_days": 0
+    },
+    {
+      "id": "en-270",
+      "front": "It depends on the data source.",
+      "back": "Depende da fonte dos dados.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-271",
+      "front": "I identify the common keys between the tables.",
+      "back": "Identifico as chaves em comum entre as tabelas.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-272",
+      "front": "I check the number of records to make sure the data was loaded correctly.",
+      "back": "Verifico a quantidade de registros para garantir que os dados foram carregados corretamente.",
+      "initial_due_days": 0
     }
   ]
 }
