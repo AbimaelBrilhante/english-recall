@@ -1102,6 +1102,36 @@
       "back": "Sim, eu tenho tempo na sexta-feira às dez horas.",
       "initial_due_days": 0,
       "id": "de-183"
+    },
+    {
+      "id": "de-184",
+      "front": "Ich fahre mit dem Bus.",
+      "back": "Eu vou de ônibus.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "de-185",
+      "front": "Fährst du am Freitag zum Bahnhof?",
+      "back": "Você vai à estação na sexta-feira?",
+      "initial_due_days": 0
+    },
+    {
+      "id": "de-186",
+      "front": "Ich fahre am Freitag um acht Uhr zum Bahnhof.",
+      "back": "Eu vou à estação na sexta-feira às oito horas.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "de-187",
+      "front": "Wann fährt der Bus?",
+      "back": "Quando o ônibus sai?",
+      "initial_due_days": 0
+    },
+    {
+      "id": "de-188",
+      "front": "Der Bus fährt um acht Uhr.",
+      "back": "O ônibus sai às oito horas.",
+      "initial_due_days": 0
     }
   ]
 }
