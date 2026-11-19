@@ -1636,6 +1636,30 @@
       "front": "I check the number of records to make sure the data was loaded correctly.",
       "back": "Verifico a quantidade de registros para garantir que os dados foram carregados corretamente.",
       "initial_due_days": 0
+    },
+    {
+      "id": "en-273",
+      "front": "I compared the data with SAP.",
+      "back": "Eu comparei os dados com o SAP.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-274",
+      "front": "The join key was incorrect.",
+      "back": "A chave do join estava incorreta.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-275",
+      "front": "I let the tax analysts know by chat.",
+      "back": "Eu aviso os analistas tributários pelo chat.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-276",
+      "front": "Small data errors can cause big problems for the company.",
+      "back": "Pequenos erros nos dados podem causar grandes problemas para a empresa.",
+      "initial_due_days": 0
     }
   ]
 }
