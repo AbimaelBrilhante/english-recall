@@ -1140,12 +1140,6 @@
       "initial_due_days": 0
     },
     {
-      "id": "de-190",
-      "front": "Die Besichtigung ist am 28. November.",
-      "back": "A visita ao apartamento é no dia 28 de novembro.",
-      "initial_due_days": 0
-    },
-    {
       "id": "de-191",
       "front": "Die Besichtigung ist am 28. November um acht Uhr.",
       "back": "A visita ao apartamento é no dia 28 de novembro às oito horas.",
@@ -1167,12 +1161,6 @@
       "id": "de-194",
       "front": "Ich habe am 28. November Zeit. Passt das?",
       "back": "Eu tenho tempo no dia 28 de novembro. Serve?",
-      "initial_due_days": 0
-    },
-    {
-      "id": "de-195",
-      "front": "Gut, danke.",
-      "back": "Ótimo, obrigado.",
       "initial_due_days": 0
     }
   ]
