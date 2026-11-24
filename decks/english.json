@@ -1660,6 +1660,24 @@
       "front": "Small data errors can cause big problems for the company.",
       "back": "Pequenos erros nos dados podem causar grandes problemas para a empresa.",
       "initial_due_days": 0
+    },
+    {
+      "id": "en-277",
+      "front": "The data from SAP is already in Snowflake's Bronze layer.",
+      "back": "Os dados do SAP já estão na camada Bronze do Snowflake.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-278",
+      "front": "I validate the data by comparing it with SAP reports.",
+      "back": "Eu valido os dados comparando-os com os relatórios do SAP.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-279",
+      "front": "This helps identify possible issues.",
+      "back": "Isso ajuda a identificar possíveis problemas.",
+      "initial_due_days": 0
     }
   ]
 }
