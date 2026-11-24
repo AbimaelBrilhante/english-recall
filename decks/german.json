@@ -1132,6 +1132,48 @@
       "front": "Der Bus fährt um acht Uhr.",
       "back": "O ônibus sai às oito horas.",
       "initial_due_days": 0
+    },
+    {
+      "id": "de-189",
+      "front": "Heute ist der 23. November.",
+      "back": "Hoje é 23 de novembro.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "de-190",
+      "front": "Die Besichtigung ist am 28. November.",
+      "back": "A visita ao apartamento é no dia 28 de novembro.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "de-191",
+      "front": "Die Besichtigung ist am 28. November um acht Uhr.",
+      "back": "A visita ao apartamento é no dia 28 de novembro às oito horas.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "de-192",
+      "front": "Der Termin ist am 30. November.",
+      "back": "O compromisso é no dia 30 de novembro.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "de-193",
+      "front": "Guten Tag. Wann ist die Besichtigung?",
+      "back": "Boa tarde. Quando é a visita ao apartamento?",
+      "initial_due_days": 0
+    },
+    {
+      "id": "de-194",
+      "front": "Ich habe am 28. November Zeit. Passt das?",
+      "back": "Eu tenho tempo no dia 28 de novembro. Serve?",
+      "initial_due_days": 0
+    },
+    {
+      "id": "de-195",
+      "front": "Gut, danke.",
+      "back": "Ótimo, obrigado.",
+      "initial_due_days": 0
     }
   ]
 }
