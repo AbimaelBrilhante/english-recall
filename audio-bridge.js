@@ -75,6 +75,15 @@
   function handleSpeak(utterance) {
     const text = textKey(utterance?.text);
     const lang = languageKey(utterance?.lang);
+    // The prerecorded de-195 CAF is reported to speak a different German phrase.
+    // Prefer the iPhone's de-DE voice for this exact card until its CAF is replaced.
+    const isDe195 = lang === 'de' && text === 'Ich habe Bock auf Eis.';
+    if (isDe195) {
+      stopPrerecorded();
+      nativeCancel();
+      fallbackToBrowser(utterance);
+      return;
+    }
     const audioPath = (lang ? prerecordedByLang.get(`${lang}|${text}`) : null) || prerecordedByText.get(text);
 
     if (!audioPath) {
