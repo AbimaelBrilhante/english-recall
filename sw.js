@@ -1,4 +1,4 @@
-const CACHE='english-recall-v20-26-indexeddb-v1';
+const CACHE='english-recall-v20-26-1-audio-de195';
 const ASSETS=['./','./index.html','./manifest.webmanifest','./icon-192.png','./icon-512.png','./voice-diagnostics.js','./audio-bridge.js','./home-controls.js','./theme-hotfix.css','./recall-features-v2.js','./home-layout-v2.js','./recall-advanced-v3.js','./recall-flow-fixes-v14.js','./recall-single-audio-v14-1.js','./recall-auto-tags-v15.js','./recall-practice-v16.js','./recall-review-layout-v16-1.js','./recall-modern-v17.css','./recall-home-v20.css','./recall-modern-v17.js','./recall-audio-dedupe-v17-1.js','./recall-insights-v18.js','./recall-cefr-v18-1.js','./recall-learning-v19.js','./recall-ios-pt-speech-v19-3.js','./recall-handsfree-recognition-v20-11.js','./recall-handsfree-production-v19-2.js','./recall-handsfree-favorites-v1.js','./recall-cram-natural-v19-4.js','./recall-study-window-v19-8.js','./recall-smart-sessions-v19-9.js','./recall-home-v20.js','./recall-repair-v20-7.js','./recall-storage-diagnostics-v1.js','./recall-indexeddb-v1.js','./recall-version-v18-1.js','./recall-speaking-lab-entry-v20-18.js','./recall-dual-streak-v20-19.js','./recall-new-card-learning-v1.js','./recall-new-card-variation-hints-v1.js','./recall-push-setup-v1.js','./speaking-lab-prompt-share-v1.js','./speaking-lab-prod-shell-v20-20.js','./speaking-lab.html','./60-second.html','./error-rescue.html','./speaking-lab/sentence-builder-curated-v1.json','./speaking-lab/sentence-builder-deck-v1.json','./speaking-lab/sentence-builder-errors-v1.json','./speaking-lab/60-second-curated-v2.json','./speaking-lab/60-second-professional-v2.json','./speaking-lab/error-rescue-v1.json'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)));self.skipWaiting();});
 self.addEventListener('activate',e=>{e.waitUntil((async()=>{const ks=await caches.keys();await Promise.all(ks.filter(k=>k!==CACHE).map(k=>caches.delete(k)));await self.clients.claim();const cs=await self.clients.matchAll({type:'window',includeUncontrolled:true});for(const c of cs){try{await c.navigate(c.url);}catch{}}})());});
@@ -8,8 +8,8 @@ async function inject(r){
   const ct=r.headers.get('content-type')||'';
   if(!ct.includes('text/html'))return r;
   let t=bridge(await r.text());
-  if(!t.includes('theme-hotfix.css'))t=t.replace('</head>','<link rel="stylesheet" href="./theme-hotfix.css?v=2254">\n</head>');
-  if(!t.includes('recall-home-v20.css'))t=t.replace('</head>','<link rel="stylesheet" href="./recall-home-v20.css?v=2254">\n</head>');
+  if(!t.includes('theme-hotfix.css'))t=t.replace('</head>','<link rel="stylesheet" href="./theme-hotfix.css?v=2255">\n</head>');
+  if(!t.includes('recall-home-v20.css'))t=t.replace('</head>','<link rel="stylesheet" href="./recall-home-v20.css?v=2255">\n</head>');
   // Wait for IndexedDB hydration before loading any module requiring recallCore.
   const scripts=["voice-diagnostics.js","audio-bridge.js","home-controls.js","recall-features-v2.js","home-layout-v2.js","recall-advanced-v3.js","recall-flow-fixes-v14.js","recall-single-audio-v14-1.js","recall-auto-tags-v15.js","recall-practice-v16.js","recall-review-layout-v16-1.js","recall-modern-v17.js","recall-audio-dedupe-v17-1.js","recall-insights-v18.js","recall-cefr-v18-1.js","recall-learning-v19.js","recall-ios-pt-speech-v19-3.js","recall-handsfree-recognition-v20-11.js","recall-handsfree-production-v19-2.js","recall-handsfree-favorites-v1.js","recall-cram-natural-v19-4.js","recall-study-window-v19-8.js","recall-smart-sessions-v19-9.js","recall-home-v20.js","recall-repair-v20-7.js","recall-storage-diagnostics-v1.js","recall-version-v18-1.js","recall-speaking-lab-entry-v20-18.js","recall-dual-streak-v20-19.js","recall-new-card-learning-v1.js","recall-new-card-variation-hints-v1.js","recall-push-setup-v1.js"];
   const loader=`<script>
@@ -20,7 +20,7 @@ async function inject(r){
     if(path==='recall-storage-diagnostics-v1.js'&&window.__recallStorageDiagnosticsV1)continue;
     await new Promise(resolve=>{
       const script=document.createElement('script');
-      script.src='./'+path+'?v=2254';
+      script.src='./'+path+'?v=2255';
       script.onload=resolve;
       script.onerror=()=>{
         console.error('Recall: módulo indisponível',path);
@@ -38,10 +38,16 @@ async function inject(r){
   h.delete('content-length');
   return new Response(t,{status:r.status,statusText:r.statusText,headers:h});
 }
-async function injectSpeaking(r){if(!r)return r;const ct=r.headers.get('content-type')||'';if(!ct.includes('text/html'))return r;let t=await r.text();if(!t.includes('speaking-lab-prod-shell-v20-20.js'))t=t.replace('</body>','<script src="./speaking-lab-prod-shell-v20-20.js?v=2254"></script>\n</body>');if(!t.includes('speaking-lab-prompt-share-v1.js'))t=t.replace('</body>','<script src="./speaking-lab-prompt-share-v1.js?v=2254"></script>\n</body>');const h=new Headers(r.headers);h.delete('content-length');return new Response(t,{status:r.status,statusText:r.statusText,headers:h});}
+async function injectSpeaking(r){if(!r)return r;const ct=r.headers.get('content-type')||'';if(!ct.includes('text/html'))return r;let t=await r.text();if(!t.includes('speaking-lab-prod-shell-v20-20.js'))t=t.replace('</body>','<script src="./speaking-lab-prod-shell-v20-20.js?v=2255"></script>\n</body>');if(!t.includes('speaking-lab-prompt-share-v1.js'))t=t.replace('</body>','<script src="./speaking-lab-prompt-share-v1.js?v=2255"></script>\n</body>');const h=new Headers(r.headers);h.delete('content-length');return new Response(t,{status:r.status,statusText:r.statusText,headers:h});}
 function speakingPage(u){return u.pathname.endsWith('/speaking-lab.html')||u.pathname.endsWith('/60-second.html')||u.pathname.endsWith('/error-rescue.html');}
 function cachePath(u){if(u.pathname.endsWith('/60-second.html'))return './60-second.html';if(u.pathname.endsWith('/error-rescue.html'))return './error-rescue.html';return './speaking-lab.html';}
-self.addEventListener('fetch',e=>{if(e.request.method!=='GET')return;const u=new URL(e.request.url);if(u.pathname.includes('/decks/')){e.respondWith(fetch(e.request,{cache:'no-store'}).then(r=>{if(r.ok)caches.open(CACHE).then(c=>c.put(e.request,r.clone()));return r;}).catch(()=>caches.match(e.request)));return;}if(u.pathname.includes('/audio/')){e.respondWith(fetch(e.request).then(r=>{if(r.ok)caches.open(CACHE).then(c=>c.put(e.request,r.clone()));return r;}).catch(()=>caches.match(e.request)));return;}if(e.request.mode==='navigate'&&speakingPage(u)){e.respondWith(fetch(e.request,{cache:'no-store'}).then(injectSpeaking).catch(async()=>injectSpeaking(await caches.match(cachePath(u)))));return;}if(e.request.mode==='navigate'){e.respondWith(fetch(e.request,{cache:'no-store'}).then(inject).catch(async()=>inject(await caches.match('./index.html'))));return;}e.respondWith(caches.match(e.request,{ignoreSearch:true}).then(c=>c||fetch(e.request).then(r=>{if(r.ok)caches.open(CACHE).then(x=>x.put(e.request,r.clone()));return r;})));});
+self.addEventListener('fetch',e=>{if(e.request.method!=='GET')return;const u=new URL(e.request.url);if(u.pathname.includes('/decks/')){e.respondWith(fetch(e.request,{cache:'no-store'}).then(r=>{if(r.ok)caches.open(CACHE).then(c=>c.put(e.request,r.clone()));return r;}).catch(()=>caches.match(e.request)));return;}if(u.pathname.endsWith('/audio/de/de-195.caf')){
+  // A mismatched prerecorded file must never override the correct German text.
+  // A 404 lets all playback implementations fall back to native speech.
+  e.respondWith(new Response('Use German text-to-speech for de-195',{status:404,headers:{'Content-Type':'text/plain'}}));
+  return;
+}
+if(u.pathname.includes('/audio/')){e.respondWith(fetch(e.request).then(r=>{if(r.ok)caches.open(CACHE).then(c=>c.put(e.request,r.clone()));return r;}).catch(()=>caches.match(e.request)));return;}if(e.request.mode==='navigate'&&speakingPage(u)){e.respondWith(fetch(e.request,{cache:'no-store'}).then(injectSpeaking).catch(async()=>injectSpeaking(await caches.match(cachePath(u)))));return;}if(e.request.mode==='navigate'){e.respondWith(fetch(e.request,{cache:'no-store'}).then(inject).catch(async()=>inject(await caches.match('./index.html'))));return;}e.respondWith(caches.match(e.request,{ignoreSearch:true}).then(c=>c||fetch(e.request).then(r=>{if(r.ok)caches.open(CACHE).then(x=>x.put(e.request,r.clone()));return r;})));});
 
 self.addEventListener('push', event => {
   let data={};
