@@ -1162,6 +1162,24 @@
       "front": "Ich habe am 28. November Zeit. Passt das?",
       "back": "Eu tenho tempo no dia 28 de novembro. Serve?",
       "initial_due_days": 0
+    },
+    {
+      "id": "de-195",
+      "front": "Ich habe Bock auf Eis.",
+      "back": "Estou a fim de tomar sorvete.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "de-196",
+      "front": "Ich habe keinen Bock.",
+      "back": "Não estou a fim.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "de-197",
+      "front": "Ich habe Lust auf Pizza.",
+      "back": "Estou com vontade de comer pizza.",
+      "initial_due_days": 0
     }
   ]
 }
