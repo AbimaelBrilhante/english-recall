@@ -1180,6 +1180,18 @@
       "front": "Ich habe Lust auf Pizza.",
       "back": "Estou com vontade de comer pizza.",
       "initial_due_days": 0
+    },
+    {
+      "id": "de-198",
+      "front": "Ich arbeite am Montag.",
+      "back": "Eu trabalho na segunda-feira.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "de-199",
+      "front": "Am Montag arbeite ich.",
+      "back": "Na segunda-feira, eu trabalho.",
+      "initial_due_days": 0
     }
   ]
 }
