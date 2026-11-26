@@ -1678,6 +1678,54 @@
       "front": "This helps identify possible issues.",
       "back": "Isso ajuda a identificar possíveis problemas.",
       "initial_due_days": 0
+    },
+    {
+      "id": "en-280",
+      "front": "One project I'm proud of is an automation project.",
+      "back": "Um projeto do qual me orgulho é um projeto de automação.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-281",
+      "front": "The biggest challenge was to understand the tax rules.",
+      "back": "O maior desafio foi entender as regras tributárias.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-282",
+      "front": "I load data into Snowflake and validate it in the bronze layer.",
+      "back": "Eu carrego os dados para o Snowflake e os valido na camada bronze.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-283",
+      "front": "Some tasks depend on other tasks.",
+      "back": "Algumas tarefas dependem de outras tarefas.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-284",
+      "front": "I'm open to learning new tools.",
+      "back": "Estou aberto a aprender novas ferramentas.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-285",
+      "front": "First, I check if there are any filters.",
+      "back": "Primeiro, verifico se existem filtros.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-286",
+      "front": "The project helped the company improve data accuracy.",
+      "back": "O projeto ajudou a empresa a melhorar a precisão dos dados.",
+      "initial_due_days": 0
+    },
+    {
+      "id": "en-287",
+      "front": "As a result, we saved around thirty hours per month and allowed analysts to focus on more important tasks.",
+      "back": "Como resultado, economizamos cerca de trinta horas por mês e permitimos que os analistas se concentrassem em tarefas mais importantes.",
+      "initial_due_days": 0
     }
   ]
 }
