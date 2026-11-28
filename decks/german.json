@@ -1192,6 +1192,12 @@
       "front": "Am Montag arbeite ich.",
       "back": "Na segunda-feira, eu trabalho.",
       "initial_due_days": 0
+    },
+    {
+      "id": "de-200",
+      "front": "Kannst du das noch mal sagen?",
+      "back": "Você pode dizer isso de novo?",
+      "initial_due_days": 0
     }
   ]
 }
